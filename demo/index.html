@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+
+    <title>Kokoro Player Demo</title>
+
+    <script src="../node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
+    <script src="../node_modules/kokoro/dist/kokoro.min.js"></script>
+
+    <script type="module">
+      import Player from '../player'
+      import { connect } from '../provider'
+
+      window.player = new Kokoro()
+      window.customElements.define('kokoro-player', Player)
+      window.customElements.define('kokoro-provider', connect(window.player))
+    </script>
+  </head>
+  <body>
+    <kokoro-provider>
+      <kokoro-player></kokoro-player>
+    </kokoro-provider>
+  </body>
+</html>

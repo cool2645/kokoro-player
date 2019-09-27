@@ -1,0 +1,22 @@
+{
+  "name": "kokoro-player",
+  "description": "A nice music player.",
+  "main": "index.js",
+  "scripts": {
+    "start": "",
+    "develop": "polymer serve",
+    "test": "polymer test",
+    "lint": "polymer lint"
+  },
+  "dependencies": {
+    "@polymer/polymer": "^3.0.0",
+    "lit-element": "^2.2.1",
+    "wc-context": "^0.8.0"
+  },
+  "devDependencies": {
+    "@webcomponents/webcomponentsjs": "^2.0.0",
+    "kokoro": "^0.1.0-beta.5",
+    "polymer-cli": "^1.9.11"
+  },
+  "license": "MIT"
+}
