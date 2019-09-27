@@ -3,9 +3,8 @@
   "description": "A nice music player.",
   "main": "src/index.js",
   "scripts": {
-    "start": "polymer serve",
-    "develop": "polymer serve",
-    "test": "polymer test",
+    "start": "webpack-dev-server --env.mode development",
+    "develop": "webpack-dev-server --env.mode development",
     "lint": "eslint --fix ."
   },
   "repository": {
@@ -27,14 +26,19 @@
     "wc-context": "^0.8.0"
   },
   "devDependencies": {
+    "@vaadin/router": "^1.4.3",
     "@webcomponents/webcomponentsjs": "^2.0.0",
+    "copy-webpack-plugin": "^5.0.4",
     "eslint": "^6.4.0",
     "eslint-config-standard": "^14.1.0",
     "eslint-plugin-import": "^2.18.2",
     "eslint-plugin-node": "^10.0.0",
     "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-standard": "^4.0.1",
+    "html-webpack-plugin": "^3.2.0",
     "kokoro": "^0.1.0-beta.6",
-    "polymer-cli": "^1.9.11"
+    "webpack": "^4.41.0",
+    "webpack-cli": "^3.3.9",
+    "webpack-dev-server": "^3.8.1"
   }
 }

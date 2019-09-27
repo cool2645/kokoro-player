@@ -1,4 +1,4 @@
-import { html } from 'lit-element'
+import { html, css } from 'lit-element'
 
 import { connect } from '../utils/redux'
 import Component from '../utils/component'
@@ -6,6 +6,14 @@ import Component from '../utils/component'
 class Player extends Component {
   static get properties () {
     return { json: { type: String } }
+  }
+
+  static get styles () {
+    return css`
+      p {
+        word-break: break-all;
+      }
+    `
   }
 
   render () {
