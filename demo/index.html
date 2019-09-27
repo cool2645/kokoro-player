@@ -10,8 +10,7 @@
     <script src="../node_modules/kokoro/dist/kokoro.min.js"></script>
 
     <script type="module">
-      import Player from '../player'
-      import { connect } from '../provider'
+      import { Player, connect } from '../'
 
       window.player = new Kokoro()
       window.customElements.define('kokoro-player', Player)
