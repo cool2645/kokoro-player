@@ -1,5 +1,4 @@
 export const connect = (mapStateToProps) => (ClassName) => {
-
   if (typeof ClassName !== 'function') throw new Error(`${ClassName.name} has to be a function or class`)
 
   ClassName.prototype.updateProps = function () {
@@ -26,7 +25,6 @@ export const connect = (mapStateToProps) => (ClassName) => {
     this.context.kokoro.subscribe(this.updateProps)
   }
 
-
   let userDefinedFirstUpdated = ClassName.prototype.firstUpdated
   ClassName.prototype.firstUpdated = function (updatedProperties) {
     this.updateStateContext()
@@ -44,4 +42,3 @@ export const connect = (mapStateToProps) => (ClassName) => {
 
   return ClassName
 }
-

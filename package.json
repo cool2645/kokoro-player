@@ -3,11 +3,24 @@
   "description": "A nice music player.",
   "main": "src/index.js",
   "scripts": {
-    "start": "",
+    "start": "polymer serve",
     "develop": "polymer serve",
     "test": "polymer test",
-    "lint": "polymer lint"
+    "lint": "eslint --fix ."
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cool2645/kokoro-player.git"
+  },
+  "keywords": [
+    "music-player"
+  ],
+  "author": "rikakomoe",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/cool2645/kokoro-player/issues"
+  },
+  "homepage": "https://github.com/cool2645/kokoro-player#readme",
   "dependencies": {
     "@polymer/polymer": "^3.0.0",
     "lit-element": "^2.2.1",
@@ -15,8 +28,13 @@
   },
   "devDependencies": {
     "@webcomponents/webcomponentsjs": "^2.0.0",
-    "kokoro": "^0.1.0-beta.5",
+    "eslint": "^6.4.0",
+    "eslint-config-standard": "^14.1.0",
+    "eslint-plugin-import": "^2.18.2",
+    "eslint-plugin-node": "^10.0.0",
+    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-standard": "^4.0.1",
+    "kokoro": "^0.1.0-beta.6",
     "polymer-cli": "^1.9.11"
-  },
-  "license": "MIT"
+  }
 }

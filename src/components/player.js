@@ -1,11 +1,11 @@
 import { html } from 'lit-element'
+
 import { connect } from '../utils/redux'
 import Component from '../utils/component'
 
 class Player extends Component {
-
-  static get properties() {
-    return { json: { type: String } };
+  static get properties () {
+    return { json: { type: String } }
   }
 
   render () {

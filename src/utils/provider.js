@@ -33,7 +33,7 @@ export default class Provider extends Component {
     }
   }
 
-  render() {
+  render () {
     return html`<slot/>`
   }
 }
