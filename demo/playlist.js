@@ -1,32 +1,76 @@
-import { LitElement, html, css } from 'lit-element'
+import { LitElement, html, css, unsafeCSS } from 'lit-element'
+
+import { waveStyle, sharedPageStyle } from './style'
 
 class PlaylistPage extends LitElement {
   static get styles () {
     return css`
+      ${unsafeCSS(waveStyle)}
+      ${unsafeCSS(sharedPageStyle)}
       .demo {
-        height: calc(100% + 700px);
-        background-image: url("https://i.loli.net/2019/09/27/PjdKtTgi3ZHoXCa.jpg");
-        background-size: cover;
-        background-position: bottom;
-        position: relative;
+        background: linear-gradient(315deg, #fffbf8, #fffbf0);
       }
-      .content {
-        height: 100%;
-        background: linear-gradient(180deg, #ffffff00 90%, #ffffffff);
+      .main {
+        color: #3e4f55;
       }
     `
   }
 
   render () {
     return html`
-      <div class="demo">
+      <link href="https://cdn.jsdelivr.net/gh/PrismJS/prism@1.16.0/themes/prism-coy.css" rel="stylesheet" />
+      <div class="demo waveAnimation">
         <div class="content">
-          <nav-bar .location=${this.location} color="#000"></nav-bar>
-          <h1>Playlist Page</h1>
-          <kokoro-provider>
-            <kokoro-player></kokoro-player>
-          </kokoro-provider>
+          <nav-bar .location=${this.location} color="#3e4f55"></nav-bar>
+          <div class="main">
+            <h1>Playlist Card</h1>
+            <div class="landing">
+              <kokoro-provider>
+                <kokoro-player></kokoro-player>
+              </kokoro-provider>
+            </div>
+          </div>
         </div>
+        <div class="waveWrapperInner bgTop">
+          <div class="wave waveTop" style="background-image: url('https://i.loli.net/2019/09/28/uJiFzLwxGkA8Ecl.png')"></div>
+        </div>
+        <div class="waveWrapperInner bgMiddle">
+          <div class="wave waveMiddle" style="background-image: url('https://i.loli.net/2019/09/28/fhKuB9jLc7wRTEG.png')"></div>
+        </div>
+        <div class="waveWrapperInner bgBottom">
+          <div class="wave waveBottom" style="background-image: url('https://i.loli.net/2019/09/28/lpuMerGD4wbgR5P.png')"></div>
+        </div>
+      </div>
+      <div class="source">
+        <h1>Source Code</h1>
+        <source-box .snippets=${[{
+      langCode: 'html',
+      lang: 'HTML',
+      code: `<html>
+<head>
+</head>
+<body>
+  <kokoro-provider>
+    <!-- Playlist Card -->
+    <playlist-card></playlist-card>
+  </kokoro-provider>
+  <kokoro-provider>
+    <!-- Player -->
+    <kokoro-player></kokoro-player>
+  </kokoro-provider>
+</body>
+</html>`
+    }, {
+      langCode: 'javascript',
+      lang: 'JavaScript',
+      code: `import Kororo from 'kokoro'
+import { connect, Player, Playlist } from 'kokoro-player' 
+
+window.player = new Kokoro()
+window.customElements.define('kokoro-player', Player)
+window.customElements.define('playlist-card', Playlist)
+window.customElements.define('kokoro-provider', connect(window.player))`
+    }]}></source-box>
       </div>
     `
   }

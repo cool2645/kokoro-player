@@ -1,15 +1,18 @@
-import { LitElement, html, css } from 'lit-element'
+import { LitElement, html, css, unsafeCSS } from 'lit-element'
+
+import { sharedPageStyle } from './style'
 
 class LyricsPage extends LitElement {
   static get styles () {
     return css`
+      ${unsafeCSS(sharedPageStyle)}
       .demo {
         height: 600px;
-        background: linear-gradient(315deg, #ffde79, #ffc795);
-        position: relative;
+        background: linear-gradient(315deg, #c24046, #751b1a);
       }
-      .source {
-        height: 500px;
+      .main {
+        height: calc(100% - 60px);
+        color: #fff;
       }
     `
   }
@@ -18,11 +21,15 @@ class LyricsPage extends LitElement {
     return html`
       <div class="demo">
         <div class="content">
-          <nav-bar .location=${this.location} color="#000"></nav-bar>
-          <h1>Lyrics Page</h1>
-          <kokoro-provider>
-            <kokoro-player></kokoro-player>
-          </kokoro-provider>
+          <nav-bar .location=${this.location} color="#fff"></nav-bar>
+          <div class="main">
+            <h1>Hyper Lyrics</h1>
+            <div class="landing">
+              <kokoro-provider>
+                <kokoro-player></kokoro-player>
+              </kokoro-provider>
+            </div>
+          </div>
         </div>
       </div>
       <div class="source">

@@ -1,87 +1,17 @@
-import { LitElement, html, css } from 'lit-element'
+import { LitElement, html, css, unsafeCSS } from 'lit-element'
+
+import { waveStyle, sharedPageStyle } from './style'
 
 class SoloPage extends LitElement {
   static get styles () {
     return css`
+      ${unsafeCSS(waveStyle)}
+      ${unsafeCSS(sharedPageStyle)}
       .demo {
-        height: 100%;
         background: linear-gradient(315deg, #24354E, #04142D);
-        position: relative;
       }
-      .source {
-        height: 700px;
-      }
-      .content {
-        z-index: 100;
-        position: relative;
-      }
-      @keyframes move_wave {
-        0% {
-            transform: translateX(0) translateZ(0) scaleY(1)
-        }
-        50% {
-            transform: translateX(-25%) translateZ(0) scaleY(0.55)
-        }
-        100% {
-            transform: translateX(-50%) translateZ(0) scaleY(1)
-        }
-      }
-      .waveWrapper {
-          overflow: hidden;
-          position: absolute;
-          left: 0;
-          right: 0;
-          bottom: 0;
-          top: 0;
-          margin: auto;
-      }
-      .waveWrapperInner {
-          position: absolute;
-          width: 100%;
-          overflow: hidden;
-          height: 100%;
-          bottom: 0px;
-      }
-      .bgTop {
-          z-index: 15;
-          opacity: 0.5;
-      }
-      .bgMiddle {
-          z-index: 10;
-          opacity: 0.75;
-      }
-      .bgBottom {
-          z-index: 5;
-      }
-      .wave {
-          position: absolute;
-          left: 0;
-          width: 200%;
-          height: 100%;
-          background-repeat: repeat no-repeat;
-          background-position: 0 bottom;
-          transform-origin: center bottom;
-      }
-      .waveTop {
-          background-size: 50% 100px;
-      }
-      .waveAnimation .waveTop {
-        animation: move-wave 3s;
-         -webkit-animation: move-wave 3s;
-         -webkit-animation-delay: 1s;
-         animation-delay: 1s;
-      }
-      .waveMiddle {
-          background-size: 50% 120px;
-      }
-      .waveAnimation .waveMiddle {
-          animation: move_wave 10s linear infinite;
-      }
-      .waveBottom {
-          background-size: 50% 100px;
-      }
-      .waveAnimation .waveBottom {
-          animation: move_wave 15s linear infinite;
+      .main {
+        color: #ffe9f8;
       }
     `
   }
@@ -90,11 +20,15 @@ class SoloPage extends LitElement {
     return html`
       <div class="demo waveAnimation">
         <div class="content">
-          <nav-bar .location=${this.location} color="#fff"></nav-bar>
-          <h1>Solo Page</h1>
-          <kokoro-provider>
-            <kokoro-player></kokoro-player>
-          </kokoro-provider>
+          <nav-bar .location=${this.location} color="#ffe9f8"></nav-bar>
+          <div class="main">
+            <h1>Single Song Card</h1>
+            <div class="landing">
+              <kokoro-provider>
+                <kokoro-player></kokoro-player>
+              </kokoro-provider>
+            </div>
+          </div>
         </div>
         <div class="waveWrapperInner bgTop">
           <div class="wave waveTop" style="background-image: url('https://i.loli.net/2019/09/27/DgOiUhxQM69RlWL.png')"></div>
@@ -107,7 +41,35 @@ class SoloPage extends LitElement {
         </div>
       </div>
       <div class="source">
-      
+        <h1>Source Code</h1>
+        <source-box .snippets=${[{
+          langCode: 'html',
+          lang: 'HTML',
+          code: `<html>
+<head>
+</head>
+<body>
+  <kokoro-provider>
+    <!-- Single Song Card -->
+    <single-song-card></single-song-card>
+  </kokoro-provider>
+  <kokoro-provider>
+    <!-- Player -->
+    <kokoro-player></kokoro-player>
+  </kokoro-provider>
+</body>
+</html>`
+        }, {
+          langCode: 'javascript',
+          lang: 'JavaScript',
+          code: `import Kororo from 'kokoro'
+import { connect, Player, SingleSong } from 'kokoro-player' 
+
+window.player = new Kokoro()
+window.customElements.define('kokoro-player', Player)
+window.customElements.define('single-song-card', SingleSong)
+window.customElements.define('kokoro-provider', connect(window.player))`
+      }]}></source-box>
       </div>
     `
   }

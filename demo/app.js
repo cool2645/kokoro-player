@@ -6,6 +6,7 @@ import { routes } from './nav'
 import './solo'
 import './playlist'
 import './lyrics'
+import './source'
 
 window.player = new Kokoro()
 window.customElements.define('kokoro-player', Player)
