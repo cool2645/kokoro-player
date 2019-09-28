@@ -2,9 +2,11 @@
   "name": "kokoro-player",
   "description": "\uD83D\uDC98 All you need is a modern, super light and elegant music player, powered with web component.",
   "main": "src/index.js",
+  "version": "0.0.1",
   "scripts": {
     "start": "webpack-dev-server --env.mode development",
     "develop": "webpack-dev-server --env.mode development",
+    "build": "webpack --env.mode production && webpack --env.mode production --config=webpack.dist.config.js",
     "lint": "eslint --fix ."
   },
   "repository": {

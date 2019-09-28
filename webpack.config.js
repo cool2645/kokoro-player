@@ -1,5 +1,6 @@
 const path = require('path')
 
+const HotModuleReplacementPlugin = require('webpack').HotModuleReplacementPlugin
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 
@@ -9,9 +10,10 @@ module.exports = ({ mode }) => {
     entry: path.join(__dirname, 'demo/app.js'),
     output: {
       filename: '[name].[hash].js',
-      path: path.resolve(__dirname, 'demo')
+      path: path.resolve(__dirname, 'public')
     },
     plugins: [
+      new HotModuleReplacementPlugin(),
       new HtmlWebpackPlugin({
         template: './demo/index.html',
         minify: {

@@ -46,7 +46,6 @@ class Source extends LitElement {
   render () {
     return html`
       <link href="https://cdn.jsdelivr.net/gh/PrismJS/prism@1.16.0/themes/prism-coy.css" rel="stylesheet" />
-      <script src="https://cdn.jsdelivr.net/gh/PrismJS/prism@1.16.0/prism.js"></script>
       <div class="inline">
         ${
           this.snippets.map((snippet, id) => html`
