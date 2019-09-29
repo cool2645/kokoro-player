@@ -1,18 +1,17 @@
-import { withContext } from 'wc-context/lit-element'
-import { LitElement, html } from 'lit-element'
+import { html } from 'lit-element'
 
-const Component = withContext(LitElement)
-
-export function connect (kokoro) {
-  return class extends Provider {
-    constructor () {
-      super()
-      this.kokoro = kokoro
-    }
-  }
-}
+import { Component } from './component'
 
 export default class Provider extends Component {
+  static connect (kokoro) {
+    return class extends Provider {
+      constructor () {
+        super()
+        this.kokoro = kokoro
+      }
+    }
+  }
+
   connect (kokoro) {
     this.kokoro = kokoro
   }
