@@ -69,11 +69,9 @@ class SoloPage extends LitElement {
           langCode: 'javascript',
           lang: 'JavaScript',
           code: `import Kororo from 'kokoro'
-import { Player, Provider, SingleCard } from 'kokoro-player' 
+import { Provider } from 'kokoro-player' 
 
 window.player = new Kokoro()
-window.customElements.define('kokoro-player', Player)
-window.customElements.define('kokoro-single-card', SingleCard)
 window.customElements.define('kokoro-provider', Provider.connect(window.player))`
       }]}></source-box>
       </div>

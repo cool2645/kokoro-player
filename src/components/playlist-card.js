@@ -29,4 +29,6 @@ const mapStateToProps = (state) => {
   }
 }
 
-export default connect(mapStateToProps)(PlaylistCard)
+const KokoroPlaylistCard = connect(mapStateToProps)(PlaylistCard)
+window.customElements.define('kokoro-playlist-card', KokoroPlaylistCard)
+export default KokoroPlaylistCard

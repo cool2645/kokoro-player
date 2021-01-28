@@ -29,4 +29,6 @@ const mapStateToProps = (state) => {
   }
 }
 
-export default connect(mapStateToProps)(Player)
+const KokoroPlayer = connect(mapStateToProps)(Player)
+window.customElements.define('kokoro-player', KokoroPlayer)
+export default KokoroPlayer

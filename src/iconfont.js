@@ -3,12 +3,15 @@ import { css } from 'lit-element'
 export const iconfont = css`
 .icon {
   font-family: "iconfont" !important;
-  font-size: 16px;
   font-style: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
+.icon-ok:before {
+  content: "\\e645";
+}
+  
 .icon-right:before {
   content: "\\e62b";
 }
