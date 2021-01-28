@@ -1,12 +1,12 @@
-import { LitElement, html, css, unsafeCSS } from 'lit-element'
+import { LitElement, html, css } from 'lit-element'
 
 import { waveStyle, sharedPageStyle } from './style'
 
 class PlaylistPage extends LitElement {
   static get styles () {
     return css`
-      ${unsafeCSS(waveStyle)}
-      ${unsafeCSS(sharedPageStyle)}
+      ${waveStyle}
+      ${sharedPageStyle}
       .demo {
         background: linear-gradient(315deg, #fffbf8, #fffbf0);
       }
@@ -26,7 +26,7 @@ class PlaylistPage extends LitElement {
             <h1>Playlist Card</h1>
             <div class="landing">
               <kokoro-provider>
-                <kokoro-player></kokoro-player>
+                <kokoro-playlist-card></kokoro-playlist-card>
               </kokoro-provider>
             </div>
           </div>
@@ -52,7 +52,7 @@ class PlaylistPage extends LitElement {
 <body>
   <kokoro-provider>
     <!-- Playlist Card -->
-    <playlist-card></playlist-card>
+    <kokoro-playlist-card></kokoro-playlist-card>
   </kokoro-provider>
   <kokoro-provider>
     <!-- Player -->
@@ -64,11 +64,11 @@ class PlaylistPage extends LitElement {
       langCode: 'javascript',
       lang: 'JavaScript',
       code: `import Kororo from 'kokoro'
-import { Player, Playlist, Provider } from 'kokoro-player' 
+import { Player, PlaylistCard, Provider } from 'kokoro-player' 
 
 window.player = new Kokoro()
 window.customElements.define('kokoro-player', Player)
-window.customElements.define('playlist-card', Playlist)
+window.customElements.define('kokoro-playlist-card', PlaylistCard)
 window.customElements.define('kokoro-provider', Provider.connect(window.player))`
     }]}></source-box>
       </div>

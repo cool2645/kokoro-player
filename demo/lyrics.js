@@ -1,11 +1,11 @@
-import { LitElement, html, css, unsafeCSS } from 'lit-element'
+import { LitElement, html, css } from 'lit-element'
 
 import { sharedPageStyle } from './style'
 
 class LyricsPage extends LitElement {
   static get styles () {
     return css`
-      ${unsafeCSS(sharedPageStyle)}
+      ${sharedPageStyle}
       .demo {
         height: 600px;
         background: linear-gradient(315deg, #c24046, #751b1a);

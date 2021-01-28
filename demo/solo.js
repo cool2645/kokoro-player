@@ -1,12 +1,12 @@
-import { LitElement, html, css, unsafeCSS } from 'lit-element'
+import { LitElement, html, css } from 'lit-element'
 
 import { waveStyle, sharedPageStyle } from './style'
 
 class SoloPage extends LitElement {
   static get styles () {
     return css`
-      ${unsafeCSS(waveStyle)}
-      ${unsafeCSS(sharedPageStyle)}
+      ${waveStyle}
+      ${sharedPageStyle}
       .demo {
         background: linear-gradient(315deg, #24354E, #04142D);
       }
@@ -25,7 +25,13 @@ class SoloPage extends LitElement {
             <h1>Single Song Card</h1>
             <div class="landing">
               <kokoro-provider>
-                <kokoro-player></kokoro-player>
+                <kokoro-single-card
+                  title="如果你能够做我男朋友"
+                  artist="阮豆"
+                  album="如果你能够做我男朋友"
+                  src="https://cdn.innocent.love/%E9%98%AE%E8%B1%86%20-%20%E5%A6%82%E6%9E%9C%E4%BD%A0%E8%83%BD%E5%A4%9F%E5%81%9A%E6%88%91%E7%94%B7%E6%9C%8B%E5%8F%8B.mp3"
+                  cover="https://cdn.innocent.love/%E9%98%AE%E8%B1%86%20-%20%E5%A6%82%E6%9E%9C%E4%BD%A0%E8%83%BD%E5%A4%9F%E5%81%9A%E6%88%91%E7%94%B7%E6%9C%8B%E5%8F%8B.jpg"
+                ></kokoro-single-card>
               </kokoro-provider>
             </div>
           </div>
@@ -51,7 +57,7 @@ class SoloPage extends LitElement {
 <body>
   <kokoro-provider>
     <!-- Single Song Card -->
-    <single-song-card></single-song-card>
+    <kokoro-single-card></kokoro-single-card>
   </kokoro-provider>
   <kokoro-provider>
     <!-- Player -->
@@ -63,11 +69,11 @@ class SoloPage extends LitElement {
           langCode: 'javascript',
           lang: 'JavaScript',
           code: `import Kororo from 'kokoro'
-import { Player, Provider, SingleSong } from 'kokoro-player' 
+import { Player, Provider, SingleCard } from 'kokoro-player' 
 
 window.player = new Kokoro()
 window.customElements.define('kokoro-player', Player)
-window.customElements.define('single-song-card', SingleSong)
+window.customElements.define('kokoro-single-card', SingleCard)
 window.customElements.define('kokoro-provider', Provider.connect(window.player))`
       }]}></source-box>
       </div>
