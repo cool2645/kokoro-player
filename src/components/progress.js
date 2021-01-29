@@ -29,7 +29,7 @@ export default class Progress extends LitElement {
       .bar {
         position: relative;
         height: 100%;
-        border-radius: 0 0 4px 4px;
+        border-radius: 0 0 var(--kokoro-border-radius, 4px) var(--kokoro-border-radius, 4px);
         overflow: hidden;
       }
 

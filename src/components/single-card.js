@@ -26,7 +26,8 @@ class SingleCard extends Component {
       played: { type: Number },
       buffered: { type: Array },
       currentTime: { type: Number },
-      totalTime: { type: Number }
+      totalTime: { type: Number },
+      type: { type: String }
     }
   }
 
@@ -42,7 +43,7 @@ class SingleCard extends Component {
         margin: 0 auto;
         box-shadow: rgba(0, 0, 0, 0.1) 0.96px 0.96px 1.6px 0,
           rgba(0, 0, 0, 0.1) -0.96px 0px 0.96px 0px;
-        border-radius: 4px;
+        border-radius: var(--kokoro-border-radius);
         position: relative;
       }
 
@@ -51,7 +52,7 @@ class SingleCard extends Component {
         width: 40%;
         max-width: 200px;
         position: relative;
-        border-radius: 4px 0 0 4px;
+        border-radius: var(--kokoro-border-radius) 0 0 var(--kokoro-border-radius);
       }
       
       .cover::before {
@@ -217,6 +218,13 @@ class SingleCard extends Component {
           --kokoro-primary-color: ${this.primaryColor};
           --kokoro-secondary-color: ${this.secondaryColor};
           --kokoro-background-color: ${this.backgroundColor};
+          --kokoro-border-radius: ${this.type === 'flat' ? '0' : '4px'}
+        }
+        ${this.type === 'flat'
+          ? css`
+            :host {
+              box-shadow: none !important;
+            }` : ''
         }
       </style>
       <div class="cover">
