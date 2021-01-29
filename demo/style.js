@@ -77,12 +77,11 @@ export const sharedPageStyle = css`
     position: relative;
   }
   .source {
-    height: 700px;
     display: flex;
     flex-direction: column;
     justify-content: center;
     max-width: 800px;
-    padding: 10px;
+    padding: 100px 10px;
     margin: 0 auto;
   }
   .content {

@@ -249,7 +249,6 @@ class SingleCard extends Component {
                   <i class="icon icon-${this.playOrder === PLAY_ORDER_SINGLE
                     ? 'solo' : this.playOrder === PLAY_ORDER_SHUFFLE ? 'shuffle' : 'loop'}"></i></a>
                 <a class="btn"><i class="icon icon-volume"></i></a>
-                <a class="btn"><i class="icon icon-lyrics"></i></a>
               `
               : html`
                 <kokoro-button

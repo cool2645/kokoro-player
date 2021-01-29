@@ -3,6 +3,32 @@ import { LitElement, html, css } from 'lit-element'
 import { waveStyle, sharedPageStyle } from './style'
 
 class SoloPage extends LitElement {
+  static get properties () {
+    return {
+      connected: { type: Boolean },
+      flatMode: { type: Boolean }
+    }
+  }
+
+  constructor () {
+    super()
+    this.connected = true
+    this.flatMode = false
+  }
+
+  toggleConnect () {
+    this.connected = !this.connected
+    if (this.connected) {
+      document.querySelector('solo-page')
+        .shadowRoot.querySelector('kokoro-provider')
+        .connect(window.player)
+    } else {
+      document.querySelector('solo-page')
+        .shadowRoot.querySelector('kokoro-provider')
+        .disconnect()
+    }
+  }
+
   static get styles () {
     return css`
       ${waveStyle}
@@ -34,6 +60,7 @@ class SoloPage extends LitElement {
                   primaryColor="#bbbdd7"
                   secondaryColor="#a0a2bb"
                   backgroundColor="#2c3b58"
+                  type="${this.flatMode ? 'flat' : 'classical'}"
                 ></kokoro-single-card>
               </kokoro-provider>
             </div>
@@ -51,6 +78,16 @@ class SoloPage extends LitElement {
       </div>
       <div class="source">
         <h1>Source Code</h1>
+        <div>
+          <label for="conn"><input type="checkbox" id="conn"
+                                   ?checked="${this.connected}"
+                                   @change="${this.toggleConnect}"
+          /> Connected</label>
+          <label for="flat"><input type="checkbox" id="flat"
+                                   ?checkd="${this.flatMode}"
+                                   @change="${() => { this.flatMode = !this.flatMode }}"
+          /> Flat mode</label>
+        </div>
         <source-box .snippets=${[{
           langCode: 'html',
           lang: 'HTML',
@@ -60,7 +97,17 @@ class SoloPage extends LitElement {
 <body>
   <kokoro-provider>
     <!-- Single Song Card -->
-    <kokoro-single-card></kokoro-single-card>
+    <kokoro-single-card
+      title="如果你能够做我男朋友"
+      artist="阮豆"
+      album="如果你能够做我男朋友"
+      src="https://cdn.innocent.love/阮豆 - 如果你能够做我男朋友.mp3"
+      cover="https://cdn.innocent.love/阮豆 - 如果你能够做我男朋友.jpg"
+      primaryColor="#bbbdd7"
+      secondaryColor="#a0a2bb"
+      backgroundColor="#2c3b58"${this.flatMode ? `
+      type="flat"` : ''}
+    ></kokoro-single-card>
   </kokoro-provider>
   <kokoro-provider>
     <!-- Player -->
@@ -71,9 +118,23 @@ class SoloPage extends LitElement {
         }, {
           langCode: 'javascript',
           lang: 'JavaScript',
-          code: `import { Kokoro, Provider } from 'kokoro-player' 
+          code: `import { Kokoro, Provider, PLAY_ORDER_LOOP } from 'kokoro-player' 
 
-window.customElements.define('kokoro-provider', Provider.connect(new Kokoro()))`
+window.player = new Kokoro()
+window.customElements.define('kokoro-provider', Provider${this.connected ? '.connect(window.player)' : ''})
+${this.connected ? `// To disconnect
+// document.querySelector('kokoro-provider').disconnect()` : `// To connect
+// document.querySelector('kokoro-provider').connect(window.player)`}
+
+// Set initial playlist
+// More about Kokoro's API: https://kokoro.js.org
+window.player.setPlaylist([{
+  title: '你的答案',
+  artist: '阿冗',
+  album: '你的答案',
+  src: 'https://cdn.innocent.love/阿冗 - 你的答案.mp3',
+  cover: 'https://cdn.innocent.love/阿冗 - 你的答案.jpg'
+}], 0, PLAY_ORDER_LOOP)`
       }]}></source-box>
       </div>
     `
