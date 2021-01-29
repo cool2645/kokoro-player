@@ -31,6 +31,9 @@ class SoloPage extends LitElement {
                   album="如果你能够做我男朋友"
                   src="https://cdn.innocent.love/%E9%98%AE%E8%B1%86%20-%20%E5%A6%82%E6%9E%9C%E4%BD%A0%E8%83%BD%E5%A4%9F%E5%81%9A%E6%88%91%E7%94%B7%E6%9C%8B%E5%8F%8B.mp3"
                   cover="https://cdn.innocent.love/%E9%98%AE%E8%B1%86%20-%20%E5%A6%82%E6%9E%9C%E4%BD%A0%E8%83%BD%E5%A4%9F%E5%81%9A%E6%88%91%E7%94%B7%E6%9C%8B%E5%8F%8B.jpg"
+                  primaryColor="#bbbdd7"
+                  secondaryColor="#a0a2bb"
+                  backgroundColor="#2c3b58"
                 ></kokoro-single-card>
               </kokoro-provider>
             </div>

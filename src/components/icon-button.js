@@ -22,11 +22,13 @@ export default class Button extends LitElement {
         cursor: pointer;
         padding: 10px 12px;
         border-radius: 15px;
+        color: var(--kokoro-primary-color);
       }
 
       .btn.primary {
-        background-color: #ffe9f8;
-        color: #04142d;
+        background-color: var(--kokoro-primary-color);
+        color: var(--kokoro-background-color);
+        border: 1px var(--kokoro-primary-color) solid;
       }
 
       .btn.bordered {
