@@ -4,6 +4,7 @@ import { PLAY_ORDER_SHUFFLE, PLAY_ORDER_SINGLE } from 'kokoro'
 import { connect } from '../utils/lit-redux'
 import { Component } from '../utils/component'
 import './icon-button'
+import './progress'
 import { iconfont } from '../iconfont'
 
 class SingleCard extends Component {
@@ -18,11 +19,14 @@ class SingleCard extends Component {
       primaryColor: { type: String },
       secondaryColor: { type: String },
       backgroundColor: { type: String },
-      borderRadius: { type: Number },
       nextSongSrc: { type: String },
       currentSongSrc: { type: String },
       paused: { type: Boolean },
-      playOrder: { type: String }
+      playOrder: { type: String },
+      played: { type: Number },
+      buffered: { type: Array },
+      currentTime: { type: Number },
+      totalTime: { type: Number }
     }
   }
 
@@ -39,7 +43,7 @@ class SingleCard extends Component {
         box-shadow: rgba(0, 0, 0, 0.1) 0.96px 0.96px 1.6px 0,
           rgba(0, 0, 0, 0.1) -0.96px 0px 0.96px 0px;
         border-radius: 4px;
-        overflow: hidden;
+        position: relative;
       }
 
       .cover {
@@ -47,6 +51,7 @@ class SingleCard extends Component {
         width: 40%;
         max-width: 200px;
         position: relative;
+        border-radius: 4px 0 0 4px;
       }
       
       .cover::before {
@@ -111,6 +116,10 @@ class SingleCard extends Component {
         .control-panel {
           padding-left: 15px;
         }
+
+        .control.current {
+          margin-bottom: 0 !important;
+        }
       }
 
       @media screen and (max-width: 400px) {
@@ -134,6 +143,10 @@ class SingleCard extends Component {
         white-space: nowrap;
       }
       
+      .control.current {
+        margin-bottom: 5px;
+      }
+      
       .btn {
         text-decoration: none;
         color: inherit;
@@ -149,6 +162,10 @@ class SingleCard extends Component {
       .btn:last-child {
         margin-right: 0;
       }
+      
+      .btn.primary {
+        color: var(--kokoro-primary-color);
+      }
 
       @media screen and (max-width: 450px) {
         .btn {
@@ -162,6 +179,13 @@ class SingleCard extends Component {
           font-size: 16px;
           margin: 2px;
         }
+      }
+      
+      kokoro-progress {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
       }
     `
   }
@@ -189,7 +213,6 @@ class SingleCard extends Component {
           --kokoro-primary-color: ${this.primaryColor};
           --kokoro-secondary-color: ${this.secondaryColor};
           --kokoro-background-color: ${this.backgroundColor};
-          border-radius: ${this.borderRadius}px !important;
         }
       </style>
       <div class="cover">
@@ -202,11 +225,11 @@ class SingleCard extends Component {
           <h2 class="artist">${this.artist} - ${this.album}</h2>
         </div>
         <div class="lyrics"></div>
-        <div class="control">
+        <div class="control ${this.isCurrentSong ? 'current' : ''}">
           ${this.isCurrentSong
             ? html`
               <a class="btn" @click="${this.prev}"><i class="icon icon-previous"></i></a>
-              <a class="btn" @click="${this.togglePlay}">
+              <a class="btn primary" @click="${this.togglePlay}">
                 <i class="icon icon-${this.paused ? 'play' : 'pause'}"></i></a>
               <a class="btn" @click="${this.next}"><i class="icon icon-next"></i></a>
               <a class="btn" @click="${this.nextPlayOrder}">
@@ -238,6 +261,14 @@ class SingleCard extends Component {
           }
         </div>
       </div>
+      ${this.isCurrentSong ? html`
+        <kokoro-progress
+          .played="${this.played}"
+          .buffered="${this.buffered}"
+          .currentTime="${this.currentTime}"
+          .totalTime="${this.totalTime}"
+        ></kokoro-progress>` : ''
+      }
     `
   }
 
@@ -297,7 +328,13 @@ const mapStateToProps = (state) => {
     nextSongSrc: getNextSongSrc(state),
     currentSongSrc: state.playing.src,
     paused: state.playing.paused,
-    playOrder: state.playlist.playOrder
+    playOrder: state.playlist.playOrder,
+    played: state.playing.currentTime / state.playing.totalTime,
+    buffered: state.playing.bufferedTime?.map(
+      (buf) => [buf[0] / state.playing.totalTime, buf[1] / state.playing.totalTime]
+    ),
+    currentTime: state.playing.currentTime,
+    totalTime: state.playing.totalTime
   }
 }
 
