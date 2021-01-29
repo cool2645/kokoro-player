@@ -107,11 +107,11 @@ export default class Progress extends LitElement {
         ${this.buffered?.map((buf) => html`
         <div class="buffered" style="left: ${buf[0] * 100}%; width: ${(buf[1] - buf[0]) * 100}%"></div>
       `)}
-        <div class="played" style="width: ${this.played * 100}%"></div>
+        <div class="played" style="width: ${(this.played || 0) * 100}%"></div>
       </div>
       <div class="track">
         <div class="handle"
-             style="left: calc(${this.played * 100}% - 4px)"
+             style="left: calc(${(this.played || 0) * 100}% - 4px)"
         ></div>
       </div>
       <div class="label left">${this.formatTime(this.currentTime)}</div>

@@ -53,6 +53,7 @@ class SingleCard extends Component {
         max-width: 200px;
         position: relative;
         border-radius: var(--kokoro-border-radius) 0 0 var(--kokoro-border-radius);
+        user-select: none;
       }
       
       .cover::before {
