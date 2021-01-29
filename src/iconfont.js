@@ -8,6 +8,10 @@ export const iconfont = css`
     -moz-osx-font-smoothing: grayscale;
   }
 
+  .icon-warn:before {
+    content: "\\e613";
+  }
+
   .icon-ok:before {
     content: "\\e645";
   }

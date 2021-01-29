@@ -17,7 +17,8 @@
         ],
         "newlines-between": "always"
       }
-    ]
+    ],
+    "no-unused-expressions": "warn"
   },
   "overrides": [{
     "files": "test/**",

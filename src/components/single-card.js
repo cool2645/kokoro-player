@@ -190,6 +190,10 @@ class SingleCard extends Component {
     `
   }
 
+  get isConnected () {
+    return !!this.context.kokoro
+  }
+
   get isNextSong () {
     if (!this.src || !this.nextSongSrc) return false
     if (this.nextSongSrc instanceof Array) {
@@ -226,42 +230,49 @@ class SingleCard extends Component {
         </div>
         <div class="lyrics"></div>
         <div class="control ${this.isCurrentSong ? 'current' : ''}">
-          ${this.isCurrentSong
-            ? html`
-              <a class="btn" @click="${this.prev}"><i class="icon icon-previous"></i></a>
-              <a class="btn primary" @click="${this.togglePlay}">
-                <i class="icon icon-${this.paused ? 'play' : 'pause'}"></i></a>
-              <a class="btn" @click="${this.next}"><i class="icon icon-next"></i></a>
-              <a class="btn" @click="${this.nextPlayOrder}">
-                <i class="icon icon-${this.playOrder === PLAY_ORDER_SINGLE
-                  ? 'solo' : this.playOrder === PLAY_ORDER_SHUFFLE ? 'shuffle' : 'loop'}"></i></a>
-              <a class="btn"><i class="icon icon-volume"></i></a>
-              <a class="btn"><i class="icon icon-lyrics"></i></a>
-            `
+          ${this.isConnected
+            ? this.isCurrentSong
+              ? html`
+                <a class="btn" @click="${this.prev}"><i class="icon icon-previous"></i></a>
+                <a class="btn primary" @click="${this.togglePlay}">
+                  <i class="icon icon-${this.paused ? 'play' : 'pause'}"></i></a>
+                <a class="btn" @click="${this.next}"><i class="icon icon-next"></i></a>
+                <a class="btn" @click="${this.nextPlayOrder}">
+                  <i class="icon icon-${this.playOrder === PLAY_ORDER_SINGLE
+                    ? 'solo' : this.playOrder === PLAY_ORDER_SHUFFLE ? 'shuffle' : 'loop'}"></i></a>
+                <a class="btn"><i class="icon icon-volume"></i></a>
+                <a class="btn"><i class="icon icon-lyrics"></i></a>
+              `
+              : html`
+                <kokoro-button
+                  type="primary"
+                  icon="play"
+                  @click="${this.playNow}"
+                >立即播放</kokoro-button>
+                ${this.isNextSong
+                  ? html`
+                    <kokoro-button
+                      type="bordered"
+                      icon="ok"
+                      disabled
+                    >已添加</kokoro-button>`
+                  : html`
+                    <kokoro-button
+                      type="bordered"
+                      icon="play-next"
+                      @click="${this.playNext}"
+                    >下一首播放</kokoro-button>`
+                }`
             : html`
               <kokoro-button
-                type="primary"
-                icon="play"
-                @click="${this.playNow}"
-              >立即播放</kokoro-button>
-              ${this.isNextSong
-                ? html`
-                  <kokoro-button
-                    type="bordered"
-                    icon="ok"
-                    disabled
-                  >已添加</kokoro-button>`
-                : html`
-                  <kokoro-button
-                    type="bordered"
-                    icon="play-next"
-                    @click="${this.playNext}"
-                  >下一首播放</kokoro-button>`
-              }`
+                type="bordered"
+                icon="warn"
+                disabled
+              >未连接到 Kokoro 播放器</kokoro-button>`
           }
         </div>
       </div>
-      ${this.isCurrentSong ? html`
+      ${this.isConnected && this.isCurrentSong ? html`
         <kokoro-progress
           .played="${this.played}"
           .buffered="${this.buffered}"
@@ -273,7 +284,7 @@ class SingleCard extends Component {
   }
 
   playNow () {
-    this.context.kokoro.setCurrentSong({
+    this.context.kokoro?.setCurrentSong({
       title: this.title,
       artist: this.artist,
       album: this.album,
@@ -284,7 +295,7 @@ class SingleCard extends Component {
   }
 
   playNext () {
-    this.context.kokoro.setNextSong({
+    this.context.kokoro?.setNextSong({
       title: this.title,
       artist: this.artist,
       album: this.album,
@@ -295,19 +306,19 @@ class SingleCard extends Component {
   }
 
   prev () {
-    this.context.kokoro.previous()
+    this.context.kokoro?.previous()
   }
 
   next () {
-    this.context.kokoro.next()
+    this.context.kokoro?.next()
   }
 
   togglePlay () {
-    this.context.kokoro.togglePlay()
+    this.context.kokoro?.togglePlay()
   }
 
   nextPlayOrder () {
-    this.context.kokoro.nextPlayOrder()
+    this.context.kokoro?.nextPlayOrder()
   }
 }
 
