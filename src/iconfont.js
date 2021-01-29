@@ -1,94 +1,94 @@
 import { css } from 'lit-element'
 
 export const iconfont = css`
-.icon {
-  font-family: "iconfont" !important;
-  font-style: normal;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
+  .icon {
+    font-family: "iconfont" !important;
+    font-style: normal;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
 
-.icon-ok:before {
-  content: "\\e645";
-}
-  
-.icon-right:before {
-  content: "\\e62b";
-}
+  .icon-ok:before {
+    content: "\\e645";
+  }
 
-.icon-left:before {
-  content: "\\e605";
-}
+  .icon-right:before {
+    content: "\\e62b";
+  }
 
-.icon-close:before {
-  content: "\\e602";
-}
+  .icon-left:before {
+    content: "\\e605";
+  }
 
-.icon-lyrics:before {
-  content: "\\e61b";
-}
+  .icon-close:before {
+    content: "\\e602";
+  }
 
-.icon-volumn:before {
-  content: "\\e606";
-}
+  .icon-lyrics:before {
+    content: "\\e61b";
+  }
 
-.icon-pause-solid:before {
-  content: "\\e6b3";
-}
+  .icon-volume:before {
+    content: "\\e606";
+  }
 
-.icon-play-solid:before {
-  content: "\\e603";
-}
+  .icon-pause-solid:before {
+    content: "\\e6b3";
+  }
 
-.icon-playlist:before {
-  content: "\\e601";
-}
+  .icon-play-solid:before {
+    content: "\\e603";
+  }
 
-.icon-solo:before {
-  content: "\\e622";
-}
+  .icon-playlist:before {
+    content: "\\e601";
+  }
 
-.icon-shuffle:before {
-  content: "\\e609";
-}
+  .icon-solo:before {
+    content: "\\e622";
+  }
 
-.icon-repeat:before {
-  content: "\\e60c";
-}
+  .icon-shuffle:before {
+    content: "\\e609";
+  }
 
-.icon-pause:before {
-  content: "\\e60e";
-}
+  .icon-loop:before {
+    content: "\\e60c";
+  }
 
-.icon-play:before {
-  content: "\\e6ee";
-}
+  .icon-pause:before {
+    content: "\\e60e";
+  }
 
-.icon-back:before {
-  content: "\\e65e";
-}
+  .icon-play:before {
+    content: "\\e6ee";
+  }
 
-.icon-next:before {
-  content: "\\e663";
-}
+  .icon-back:before {
+    content: "\\e65e";
+  }
 
-.icon-previous:before {
-  content: "\\e664";
-}
+  .icon-next:before {
+    content: "\\e663";
+  }
 
-.icon-pause-circle:before {
-  content: "\\e666";
-}
+  .icon-previous:before {
+    content: "\\e664";
+  }
 
-.icon-play-circle:before {
-  content: "\\e667";
-}
+  .icon-pause-circle:before {
+    content: "\\e666";
+  }
 
-.icon-menu:before {
-  content: "\\e60a";
-}
+  .icon-play-circle:before {
+    content: "\\e667";
+  }
 
-.icon-play-next:before {
-  content: "\\e786";
-}
+  .icon-menu:before {
+    content: "\\e60a";
+  }
+
+  .icon-play-next:before {
+    content: "\\e786";
+  }
 `

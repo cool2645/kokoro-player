@@ -63,11 +63,9 @@ class PlaylistPage extends LitElement {
     }, {
       langCode: 'javascript',
       lang: 'JavaScript',
-      code: `import Kororo from 'kokoro'
-import { Provider } from 'kokoro-player' 
+      code: `import { Kokoro, Provider } from 'kokoro-player' 
 
-window.player = new Kokoro()
-window.customElements.define('kokoro-provider', Provider.connect(window.player))`
+window.customElements.define('kokoro-provider', Provider.connect(new Kokoro()))`
     }]}></source-box>
       </div>
     `

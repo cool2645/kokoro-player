@@ -6,7 +6,8 @@ export default class Button extends LitElement {
   static get properties () {
     return {
       type: { type: String },
-      icon: { type: String }
+      icon: { type: String },
+      disabled: { type: Boolean }
     }
   }
 
@@ -23,6 +24,10 @@ export default class Button extends LitElement {
         padding: 10px 12px;
         border-radius: 15px;
         color: var(--kokoro-primary-color);
+      }
+      
+      .btn.disabled {
+        cursor: default;
       }
 
       .btn.primary {
@@ -65,7 +70,7 @@ export default class Button extends LitElement {
 
   render () {
     return html`
-      <div class="btn ${this.type}">
+      <div class="btn ${this.type} ${this.disabled ? 'disabled' : ''}">
         <i class="icon icon-${this.icon}"></i>
         <slot></slot>
       </div>

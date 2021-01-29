@@ -15,6 +15,17 @@ module.exports = ({ mode }) => {
     module: {
       rules: [
         {
+          test: /\.m?js$/,
+          exclude: /(node_modules|bower_components)/,
+          use: {
+            loader: 'babel-loader',
+            options: {
+              presets: ['@babel/preset-env'],
+              plugins: ['@babel/plugin-proposal-nullish-coalescing-operator']
+            }
+          }
+        },
+        {
           test: /\.css$/,
           use: ['style-loader', 'css-loader']
         },

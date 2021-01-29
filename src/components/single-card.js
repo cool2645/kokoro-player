@@ -1,8 +1,10 @@
 import { html, css } from 'lit-element'
+import { PLAY_ORDER_SHUFFLE, PLAY_ORDER_SINGLE } from 'kokoro'
 
 import { connect } from '../utils/lit-redux'
 import { Component } from '../utils/component'
 import './icon-button'
+import { iconfont } from '../iconfont'
 
 class SingleCard extends Component {
   static get properties () {
@@ -17,12 +19,16 @@ class SingleCard extends Component {
       secondaryColor: { type: String },
       backgroundColor: { type: String },
       borderRadius: { type: Number },
-      json: { type: String }
+      nextSongSrc: { type: String },
+      currentSongSrc: { type: String },
+      paused: { type: Boolean },
+      playOrder: { type: String }
     }
   }
 
   static get styles () {
     return css`
+      ${iconfont}
       :host {
         color: var(--kokoro-secondary-color);
         background-color: var(--kokoro-background-color);
@@ -122,7 +128,58 @@ class SingleCard extends Component {
           display: none;
         }
       }
+      
+      .control {
+        user-select: none;
+        white-space: nowrap;
+      }
+      
+      .btn {
+        text-decoration: none;
+        color: inherit;
+        font-size: 24px;
+        margin: 5px;
+        cursor: pointer;
+      }
+      
+      .btn:first-child {
+        margin-left: 0;
+      }
+
+      .btn:last-child {
+        margin-right: 0;
+      }
+
+      @media screen and (max-width: 450px) {
+        .btn {
+          font-size: 20px;
+          margin: 2px;
+        }
+      }
+
+      @media screen and (max-width: 350px) {
+        .btn {
+          font-size: 16px;
+          margin: 2px;
+        }
+      }
     `
+  }
+
+  get isNextSong () {
+    if (!this.src || !this.nextSongSrc) return false
+    if (this.nextSongSrc instanceof Array) {
+      return this.nextSongSrc.indexOf(this.src) !== -1
+    }
+    return this.nextSongSrc === this.src
+  }
+
+  get isCurrentSong () {
+    if (!this.src || !this.currentSongSrc) return false
+    if (this.currentSongSrc instanceof Array) {
+      return this.currentSongSrc.indexOf(this.src) !== -1
+    }
+    return this.currentSongSrc === this.src
   }
 
   render () {
@@ -146,23 +203,101 @@ class SingleCard extends Component {
         </div>
         <div class="lyrics"></div>
         <div class="control">
-          <kokoro-button
-            type="primary"
-            icon="play"
-          >立即播放</kokoro-button>
-          <kokoro-button
-            type="bordered"
-            icon="play-next"
-          >下一首播放</kokoro-button>
+          ${this.isCurrentSong
+            ? html`
+              <a class="btn" @click="${this.prev}"><i class="icon icon-previous"></i></a>
+              <a class="btn" @click="${this.togglePlay}">
+                <i class="icon icon-${this.paused ? 'play' : 'pause'}"></i></a>
+              <a class="btn" @click="${this.next}"><i class="icon icon-next"></i></a>
+              <a class="btn" @click="${this.nextPlayOrder}">
+                <i class="icon icon-${this.playOrder === PLAY_ORDER_SINGLE
+                  ? 'solo' : this.playOrder === PLAY_ORDER_SHUFFLE ? 'shuffle' : 'loop'}"></i></a>
+              <a class="btn"><i class="icon icon-volume"></i></a>
+              <a class="btn"><i class="icon icon-lyrics"></i></a>
+            `
+            : html`
+              <kokoro-button
+                type="primary"
+                icon="play"
+                @click="${this.playNow}"
+              >立即播放</kokoro-button>
+              ${this.isNextSong
+                ? html`
+                  <kokoro-button
+                    type="bordered"
+                    icon="ok"
+                    disabled
+                  >已添加</kokoro-button>`
+                : html`
+                  <kokoro-button
+                    type="bordered"
+                    icon="play-next"
+                    @click="${this.playNext}"
+                  >下一首播放</kokoro-button>`
+              }`
+          }
         </div>
       </div>
     `
+  }
+
+  playNow () {
+    this.context.kokoro.setCurrentSong({
+      title: this.title,
+      artist: this.artist,
+      album: this.album,
+      src: this.src,
+      lyrics: this.lyrics,
+      cover: this.cover
+    })
+  }
+
+  playNext () {
+    this.context.kokoro.setNextSong({
+      title: this.title,
+      artist: this.artist,
+      album: this.album,
+      src: this.src,
+      lyrics: this.lyrics,
+      cover: this.cover
+    })
+  }
+
+  prev () {
+    this.context.kokoro.previous()
+  }
+
+  next () {
+    this.context.kokoro.next()
+  }
+
+  togglePlay () {
+    this.context.kokoro.togglePlay()
+  }
+
+  nextPlayOrder () {
+    this.context.kokoro.nextPlayOrder()
+  }
+}
+
+function getNextSongSrc (state) {
+  if (state.playlist.playOrder === PLAY_ORDER_SHUFFLE) {
+    return state.playlist.shuffledList[state.playlist.shuffledIndexOfPlaying + 1]
+  } else {
+    if (state.playlist.orderedIndexOfPlaying + 1 === state.playlist.orderedList.length) {
+      return state.playlist.orderedList[0]
+    } else {
+      return state.playlist.orderedList[state.playlist.orderedIndexOfPlaying + 1]
+    }
   }
 }
 
 const mapStateToProps = (state) => {
   return {
-    json: JSON.stringify(state)
+    nextSongSrc: getNextSongSrc(state),
+    currentSongSrc: state.playing.src,
+    paused: state.playing.paused,
+    playOrder: state.playlist.playOrder
   }
 }
 
