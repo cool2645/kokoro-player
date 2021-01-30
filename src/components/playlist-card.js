@@ -75,7 +75,9 @@ class PlaylistCard extends Component {
       }
       
       .control-panel {
-        flex: 1 1 auto;
+        box-sizing: border-box;
+        width: 60%;
+        max-width: 300px;
         padding: 15px 10px 15px 20px;
         display: flex;
         flex-direction: column;
@@ -237,6 +239,7 @@ class PlaylistCard extends Component {
       }
       
       .playlist-mask {
+        cursor: pointer;
         width: 60%;
         overflow: hidden;
         position: absolute;
@@ -482,10 +485,10 @@ class PlaylistCard extends Component {
           }
         </div>
       </div>
-      <div class="playlist-mask ${!this.showPlaylist || this.expand ? 'hide' : ''}">
-        <a class="playlist-close" href="" @click="${this.togglePlaylist}">
-          <i class="icon icon-close"></i>
-        </a>
+      <div class="playlist-mask ${!this.showPlaylist || this.expand ? 'hide' : ''}"
+           @click="${this.togglePlaylist}"
+      >
+        <a class="playlist-close"><i class="icon icon-close"></i></a>
       </div>
       <div class="playlist ${!this.showPlaylist || this.expand ? 'hide' : ''} ${this.expand ? 'expand' : ''}">
         ${this.songs.map((song) => html`
