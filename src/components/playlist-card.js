@@ -23,7 +23,9 @@ class PlaylistCard extends Component {
       totalTime: { type: Number },
       type: { type: String },
       volume: { type: Number },
-      showVolumeTrack: { type: Boolean }
+      showVolumeTrack: { type: Boolean },
+      expand: { type: Boolean },
+      showPlaylist: { type: Boolean }
     }
   }
 
@@ -34,7 +36,7 @@ class PlaylistCard extends Component {
         color: var(--kokoro-secondary-color);
         background-color: var(--kokoro-background-color);
         display: flex;
-        max-width: 750px;
+        max-width: 500px;
         max-height: 200px;
         margin: 0 auto;
         box-shadow: rgba(0, 0, 0, 0.1) 0.96px 0.96px 1.6px 0,
@@ -229,12 +231,59 @@ class PlaylistCard extends Component {
         overflow: hidden;
       }
       
+      .playlist-mask.hide {
+        opacity: 0;
+        visibility: hidden;
+      }
+      
+      .playlist-mask {
+        width: 60%;
+        overflow: hidden;
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(0, 0, 0, 0.5);
+        backdrop-filter: blur(8px);
+        opacity: 1;
+        transition: opacity 250ms;
+        border-radius: 0 var(--kokoro-border-radius) var(--kokoro-border-radius) 0;
+      }
+      
+      .playlist-close {
+        display: block;
+        font-size: 20px;
+        position: relative;
+        top: 5px;
+        left: 5px;
+        color: rgba(255, 255, 255, 0.8);
+        text-decoration: none;
+      }
+      
+      .playlist.hide {
+        width: 0;
+      }
+      
       .playlist {
-        width: 250px;
-        border-left: 1px solid rgba(51,51,51,0.05);
-        overflow: auto;
+        width: calc(60% - 30px);
+        overflow-x: hidden;
+        overflow-y: auto;
         cursor: default;
         counter-reset: songs;
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        background-color: var(--kokoro-background-color);
+        border-radius: 0 var(--kokoro-border-radius) var(--kokoro-border-radius) 0;
+        transition: width 250ms;
+      }
+      
+      .playlist.expand {
+        border-left: 1px solid rgba(51,51,51,0.05);
+        width: 250px;
+        position: static;
+        transition: none;
       }
       
       .playlist > .playlist-item {
@@ -261,6 +310,14 @@ class PlaylistCard extends Component {
       .playlist > .playlist-item.current {
         background: rgba(0,0,0,0.1);
         border-left: 3px var(--kokoro-primary-color) solid;
+      }
+      
+      .playlist-toggle {
+        text-decoration: none;
+      }
+      
+      .playlist-toggle .icon {
+        margin-left: 1ex;
       }
     `
   }
@@ -314,6 +371,18 @@ class PlaylistCard extends Component {
     return JSON.stringify(this.currentSongSrc) === JSON.stringify(song.src)
   }
 
+  firstUpdated (_) {
+    this.resizeObserver = new window.ResizeObserver(() => {
+      this.expand = this.parentElement.offsetWidth >= 750
+    })
+    this.resizeObserver.observe(this.parentElement)
+  }
+
+  disconnectedCallback () {
+    super.disconnectedCallback()
+    this.resizeObserver?.disconnect()
+  }
+
   render () {
     return html`
       <style>
@@ -330,6 +399,13 @@ class PlaylistCard extends Component {
               box-shadow: none !important;
             }` : ''
         }
+
+        ${this.expand
+          ? css`
+            :host {
+              max-width: 750px !important;
+            }` : ''
+        }
       </style>
       <div class="cover">
         <img class="cover" src="${this.displayedSong.cover}" alt="cover" />
@@ -337,7 +413,9 @@ class PlaylistCard extends Component {
       </div>
       <div class="control-panel">
         <div class="header">
-          <h1 class="title">${this.title}</h1>
+          <a class="playlist-toggle" href="" @click="${this.togglePlaylist}">
+            <h1 class="title">${this.title}<i class="icon icon-playlist"></i></h1>
+          </a>
           <h2 class="song">
             ${this.displayedSong.title} - ${this.displayedSong.artist}
           </h2>
@@ -404,7 +482,12 @@ class PlaylistCard extends Component {
           }
         </div>
       </div>
-      <div class="playlist">
+      <div class="playlist-mask ${!this.showPlaylist || this.expand ? 'hide' : ''}">
+        <a class="playlist-close" href="" @click="${this.togglePlaylist}">
+          <i class="icon icon-close"></i>
+        </a>
+      </div>
+      <div class="playlist ${!this.showPlaylist || this.expand ? 'hide' : ''} ${this.expand ? 'expand' : ''}">
         ${this.songs.map((song) => html`
           <div
             class="playlist-item ${this.isCurrentSong(song) ? 'current' : ''}"
@@ -473,6 +556,13 @@ class PlaylistCard extends Component {
 
   setVolume (volume) {
     this.context.kokoro?.setVolume(volume)
+  }
+
+  togglePlaylist (e) {
+    e.preventDefault()
+    if (!this.expand) {
+      this.showPlaylist = !this.showPlaylist
+    }
   }
 }
 
