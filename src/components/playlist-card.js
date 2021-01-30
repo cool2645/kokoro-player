@@ -23,9 +23,9 @@ class PlaylistCard extends Component {
       totalTime: { type: Number },
       type: { type: String },
       volume: { type: Number },
-      showVolumeTrack: { type: Boolean },
+      isVolumeTrackShown: { type: Boolean },
       expand: { type: Boolean },
-      showPlaylist: { type: Boolean }
+      isPlaylistShowing: { type: Boolean }
     }
   }
 
@@ -440,16 +440,13 @@ class PlaylistCard extends Component {
                   <i class="icon icon-${this.playOrder === PLAY_ORDER_SINGLE
                     ? 'solo' : this.playOrder === PLAY_ORDER_SHUFFLE ? 'shuffle' : 'loop'}"></i></a>
                 <a class="btn volume"
-                   @mouseenter="${() => {
-                     this.showVolumeTrack = true
-                   }}"
-                   @mouseleave="${() => {
-                     this.showVolumeTrack = false
-                   }}"
+                   @mouseenter="${this.showVolumeTrack}"
+                   @mouseleave="${this.closeVolumeTrack}"
                 >
                   <i class="icon icon-volume"></i>
-                  <div class="volume-track-container ${this.showVolumeTrack ? '' : 'hide'}">
+                  <div class="volume-track-container ${this.isVolumeTrackShown ? '' : 'hide'}">
                     <kokoro-track
+                      id="volume-track"
                       .played="${this.volume}"
                       .buffered="${[0, 1]}"
                       @kokoro-change="${(e) => this.setVolume(e.detail.progress)}"
@@ -489,12 +486,12 @@ class PlaylistCard extends Component {
           }
         </div>
       </div>
-      <div class="playlist-mask ${!this.showPlaylist || this.expand ? 'hide' : ''}"
+      <div class="playlist-mask ${!this.isPlaylistShowing || this.expand ? 'hide' : ''}"
            @click="${this.togglePlaylist}"
       >
         <a class="playlist-close"><i class="icon icon-close"></i></a>
       </div>
-      <div class="playlist ${!this.showPlaylist || this.expand ? 'hide' : ''} ${this.expand ? 'expand' : ''}">
+      <div class="playlist ${!this.isPlaylistShowing || this.expand ? 'hide' : ''} ${this.expand ? 'expand' : ''}">
         ${this.songs.map((song) => html`
           <div
             class="playlist-item ${this.isCurrentSong(song) ? 'current' : ''}"
@@ -515,6 +512,26 @@ class PlaylistCard extends Component {
         ></kokoro-progress>` : ''
       }
     `
+  }
+
+  showVolumeTrack () {
+    this.isVolumeTrackShown = true
+    document.removeEventListener('mouseup', this.hideVolumeTrack)
+  }
+
+  closeVolumeTrack () {
+    if (this.shadowRoot.querySelector('#volume-track').dragging) {
+      document.addEventListener('mouseup', this.hideVolumeTrack)
+    } else {
+      this.isVolumeTrackShown = false
+    }
+  }
+
+  hideVolumeTrack () {
+    setTimeout(() => {
+      this.isVolumeTrackShown = false
+    }, 250)
+    document.removeEventListener('mouseup', this.hideVolumeTrack)
   }
 
   setCurrentSong (song) {
@@ -568,7 +585,7 @@ class PlaylistCard extends Component {
   togglePlaylist (e) {
     e.preventDefault()
     if (!this.expand) {
-      this.showPlaylist = !this.showPlaylist
+      this.isPlaylistShowing = !this.isPlaylistShowing
     }
   }
 }

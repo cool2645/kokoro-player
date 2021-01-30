@@ -50,7 +50,7 @@ export default class Track extends LitElement {
       
       .track {
         position: relative;
-        margin: 0 3px;
+        margin: 0 4px;
       }
       
       .handle {
