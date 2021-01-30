@@ -244,18 +244,18 @@ class SingleCard extends Component {
 
   get isNextSong () {
     if (!this.src || !this.nextSongSrc) return false
-    if (this.nextSongSrc instanceof Array) {
+    if (this.nextSongSrc instanceof Array && typeof this.src === 'string') {
       return this.nextSongSrc.indexOf(this.src) !== -1
     }
-    return this.nextSongSrc === this.src
+    return JSON.stringify(this.nextSongSrc) === JSON.stringify(this.src)
   }
 
   get isCurrentSong () {
     if (!this.src || !this.currentSongSrc) return false
-    if (this.currentSongSrc instanceof Array) {
+    if (this.currentSongSrc instanceof Array && typeof this.src === 'string') {
       return this.currentSongSrc.indexOf(this.src) !== -1
     }
-    return this.currentSongSrc === this.src
+    return JSON.stringify(this.currentSongSrc) === JSON.stringify(this.src)
   }
 
   render () {

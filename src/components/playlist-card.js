@@ -10,7 +10,6 @@ class PlaylistCard extends Component {
     return {
       title: { type: String },
       songs: { type: Array },
-      currentSong: { type: Object },
       primaryColor: { type: String },
       secondaryColor: { type: String },
       backgroundColor: { type: String },
@@ -35,7 +34,7 @@ class PlaylistCard extends Component {
         color: var(--kokoro-secondary-color);
         background-color: var(--kokoro-background-color);
         display: flex;
-        max-width: 500px;
+        max-width: 750px;
         max-height: 200px;
         margin: 0 auto;
         box-shadow: rgba(0, 0, 0, 0.1) 0.96px 0.96px 1.6px 0,
@@ -229,6 +228,40 @@ class PlaylistCard extends Component {
         margin-left: 3px;
         overflow: hidden;
       }
+      
+      .playlist {
+        width: 250px;
+        border-left: 1px solid rgba(51,51,51,0.05);
+        overflow: auto;
+        cursor: default;
+        counter-reset: songs;
+      }
+      
+      .playlist > .playlist-item {
+        height: 40px;
+        line-height: 40px;
+        padding: 0 10px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        font-size: 14px;
+        cursor: pointer;
+      }
+      
+      .playlist > .playlist-item::before {
+        counter-increment: songs;
+        content: counter(songs);
+        margin-right: 10px;
+      }
+      
+      .playlist > .playlist-item:hover {
+        background: rgba(0,0,0,0.1);
+      }
+      
+      .playlist > .playlist-item.current {
+        background: rgba(0,0,0,0.1);
+        border-left: 3px var(--kokoro-primary-color) solid;
+      }
     `
   }
 
@@ -257,13 +290,37 @@ class PlaylistCard extends Component {
     return this.songs.map(song => song.src).indexOf(this.currentSongSrc) !== -1
   }
 
+  get displayedSong () {
+    if (!this.isConnected || !this.currentSongSrc) return this.songs[0]
+    if (this.currentSongSrc instanceof Array) {
+      for (const src of this.currentSongSrc) {
+        if (this.songs.map(song => song.src).indexOf(src) !== -1) {
+          return this.songs[this.songs.map(song => song.src).indexOf(src)]
+        }
+      }
+      return this.songs[0]
+    }
+    if (this.songs.map(song => song.src).indexOf(this.currentSongSrc) !== -1) {
+      return this.songs[this.songs.map(song => song.src).indexOf(this.currentSongSrc)]
+    }
+    return this.songs[0]
+  }
+
+  isCurrentSong (song) {
+    if (!this.isConnected) return false
+    if (this.currentSongSrc instanceof Array && typeof song.src === 'string') {
+      return this.currentSongSrc.indexOf(song.src) !== -1
+    }
+    return JSON.stringify(this.currentSongSrc) === JSON.stringify(song.src)
+  }
+
   render () {
     return html`
       <style>
         :host {
-          --kokoro-primary-color: ${this.primaryColor};
-          --kokoro-secondary-color: ${this.secondaryColor};
-          --kokoro-background-color: ${this.backgroundColor};
+          --kokoro-primary-color: ${this.displayedSong.primaryColor || this.primaryColor};
+          --kokoro-secondary-color: ${this.displayedSong.secondaryColor || this.secondaryColor};
+          --kokoro-background-color: ${this.displayedSong.backgroundColor || this.backgroundColor};
           --kokoro-border-radius: ${this.type === 'flat' ? '0' : '4px'}
         }
 
@@ -275,18 +332,14 @@ class PlaylistCard extends Component {
         }
       </style>
       <div class="cover">
-        <img class="cover"
-             src="${this.isCurrentPlaylist ? this.currentSong.cover : this.songs[0].cover}"
-             alt="cover"
-        />
+        <img class="cover" src="${this.displayedSong.cover}" alt="cover" />
         <div class="filter"></div>
       </div>
       <div class="control-panel">
         <div class="header">
           <h1 class="title">${this.title}</h1>
           <h2 class="song">
-            ${this.isCurrentPlaylist ? this.currentSong.title : this.songs[0].title}
-            - ${this.isCurrentPlaylist ? this.currentSong.artist : this.songs[0].artist}
+            ${this.displayedSong.title} - ${this.displayedSong.artist}
           </h2>
         </div>
         <div class="lyrics"></div>
@@ -351,6 +404,15 @@ class PlaylistCard extends Component {
           }
         </div>
       </div>
+      <div class="playlist">
+        ${this.songs.map((song) => html`
+          <div
+            class="playlist-item ${this.isCurrentSong(song) ? 'current' : ''}"
+            @click="${() => this.setCurrentSong(song)}"
+          >${song.title} - ${song.artist}
+          </div>
+        `)}
+      </div>
       ${this.isConnected && this.isCurrentPlaylist ? html`
         <kokoro-progress
           .played="${this.played}"
@@ -363,6 +425,14 @@ class PlaylistCard extends Component {
         ></kokoro-progress>` : ''
       }
     `
+  }
+
+  setCurrentSong (song) {
+    if (this.isCurrentSong(song)) return
+    if (!this.isCurrentPlaylist) {
+      this.context.kokoro?.setPlaylist(this.songs, 0, PLAY_ORDER_LOOP)
+    }
+    this.context.kokoro?.setCurrentSong(song)
   }
 
   playNow () {
@@ -422,7 +492,6 @@ const mapStateToProps = (state) => {
   return {
     songSrcList: getSongSrcList(state),
     currentSongSrc: state.playing.src,
-    currentSong: state.playing.song,
     paused: state.playing.paused,
     playOrder: state.playlist.playOrder,
     played: state.playing.currentTime / state.playing.totalTime,

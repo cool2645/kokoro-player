@@ -52,13 +52,19 @@ class PlaylistPage extends LitElement {
       artist: 'HAPPY BIRTHDAY',
       album: '今夜きみが怖い夢を見ませんように',
       src: 'https://cdn.innocent.love/HAPPY%20BIRTHDAY%20-%20%E5%90%9B%E3%81%A0%E3%81%A3%E3%81%9F%E3%82%89.mp3',
-      cover: 'https://cdn.innocent.love/HAPPY%20BIRTHDAY%20-%20%E5%90%9B%E3%81%A0%E3%81%A3%E3%81%9F%E3%82%89.jpg'
+      cover: 'https://cdn.innocent.love/HAPPY%20BIRTHDAY%20-%20%E5%90%9B%E3%81%A0%E3%81%A3%E3%81%9F%E3%82%89.jpg',
+      primaryColor: '#0f0000',
+      secondaryColor: '#221718',
+      backgroundColor: '#8d7d87'
     }, {
       title: '聞こえますか',
       artist: 'HoneyWorks こいぬ',
       album: '東京ウインターセッション',
       src: 'https://cdn.innocent.love/HoneyWorks%20%E3%81%93%E3%81%84%E3%81%AC%20-%20%E8%81%9E%E3%81%93%E3%81%88%E3%81%BE%E3%81%99%E3%81%8B.mp3',
-      cover: 'https://cdn.innocent.love/HoneyWorks%20%E3%81%93%E3%81%84%E3%81%AC%20-%20%E8%81%9E%E3%81%93%E3%81%88%E3%81%BE%E3%81%99%E3%81%8B.jpg'
+      cover: 'https://cdn.innocent.love/HoneyWorks%20%E3%81%93%E3%81%84%E3%81%AC%20-%20%E8%81%9E%E3%81%93%E3%81%88%E3%81%BE%E3%81%99%E3%81%8B.jpg',
+      primaryColor: '#ffe3c3',
+      secondaryColor: '#f4c7a8',
+      backgroundColor: '#743149'
     }, {
       title: '止まない雨に花束を',
       artist: 'nayuta',
@@ -70,13 +76,19 @@ class PlaylistPage extends LitElement {
       artist: 'みゆはん',
       album: '自己スキーマ',
       src: 'https://cdn.innocent.love/%E3%81%BF%E3%82%86%E3%81%AF%E3%82%93%20-%20%E8%8A%B1%E7%81%AB%E3%81%AE%E3%82%88%E3%81%86%E3%81%AA%E6%81%8B.mp3',
-      cover: 'https://cdn.innocent.love/%E3%81%BF%E3%82%86%E3%81%AF%E3%82%93%20-%20%E8%8A%B1%E7%81%AB%E3%81%AE%E3%82%88%E3%81%86%E3%81%AA%E6%81%8B.jpg'
+      cover: 'https://cdn.innocent.love/%E3%81%BF%E3%82%86%E3%81%AF%E3%82%93%20-%20%E8%8A%B1%E7%81%AB%E3%81%AE%E3%82%88%E3%81%86%E3%81%AA%E6%81%8B.jpg',
+      primaryColor: '#482100',
+      secondaryColor: '#7b4e00',
+      backgroundColor: '#bad0d9'
     }, {
       title: '失う',
       artist: 'らいらい。',
       album: '失う',
       src: 'https://cdn.innocent.love/%E3%82%89%E3%81%84%E3%82%89%E3%81%84%E3%80%82%20-%20%E5%A4%B1%E3%81%86.mp3',
-      cover: 'https://cdn.innocent.love/%E3%82%89%E3%81%84%E3%82%89%E3%81%84%E3%80%82%20-%20%E5%A4%B1%E3%81%86.jpg'
+      cover: 'https://cdn.innocent.love/%E3%82%89%E3%81%84%E3%82%89%E3%81%84%E3%80%82%20-%20%E5%A4%B1%E3%81%86.jpg',
+      primaryColor: '#6d9bd7',
+      secondaryColor: '#5181bb',
+      backgroundColor: '#19132a'
     }]
   }
 
@@ -170,13 +182,19 @@ document.querySelector('#hanabi').songs = [{
   artist: 'HAPPY BIRTHDAY',
   album: '今夜きみが怖い夢を見ませんように',
   src: 'https://cdn.innocent.love/HAPPY BIRTHDAY - 君だったら.mp3',
-  cover: 'https://cdn.innocent.love/HAPPY BIRTHDAY - 君だったら.jpg'
+  cover: 'https://cdn.innocent.love/HAPPY BIRTHDAY - 君だったら.jpg',
+  primaryColor: '#0f0000',
+  secondaryColor: '#221718',
+  backgroundColor: '#8d7d87'
 }, {
   title: '聞こえますか',
   artist: 'HoneyWorks こいぬ',
   album: '東京ウインターセッション',
   src: 'https://cdn.innocent.love/HoneyWorks こいぬ - 聞こえますか.mp3',
-  cover: 'https://cdn.innocent.love/HoneyWorks こいぬ - 聞こえますか.jpg'
+  cover: 'https://cdn.innocent.love/HoneyWorks こいぬ - 聞こえますか.jpg',
+  primaryColor: '#ffe3c3',
+  secondaryColor: '#f4c7a8',
+  backgroundColor: '#743149'
 }, {
   title: '止まない雨に花束を',
   artist: 'nayuta',
@@ -188,13 +206,19 @@ document.querySelector('#hanabi').songs = [{
   artist: 'みゆはん',
   album: '自己スキーマ',
   src: 'https://cdn.innocent.love/みゆはん - 花火のような恋.mp3',
-  cover: 'https://cdn.innocent.love/みゆはん - 花火のような恋.jpg'
+  cover: 'https://cdn.innocent.love/みゆはん - 花火のような恋.jpg',
+  primaryColor: '#482100',
+  secondaryColor: '#7b4e00',
+  backgroundColor: '#bad0d9'
 }, {
   title: '失う',
   artist: 'らいらい。',
   album: '失う',
   src: 'https://cdn.innocent.love/らいらい。 - 失う.mp3',
-  cover: 'https://cdn.innocent.love/らいらい。 - 失う.jpg'
+  cover: 'https://cdn.innocent.love/らいらい。 - 失う.jpg',
+  primaryColor: '#6d9bd7',
+  secondaryColor: '#5181bb',
+  backgroundColor: '#19132a'
 }]
 `
     }]}></source-box>
