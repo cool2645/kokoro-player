@@ -4,6 +4,7 @@ import { PLAY_ORDER_SHUFFLE, PLAY_ORDER_SINGLE } from 'kokoro'
 import { connect } from '../utils/lit-redux'
 import { Component } from '../utils/component'
 import './icon-button'
+import './track'
 import './progress'
 import { iconfont } from '../iconfont'
 
@@ -27,7 +28,9 @@ class SingleCard extends Component {
       buffered: { type: Array },
       currentTime: { type: Number },
       totalTime: { type: Number },
-      type: { type: String }
+      type: { type: String },
+      volume: { type: Number },
+      showVolumeTrack: { type: Boolean }
     }
   }
 
@@ -150,11 +153,16 @@ class SingleCard extends Component {
       }
       
       .btn {
+        display: inline-block;
         text-decoration: none;
         color: inherit;
         font-size: 24px;
         margin: 5px;
         cursor: pointer;
+      }
+      
+      .btn > .icon {
+        vertical-align: top;
       }
       
       .btn:first-child {
@@ -169,10 +177,16 @@ class SingleCard extends Component {
         color: var(--kokoro-primary-color);
       }
 
-      @media screen and (max-width: 450px) {
+      @media screen and (max-width: 480px) {
         .btn {
           font-size: 20px;
           margin: 2px;
+        }
+
+        .btn .volume-track-container {
+          top: -1px;
+          height: 16px;
+          width: 40px;
         }
       }
 
@@ -181,6 +195,12 @@ class SingleCard extends Component {
           font-size: 16px;
           margin: 2px;
         }
+
+        .btn .volume-track-container {
+          top: 1px;
+          height: 12px;
+          width: 40px;
+        }
       }
       
       kokoro-progress {
@@ -188,6 +208,31 @@ class SingleCard extends Component {
         bottom: 0;
         left: 0;
         right: 0;
+      }
+      
+      .btn.volume {
+        position: relative;
+      }
+      
+      .volume-track-container {
+        position: absolute;
+        left: 100%;
+        height: 20px;
+        width: 60px;
+        top: -3px;
+        margin: 5px 5px 5px 0;
+        padding-left: 10px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        transition: all 250ms;
+      }
+
+      .volume-track-container.hide {
+        width: 0;
+        padding-left: 0;
+        margin-left: 3px;
+        overflow: hidden;
       }
     `
   }
@@ -249,7 +294,18 @@ class SingleCard extends Component {
                 <a class="btn" @click="${this.nextPlayOrder}">
                   <i class="icon icon-${this.playOrder === PLAY_ORDER_SINGLE
                     ? 'solo' : this.playOrder === PLAY_ORDER_SHUFFLE ? 'shuffle' : 'loop'}"></i></a>
-                <a class="btn"><i class="icon icon-volume"></i></a>
+                <a class="btn volume"
+                   @mouseenter="${() => { this.showVolumeTrack = true }}"
+                   @mouseleave="${() => { this.showVolumeTrack = false }}"
+                >
+                  <i class="icon icon-volume"></i>
+                  <div class="volume-track-container ${this.showVolumeTrack ? '' : 'hide'}">
+                    <kokoro-track
+                      .played="${this.volume}"
+                      .buffered="${[0, 1]}"
+                    ></kokoro-track>
+                  </div>
+                </a>
               `
               : html`
                 <kokoro-button
@@ -353,7 +409,8 @@ const mapStateToProps = (state) => {
       (buf) => [buf[0] / state.playing.totalTime, buf[1] / state.playing.totalTime]
     ),
     currentTime: state.playing.currentTime,
-    totalTime: state.playing.totalTime
+    totalTime: state.playing.totalTime,
+    volume: state.player.volume
   }
 }
 
