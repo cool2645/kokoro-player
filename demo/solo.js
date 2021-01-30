@@ -19,12 +19,10 @@ class SoloPage extends LitElement {
   toggleConnect () {
     this.connected = !this.connected
     if (this.connected) {
-      document.querySelector('solo-page')
-        .shadowRoot.querySelector('kokoro-provider')
+      this.shadowRoot.querySelector('kokoro-provider')
         .connect(window.player)
     } else {
-      document.querySelector('solo-page')
-        .shadowRoot.querySelector('kokoro-provider')
+      this.shadowRoot.querySelector('kokoro-provider')
         .disconnect()
     }
   }
