@@ -375,10 +375,14 @@ class PlaylistCard extends Component {
   }
 
   firstUpdated (_) {
+    let parentElement = this.parentElement
+    while (parentElement?.tagName.toLowerCase().startsWith('kokoro')) {
+      parentElement = parentElement.parentElement
+    }
     this.resizeObserver = new window.ResizeObserver(() => {
-      this.expand = this.parentElement.offsetWidth >= 750
+      this.expand = parentElement.offsetWidth >= 750
     })
-    this.resizeObserver.observe(this.parentElement)
+    this.resizeObserver.observe(parentElement)
   }
 
   disconnectedCallback () {
