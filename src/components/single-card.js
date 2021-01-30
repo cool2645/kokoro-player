@@ -221,16 +221,17 @@ class SingleCard extends Component {
         width: 60px;
         top: -3px;
         margin: 5px 5px 5px 0;
-        padding-left: 10px;
+        padding: 0 20px 0 10px;
         display: flex;
         flex-direction: column;
         justify-content: center;
         transition: all 250ms;
+        cursor: initial;
       }
 
       .volume-track-container.hide {
         width: 0;
-        padding-left: 0;
+        padding: 0;
         margin-left: 3px;
         overflow: hidden;
       }
@@ -303,6 +304,7 @@ class SingleCard extends Component {
                     <kokoro-track
                       .played="${this.volume}"
                       .buffered="${[0, 1]}"
+                      @kokoro-change="${(e) => this.setVolume(e.detail.progress)}"
                     ></kokoro-track>
                   </div>
                 </a>
@@ -342,6 +344,7 @@ class SingleCard extends Component {
           .buffered="${this.buffered}"
           .currentTime="${this.currentTime}"
           .totalTime="${this.totalTime}"
+          @kokoro-change="${(e) => { if (e.detail.commit) this.setCurrentProgress(e.detail.progress) }}"
         ></kokoro-progress>` : ''
       }
     `
@@ -383,6 +386,14 @@ class SingleCard extends Component {
 
   nextPlayOrder () {
     this.context.kokoro?.nextPlayOrder()
+  }
+
+  setCurrentProgress (progress) {
+    this.context.kokoro?.setCurrentTime(progress * this.totalTime)
+  }
+
+  setVolume (volume) {
+    this.context.kokoro?.setVolume(volume)
   }
 }
 

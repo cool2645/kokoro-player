@@ -57,7 +57,9 @@ export default class Progress extends Track {
   render () {
     return html`
       ${super.render()}
-      <div class="label left">${this.formatTime(this.currentTime)}</div>
+      <div class="label left">${this.dragging
+        ? this.formatTime(this.dirtyPlayed * this.totalTime)
+        : this.formatTime(this.currentTime)}</div>
       <div class="label right">${this.formatTime(this.totalTime)}</div>
     `
   }

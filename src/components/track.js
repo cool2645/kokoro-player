@@ -6,7 +6,9 @@ export default class Track extends LitElement {
       played: { type: Number },
       buffered: { type: Array },
       currentTime: { type: Number },
-      totalTime: { type: Number }
+      totalTime: { type: Number },
+      dirtyPlayed: { type: Number },
+      dragging: { type: Boolean }
     }
   }
 
@@ -22,6 +24,7 @@ export default class Track extends LitElement {
         position: relative;
         height: 100%;
         overflow: hidden;
+        cursor: pointer;
       }
 
       .progress {
@@ -58,25 +61,89 @@ export default class Track extends LitElement {
         border: 2px var(--kokoro-primary-color) solid;
         border-radius: 50%;
         background-color: var(--kokoro-primary-color);
+        cursor: pointer;
       }
     `
   }
 
+  constructor () {
+    super()
+    this.drag = this.drag.bind(this)
+    this.stopDragging = this.stopDragging.bind(this)
+  }
+
   render () {
     return html`
-      <div class="bar">
+      <div class="bar" id="bar"
+           @mousedown="${this.startDragging}"
+      >
         <div class="progress"></div>
         ${this.buffered?.map((buf) => html`
         <div class="buffered" style="left: ${buf[0] * 100}%; width: ${(buf[1] - buf[0]) * 100}%"></div>
       `)}
-        <div class="played" style="width: ${(this.played || 0) * 100}%"></div>
+        <div class="played"
+             style="width: ${(this.dragging ? this.dirtyPlayed : (this.played || 0)) * 100}%">
+        </div>
       </div>
       <div class="track">
         <div class="handle"
-             style="left: calc(${(this.played || 0) * 100}% - 4px)"
+             style="left: calc(${(this.dragging ? this.dirtyPlayed : (this.played || 0)) * 100}% - 5px)"
+             @mousedown="${this.startDragging}"
+             @touchstart="${this.startDragging}"
         ></div>
       </div>
     `
+  }
+
+  startDragging (e) {
+    this.dragging = true
+    this.drag(e)
+    if (e.type === 'mousedown') {
+      document.addEventListener('mousemove', this.drag)
+      document.addEventListener('mouseup', this.stopDragging)
+    }
+    if (e.type === 'touchstart') {
+      document.addEventListener('touchmove', this.drag)
+      document.addEventListener('touchend', this.stopDragging)
+      document.addEventListener('touchcancel', this.stopDragging)
+    }
+  }
+
+  drag (e) {
+    e = (typeof window.TouchEvent !== 'undefined' && e instanceof window.TouchEvent)
+      ? e.changedTouches[0]
+      : e
+    const rect = this.shadowRoot.querySelector('#bar').getBoundingClientRect()
+    this.dirtyPlayed = Math.max(Math.min((e.clientX - rect.left - 3) / (rect.width - 6), 1), 0)
+    this.syncDirtyPlayed()
+  }
+
+  stopDragging () {
+    this.dragging = false
+    this.commitDirtyPlayed()
+    document.removeEventListener('mousemove', this.drag)
+    document.removeEventListener('mouseup', this.stopDragging)
+    document.removeEventListener('touchmove', this.drag)
+    document.removeEventListener('touchend', this.stopDragging)
+    document.removeEventListener('touchcancel', this.stopDragging)
+  }
+
+  syncDirtyPlayed () {
+    this.dispatchEvent(new window.CustomEvent('kokoro-change', {
+      detail: {
+        progress: this.dirtyPlayed,
+        commit: false
+      }
+    }))
+  }
+
+  commitDirtyPlayed () {
+    this.dispatchEvent(new window.CustomEvent('kokoro-change', {
+      detail: {
+        progress: this.dirtyPlayed,
+        commit: true
+      }
+    }))
   }
 }
 
