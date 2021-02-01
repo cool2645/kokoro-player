@@ -115,6 +115,9 @@ class PlaylistPage extends LitElement {
               </kokoro-provider>
             </div>
           </div>
+          <kokoro-provider>
+            <kokoro-player></kokoro-player>
+          </kokoro-provider>
         </div>
         <div class="waveWrapperInner bgTop">
           <div class="wave waveTop" style="background-image: url('https://i.loli.net/2019/09/28/uJiFzLwxGkA8Ecl.png')"></div>
@@ -169,7 +172,7 @@ class PlaylistPage extends LitElement {
     }, {
       langCode: 'javascript',
       lang: 'JavaScript',
-      code: `import { Kokoro, Provider, PLAY_ORDER_LOOP } from 'kokoro-player' 
+      code: `import { Kokoro, Provider } from 'kokoro-player' 
 
 window.player = new Kokoro()
 window.customElements.define('kokoro-provider', Provider${this.connected ? '.connect(window.player)' : ''})

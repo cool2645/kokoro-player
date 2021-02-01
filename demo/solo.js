@@ -63,6 +63,9 @@ class SoloPage extends LitElement {
               </kokoro-provider>
             </div>
           </div>
+          <kokoro-provider>
+            <kokoro-player></kokoro-player>
+          </kokoro-provider>
         </div>
         <div class="waveWrapperInner bgTop">
           <div class="wave waveTop" style="background-image: url('https://i.loli.net/2019/09/27/DgOiUhxQM69RlWL.png')"></div>

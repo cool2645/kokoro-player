@@ -10,15 +10,18 @@ class Player extends Component {
 
   static get styles () {
     return css`
-      p {
-        word-break: break-all;
+      :host {
+        position: fixed;
+        top: 100px;
+        left: 100px;
+        width: 315px;
+        height: 560px;
       }
     `
   }
 
   render () {
     return html`
-      <p>Kokoro: ${this.json}</p>
     `
   }
 }
