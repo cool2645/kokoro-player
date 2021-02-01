@@ -410,6 +410,11 @@ class PlaylistCard extends Component {
               ? 'small' : 'mini'
     })
     this.resizeObserver.observe(parentElement)
+    this.size = parentElement.offsetWidth >= 750
+      ? 'expand' : parentElement.offsetWidth >= 500
+        ? 'large' : parentElement.offsetWidth >= 420
+          ? 'medium' : parentElement.offsetWidth >= 370
+            ? 'small' : 'mini'
   }
 
   disconnectedCallback () {
