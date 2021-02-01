@@ -27,7 +27,8 @@ class PlaylistCard extends Component {
       volume: { type: Number },
       isVolumeTrackShown: { type: Boolean },
       isPlaylistShowing: { type: Boolean },
-      size: { type: String }
+      size: { type: String },
+      needShowPlayNext: { type: Boolean }
     }
   }
 
@@ -487,9 +488,9 @@ class PlaylistCard extends Component {
                   icon="play"
                   size="${this.size}"
                   @click="${this.playNow}"
-                >立即播放
+                >播放全部
                 </kokoro-button>
-                ${this.isFollowingPlaylist
+                ${this.songSrcList?.length ? this.isFollowingPlaylist
                   ? html`
                     <kokoro-button
                       type="bordered"
@@ -504,9 +505,9 @@ class PlaylistCard extends Component {
                       icon="play-next"
                       size="${this.size}"
                       @click="${this.playNext}"
-                    >下一首播放
+                    >添加到列表
                     </kokoro-button>`
-                }`
+                : ''}`
             : html`
               <kokoro-button
                 type="bordered"
@@ -580,6 +581,9 @@ class PlaylistCard extends Component {
     for (const song of this.songs.slice().reverse()) {
       this.context.kokoro?.setNextSong(song)
     }
+    if (!this.isCurrentPlaylist && !this.needShowPlayNext) {
+      this.context.kokoro?.next()
+    }
   }
 
   prev () {
@@ -643,7 +647,8 @@ const mapStateToProps = (state) => {
     ),
     currentTime: state.playing.currentTime,
     totalTime: state.playing.totalTime,
-    volume: state.player.volume
+    volume: state.player.volume,
+    needShowPlayNext: !(state.playing.paused && state.playing.currentTime === 0)
   }
 }
 

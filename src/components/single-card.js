@@ -32,7 +32,8 @@ class SingleCard extends Component {
       type: { type: String },
       volume: { type: Number },
       isVolumeTrackShown: { type: Boolean },
-      size: { type: String }
+      size: { type: String },
+      needShowPlayNext: { type: Boolean }
     }
   }
 
@@ -345,7 +346,7 @@ class SingleCard extends Component {
                   size="${this.size}"
                   @click="${this.playNow}"
                 >立即播放</kokoro-button>
-                ${this.isNextSong
+                ${this.needShowPlayNext ? this.isNextSong
                   ? html`
                     <kokoro-button
                       type="bordered"
@@ -360,7 +361,7 @@ class SingleCard extends Component {
                       size="${this.size}"
                       @click="${this.playNext}"
                     >下一首播放</kokoro-button>`
-                }`
+                : ''}`
             : html`
               <kokoro-button
                 type="bordered"
@@ -474,7 +475,8 @@ const mapStateToProps = (state) => {
     ),
     currentTime: state.playing.currentTime,
     totalTime: state.playing.totalTime,
-    volume: state.player.volume
+    volume: state.player.volume,
+    needShowPlayNext: !(state.playing.paused && state.playing.currentTime === 0)
   }
 }
 
