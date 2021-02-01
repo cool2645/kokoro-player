@@ -118,9 +118,9 @@ class PlaylistCard extends Component {
         font-size: 16px;
       }
 
-      .control-panel.medium .artist,
-      .control-panel.small .artist,
-      .control-panel.mini .artist {
+      .control-panel.medium .song,
+      .control-panel.small .song,
+      .control-panel.mini .song {
         font-size: 14px;
       }
 
