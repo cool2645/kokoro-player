@@ -436,10 +436,12 @@ class PlaylistCard extends Component {
       <div class="control-panel ${this.size}">
         <div class="header">
           <a class="playlist-toggle" href="" @click="${this.togglePlaylist}">
-            <h1 class="title">${this.title}<i class="icon icon-playlist"></i></h1>
+            <h1 class="title">${this.title || this.displayedSong.title}<i class="icon icon-playlist"></i></h1>
           </a>
           <h2 class="song">
-            ${this.displayedSong.title} - ${this.displayedSong.artist}
+            ${this.title ? this.displayedSong.title : this.displayedSong.artist}
+            -
+            ${this.title ? this.displayedSong.artist : this.displayedSong.album}
           </h2>
         </div>
         <div class="lyrics"></div>

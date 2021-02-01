@@ -6,7 +6,8 @@ class PlaylistPage extends LitElement {
   static get properties () {
     return {
       connected: { type: Boolean },
-      flatMode: { type: Boolean }
+      flatMode: { type: Boolean },
+      showTitle: { type: Boolean }
     }
   }
 
@@ -14,6 +15,7 @@ class PlaylistPage extends LitElement {
     super()
     this.connected = true
     this.flatMode = false
+    this.showTitle = true
   }
 
   toggleConnect () {
@@ -104,7 +106,7 @@ class PlaylistPage extends LitElement {
               <kokoro-provider>
                 <kokoro-playlist-card
                   id="hanabi"
-                  title="花火般的恋"
+                  title="${this.showTitle ? '花火般的恋' : ''}"
                   primaryColor="#0e0400"
                   secondaryColor="#383323"
                   backgroundColor="#bf9356"
@@ -131,6 +133,10 @@ class PlaylistPage extends LitElement {
                                    ?checked="${this.connected}"
                                    @change="${this.toggleConnect}"
           /> Connected</label>
+          <label for="title"><input type="checkbox" id="title"
+                                   ?checked="${this.showTitle}"
+                                   @change="${() => { this.showTitle = !this.showTitle }}"
+          /> Title</label>
           <label for="flat"><input type="checkbox" id="flat"
                                    ?checkd="${this.flatMode}"
                                    @change="${() => { this.flatMode = !this.flatMode }}"
@@ -146,8 +152,8 @@ class PlaylistPage extends LitElement {
   <kokoro-provider>
     <!-- Playlist Card -->
     <kokoro-playlist-card
-      id="#hanabi"
-      title="花火般的恋"
+      id="#hanabi"${this.showTitle ? `
+      title="花火般的恋"` : ''}
       primaryColor="#0e0400"
       secondaryColor="#383323"
       backgroundColor="#bf9356"${this.flatMode ? `
