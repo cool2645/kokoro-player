@@ -7,7 +7,7 @@ import './icon-button'
 import './track'
 import './progress'
 import { iconfont } from '../iconfont'
-import { SafeUri } from '../utils/safe-uri'
+import { SrcUtil } from '../utils/srcutil'
 
 class SingleCard extends Component {
   static get properties () {
@@ -262,18 +262,12 @@ class SingleCard extends Component {
 
   get isNextSong () {
     if (!this.src || !this.nextSongSrc) return false
-    if (this.nextSongSrc instanceof Array && typeof this.src === 'string') {
-      return SafeUri.indexOf(this.nextSongSrc, this.src) !== -1
-    }
-    return JSON.stringify(SafeUri.safe(this.nextSongSrc)) === JSON.stringify(SafeUri.safe(this.src))
+    return SrcUtil.same(this.nextSongSrc, this.src)
   }
 
   get isCurrentSong () {
     if (!this.src || !this.currentSongSrc) return false
-    if (this.currentSongSrc instanceof Array && typeof this.src === 'string') {
-      return SafeUri.indexOf(this.currentSongSrc.indexOf(this.src)) !== -1
-    }
-    return JSON.stringify(SafeUri.safe(this.currentSongSrc)) === JSON.stringify(SafeUri.safe(this.src))
+    return SrcUtil.same(this.currentSongSrc, this.src)
   }
 
   constructor (props) {

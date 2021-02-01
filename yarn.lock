@@ -3793,10 +3793,10 @@ kind-of@^6.0.0, kind-of@^6.0.2:
   resolved "https://registry.yarnpkg.com/kind-of/-/kind-of-6.0.3.tgz#07c05034a6c349fa06e24fa35aa76db4580ce4dd"
   integrity sha512-dcS1ul+9tmeD95T+x28/ehLgd9mENa3LsvDTtzm3vyBEO7RPptvAD+t44WVXaUjTBRcrpFeFlC8WCruUR456hw==
 
-kokoro@^0.1.0-beta.8:
-  version "0.1.0-beta.8"
-  resolved "https://registry.npmjs.org/kokoro/-/kokoro-0.1.0-beta.8.tgz#1a387bbe86edad44b0decbb890dae9f2d4292e1d"
-  integrity sha512-x9K+5gjX0qCcJuihwJxTtATJHmIpEncPdK/62l+LBsCUykjPR/wamqyH/SbbApm6GE07Y7L0UDutB1IQ6V+59Q==
+kokoro@^0.1.0-beta.9:
+  version "0.1.0-beta.9"
+  resolved "https://registry.npmjs.org/kokoro/-/kokoro-0.1.0-beta.9.tgz#227e0ae9f05cab058068356ce4b0cbf087a57890"
+  integrity sha512-c+kKgd1+8FS1f0MseNdbkEVtu1A1B3fuKOB/ITvkZy+tb0EpFpvPxKnGdlA5B3751rTXNi4upUqa1VvkEA8ZcQ==
   dependencies:
     redux "^4.0.4"
     redux-devtools-extension "^2.13.8"
