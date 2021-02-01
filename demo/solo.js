@@ -6,7 +6,8 @@ class SoloPage extends LitElement {
   static get properties () {
     return {
       connected: { type: Boolean },
-      flatMode: { type: Boolean }
+      flatMode: { type: Boolean },
+      darkMode: { type: Boolean }
     }
   }
 
@@ -14,6 +15,7 @@ class SoloPage extends LitElement {
     super()
     this.connected = true
     this.flatMode = false
+    this.darkMode = true
   }
 
   toggleConnect () {
@@ -64,7 +66,9 @@ class SoloPage extends LitElement {
             </div>
           </div>
           <kokoro-provider>
-            <kokoro-player></kokoro-player>
+            <kokoro-player
+              ?darkMode="${this.darkMode}"
+            ></kokoro-player>
           </kokoro-provider>
         </div>
         <div class="waveWrapperInner bgTop">
@@ -85,9 +89,13 @@ class SoloPage extends LitElement {
                                    @change="${this.toggleConnect}"
           /> Connected</label>
           <label for="flat"><input type="checkbox" id="flat"
-                                   ?checkd="${this.flatMode}"
+                                   ?checked="${this.flatMode}"
                                    @change="${() => { this.flatMode = !this.flatMode }}"
           /> Flat mode</label>
+          <label for="dark"><input type="checkbox" id="dark"
+                                   ?checked="${this.darkMode}"
+                                   @change="${() => { this.darkMode = !this.darkMode }}"
+          /> Dark mode</label>
         </div>
         <source-box .snippets=${[{
           langCode: 'html',

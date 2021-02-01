@@ -7,7 +7,8 @@ class PlaylistPage extends LitElement {
     return {
       connected: { type: Boolean },
       flatMode: { type: Boolean },
-      showTitle: { type: Boolean }
+      showTitle: { type: Boolean },
+      darkMode: { type: Boolean }
     }
   }
 
@@ -16,6 +17,7 @@ class PlaylistPage extends LitElement {
     this.connected = true
     this.flatMode = false
     this.showTitle = true
+    this.darkMode = false
   }
 
   toggleConnect () {
@@ -116,7 +118,9 @@ class PlaylistPage extends LitElement {
             </div>
           </div>
           <kokoro-provider>
-            <kokoro-player></kokoro-player>
+            <kokoro-player
+              ?darkMode="${this.darkMode}"
+            ></kokoro-player>
           </kokoro-provider>
         </div>
         <div class="waveWrapperInner bgTop">
@@ -141,9 +145,13 @@ class PlaylistPage extends LitElement {
                                    @change="${() => { this.showTitle = !this.showTitle }}"
           /> Title</label>
           <label for="flat"><input type="checkbox" id="flat"
-                                   ?checkd="${this.flatMode}"
+                                   ?checked="${this.flatMode}"
                                    @change="${() => { this.flatMode = !this.flatMode }}"
           /> Flat mode</label>
+          <label for="dark"><input type="checkbox" id="dark"
+                                   ?checkd="${this.darkMode}"
+                                   @change="${() => { this.darkMode = !this.darkMode }}"
+          /> Dark mode</label>
         </div>
         <source-box .snippets=${[{
       langCode: 'html',
