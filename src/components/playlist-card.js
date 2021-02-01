@@ -4,6 +4,7 @@ import { PLAY_ORDER_LOOP, PLAY_ORDER_SHUFFLE, PLAY_ORDER_SINGLE } from 'kokoro'
 import { connect } from '../utils/lit-redux'
 import { Component } from '../utils/component'
 import { iconfont } from '../iconfont'
+import { SafeUri } from '../utils/safe-uri'
 
 class PlaylistCard extends Component {
   static get properties () {
@@ -334,36 +335,36 @@ class PlaylistCard extends Component {
   get isFollowingPlaylist () {
     if (!this.src || !this.nextSongSrc) return false
     if (this.nextSongSrc instanceof Array) {
-      return this.nextSongSrc.indexOf(this.src) !== -1
+      return SafeUri.indexOf(this.nextSongSrc, this.src) !== -1
     }
-    return this.nextSongSrc === this.src
+    return SafeUri.safe(this.nextSongSrc) === SafeUri.safe(this.src)
   }
 
   get isCurrentPlaylist () {
     if (!this.songs || !this.currentSongSrc) return false
     if (this.currentSongSrc instanceof Array) {
       for (const src of this.currentSongSrc) {
-        if (this.songs.map(song => song.src).indexOf(src) !== -1) {
+        if (SafeUri.indexOf(this.songs.map(song => song.src), src) !== -1) {
           return true
         }
       }
       return false
     }
-    return this.songs.map(song => song.src).indexOf(this.currentSongSrc) !== -1
+    return SafeUri.indexOf(this.songs.map(song => song.src), this.currentSongSrc) !== -1
   }
 
   get displayedSong () {
     if (!this.isConnected || !this.currentSongSrc) return this.songs[0]
     if (this.currentSongSrc instanceof Array) {
       for (const src of this.currentSongSrc) {
-        if (this.songs.map(song => song.src).indexOf(src) !== -1) {
-          return this.songs[this.songs.map(song => song.src).indexOf(src)]
+        if (SafeUri.indexOf(this.songs.map(song => song.src), src) !== -1) {
+          return this.songs[SafeUri.indexOf(this.songs.map(song => song.src), src)]
         }
       }
       return this.songs[0]
     }
-    if (this.songs.map(song => song.src).indexOf(this.currentSongSrc) !== -1) {
-      return this.songs[this.songs.map(song => song.src).indexOf(this.currentSongSrc)]
+    if (SafeUri.indexOf(this.songs.map(song => song.src), this.currentSongSrc) !== -1) {
+      return this.songs[SafeUri.indexOf(this.songs.map(song => song.src), this.currentSongSrc)]
     }
     return this.songs[0]
   }
@@ -371,9 +372,9 @@ class PlaylistCard extends Component {
   isCurrentSong (song) {
     if (!this.isConnected) return false
     if (this.currentSongSrc instanceof Array && typeof song.src === 'string') {
-      return this.currentSongSrc.indexOf(song.src) !== -1
+      return SafeUri.indexOf(this.currentSongSrc, song.src) !== -1
     }
-    return JSON.stringify(this.currentSongSrc) === JSON.stringify(song.src)
+    return JSON.stringify(SafeUri.safe(this.currentSongSrc)) === JSON.stringify(SafeUri.safe(song.src))
   }
 
   get expand () {
