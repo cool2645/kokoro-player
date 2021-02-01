@@ -24,8 +24,8 @@ class PlaylistCard extends Component {
       type: { type: String },
       volume: { type: Number },
       isVolumeTrackShown: { type: Boolean },
-      expand: { type: Boolean },
-      isPlaylistShowing: { type: Boolean }
+      isPlaylistShowing: { type: Boolean },
+      size: { type: String }
     }
   }
 
@@ -105,39 +105,43 @@ class PlaylistCard extends Component {
         overflow: hidden;
         text-overflow: ellipsis;
       }
-      
-      @media screen and (max-width: 480px) {
-        .title {
-          font-size: 16px;
-        }
-        
-        .artist {
-          font-size: 14px;
-        }
 
-        .control-panel {
-          padding-left: 15px;
-        }
-
-        .control.current {
-          margin-bottom: 0 !important;
-        }
+      .control-panel.medium {
+        padding-left: 15px;
       }
 
-      @media screen and (max-width: 400px) {
-        .control-panel {
-          padding-left: 10px;
-        }
-        
-        .lyrics {
-          display: none;
-        }
+      .control-panel.medium .title,
+      .control-panel.small .title,
+      .control-panel.mini .title {
+        font-size: 16px;
       }
 
-      @media screen and (max-width: 350px) {
-        .song {
-          display: none;
-        }
+      .control-panel.medium .artist,
+      .control-panel.small .artist,
+      .control-panel.mini .artist {
+        font-size: 14px;
+      }
+
+      .control-panel.medium .control.current,
+      .control-panel.small .control.current,
+      .control-panel.mini .control.current {
+        margin-bottom: 0 !important;
+      }
+
+      .control-panel.small {
+        padding-left: 12px;
+      }
+
+      .control-panel.small .lyrics {
+        display: none;
+      }
+
+      .control-panel.mini {
+        padding-left: 10px;
+      }
+
+      .control-panel.mini .song {
+        display: none;
       }
       
       .control {
@@ -174,30 +178,28 @@ class PlaylistCard extends Component {
         color: var(--kokoro-primary-color);
       }
 
-      @media screen and (max-width: 480px) {
-        .btn {
-          font-size: 20px;
-          margin: 2px;
-        }
-
-        .btn .volume-track-container {
-          top: -1px;
-          height: 16px;
-          width: 40px;
-        }
+      .control-panel.medium .btn,
+      .control-panel.small .btn {
+        font-size: 20px;
+        margin: 2px;
       }
 
-      @media screen and (max-width: 350px) {
-        .btn {
-          font-size: 16px;
-          margin: 2px;
-        }
+      .control-panel.medium .btn .volume-track-container,
+      .control-panel.small .btn .volume-track-container {
+        top: -1px;
+        height: 16px;
+        width: 40px;
+      }
 
-        .btn .volume-track-container {
-          top: 1px;
-          height: 12px;
-          width: 40px;
-        }
+      .control-panel.mini .btn {
+        font-size: 16px;
+        margin: 2px;
+      }
+
+      .control-panel.mini .btn .volume-track-container {
+        top: 1px;
+        height: 12px;
+        width: 40px;
       }
       
       kokoro-progress {
@@ -374,13 +376,21 @@ class PlaylistCard extends Component {
     return JSON.stringify(this.currentSongSrc) === JSON.stringify(song.src)
   }
 
+  get expand () {
+    return this.size === 'expand'
+  }
+
   firstUpdated (_) {
     let parentElement = this.parentElement
     while (parentElement?.tagName.toLowerCase().startsWith('kokoro')) {
       parentElement = parentElement.parentElement
     }
     this.resizeObserver = new window.ResizeObserver(() => {
-      this.expand = parentElement.offsetWidth >= 750
+      this.size = parentElement.offsetWidth >= 750
+        ? 'expand' : parentElement.offsetWidth >= 500
+          ? 'large' : parentElement.offsetWidth >= 420
+            ? 'medium' : parentElement.offsetWidth >= 370
+              ? 'small' : 'mini'
     })
     this.resizeObserver.observe(parentElement)
   }
@@ -418,7 +428,7 @@ class PlaylistCard extends Component {
         <img class="cover" src="${this.displayedSong.cover}" alt="cover" />
         <div class="filter"></div>
       </div>
-      <div class="control-panel">
+      <div class="control-panel ${this.size}">
         <div class="header">
           <a class="playlist-toggle" href="" @click="${this.togglePlaylist}">
             <h1 class="title">${this.title}<i class="icon icon-playlist"></i></h1>
@@ -457,6 +467,7 @@ class PlaylistCard extends Component {
                 <kokoro-button
                   type="primary"
                   icon="play"
+                  size="${this.size}"
                   @click="${this.playNow}"
                 >立即播放
                 </kokoro-button>
@@ -465,6 +476,7 @@ class PlaylistCard extends Component {
                     <kokoro-button
                       type="bordered"
                       icon="ok"
+                      size="${this.size}"
                       disabled
                     >已添加
                     </kokoro-button>`
@@ -472,6 +484,7 @@ class PlaylistCard extends Component {
                     <kokoro-button
                       type="bordered"
                       icon="play-next"
+                      size="${this.size}"
                       @click="${this.playNext}"
                     >下一首播放
                     </kokoro-button>`
@@ -480,6 +493,7 @@ class PlaylistCard extends Component {
               <kokoro-button
                 type="bordered"
                 icon="warn"
+                size="${this.size}"
                 disabled
               >未连接到 Kokoro 播放器
               </kokoro-button>`

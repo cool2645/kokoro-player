@@ -7,7 +7,8 @@ export default class Button extends LitElement {
     return {
       type: { type: String },
       icon: { type: String },
-      disabled: { type: Boolean }
+      disabled: { type: Boolean },
+      size: { type: String }
     }
   }
 
@@ -16,7 +17,6 @@ export default class Button extends LitElement {
       ${iconfont}
       :host {
         display: inline-block;
-        margin-right: 10px;
       }
 
       .btn {
@@ -44,33 +44,31 @@ export default class Button extends LitElement {
         margin-right: 0;
       }
 
-      @media screen and (max-width: 500px) {
-        :host {
-          margin-right: 4px;
-        }
-        .btn {
-          font-size: 12px;
-          padding: 4px 8px;
-          border-radius: 8px;
-        }
+      .btn.medium,
+      .btn.small {
+        font-size: 12px;
+        padding: 4px 8px;
+        border-radius: 8px;
       }
 
-      @media screen and (max-width: 370px) {
-        :host {
-          margin-right: 2px;
-        }
-        .btn {
-          font-size: 10px;
-          padding: 2px 6px;
-          border-radius: 6px;
-        }
+      .btn.mini {
+        font-size: 10px;
+        padding: 2px 6px;
+        border-radius: 6px;
       }
     `
   }
 
   render () {
     return html`
-      <div class="btn ${this.type} ${this.disabled ? 'disabled' : ''}">
+      <style>
+        :host {
+          margin-right: ${this.size === 'mini'
+            ? 2 : this.size === 'medium' || this.size === 'small'
+              ? 4 : 10}px;
+        }
+      </style>
+      <div class="btn ${this.type} ${this.disabled ? 'disabled' : ''} ${this.size}">
         <i class="icon icon-${this.icon}"></i>
         <slot></slot>
       </div>
