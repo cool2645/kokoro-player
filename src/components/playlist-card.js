@@ -201,7 +201,12 @@ class PlaylistCard extends Component {
       .control-panel.mini .btn .volume-track-container {
         top: 1px;
         height: 12px;
-        width: 40px;
+        width: 36px;
+        padding-left: 5px;
+      }
+
+      .control-panel.mini .btn .volume-track-container.hide {
+        padding-left: 0;
       }
       
       kokoro-progress {
@@ -231,7 +236,7 @@ class PlaylistCard extends Component {
       }
 
       .volume-track-container.hide {
-        width: 0;
+        width: 0 !important;
         padding: 0;
         margin-left: 3px;
         overflow: hidden;
@@ -302,6 +307,12 @@ class PlaylistCard extends Component {
         text-overflow: ellipsis;
         font-size: 14px;
         cursor: pointer;
+      }
+
+      .playlist.mini > .playlist-item {
+        height: 35px;
+        line-height: 35px;
+        font-size: 12px;
       }
       
       .playlist > .playlist-item::before {
@@ -512,7 +523,7 @@ class PlaylistCard extends Component {
       >
         <a class="playlist-close"><i class="icon icon-close"></i></a>
       </div>
-      <div class="playlist ${!this.isPlaylistShowing || this.expand ? 'hide' : ''} ${this.expand ? 'expand' : ''}">
+      <div class="playlist ${!this.isPlaylistShowing && !this.expand ? 'hide' : ''} ${this.expand ? 'expand' : ''} ${this.size}">
         ${this.songs.map((song) => html`
           <div
             class="playlist-item ${this.isCurrentSong(song) ? 'current' : ''}"

@@ -184,19 +184,6 @@ class SingleCard extends Component {
         color: var(--kokoro-primary-color);
       }
 
-      @media screen and (max-width: 480px) {
-        .btn {
-          font-size: 20px;
-          margin: 2px;
-        }
-
-        .btn .volume-track-container {
-          top: -1px;
-          height: 16px;
-          width: 40px;
-        }
-      }
-
       .control-panel.medium .btn,
       .control-panel.small .btn {
         font-size: 20px;
@@ -218,7 +205,12 @@ class SingleCard extends Component {
       .control-panel.mini .btn .volume-track-container {
         top: 1px;
         height: 12px;
-        width: 40px;
+        width: 36px;
+        padding-left: 5px;
+      }
+
+      .control-panel.mini .btn .volume-track-container.hide {
+        padding-left: 0;
       }
       
       kokoro-progress {
@@ -248,7 +240,7 @@ class SingleCard extends Component {
       }
 
       .volume-track-container.hide {
-        width: 0;
+        width: 0 !important;
         padding: 0;
         margin-left: 3px;
         overflow: hidden;
