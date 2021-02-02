@@ -173,7 +173,9 @@ class PlaylistPage extends LitElement {
   </kokoro-provider>
   <kokoro-provider>
     <!-- Player -->
-    <kokoro-player></kokoro-player>
+    <kokoro-player${this.darkMode ? `
+      darkMode` : ''}
+    ></kokoro-player>
   </kokoro-provider>
 </body>
 </html>`
