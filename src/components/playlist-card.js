@@ -323,11 +323,11 @@ class PlaylistCard extends Component {
       }
       
       .playlist > .playlist-item:hover {
-        background: rgba(0,0,0,0.1);
+        background: rgba(0, 0, 0, 0.1);
       }
       
       .playlist > .playlist-item.current {
-        background: rgba(0,0,0,0.1);
+        background: rgba(0, 0, 0, 0.1);
         border-left: 3px var(--kokoro-primary-color) solid;
       }
       
