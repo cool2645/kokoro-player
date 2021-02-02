@@ -101,6 +101,7 @@ class Player extends Component {
         height: 84px;
         font-size: 24px;
         position: relative;
+        user-select: none;
       }
       
       .control-box > .panel {
@@ -172,6 +173,7 @@ class Player extends Component {
         height: 315px;
         padding: 20px;
         margin: 8px 0;
+        user-select: none;
       }
       
       .cover-box > img {

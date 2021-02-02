@@ -75,13 +75,6 @@ class SingleCard extends Component {
         max-height: 100%;
       }
       
-      .cover > .filter {
-        position: absolute;
-        top: 0;
-        width: 100%;
-        height: 100%;
-      }
-      
       .control-panel {
         flex: 1 1 auto;
         padding: 15px 10px 15px 20px;
@@ -309,7 +302,6 @@ class SingleCard extends Component {
       </style>
       <div class="cover">
         <img class="cover" src="${this.cover}" alt="cover" />
-        <div class="filter"></div>
       </div>
       <div class="control-panel ${this.size}">
         <div class="header">

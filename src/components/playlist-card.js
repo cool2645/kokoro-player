@@ -70,13 +70,6 @@ class PlaylistCard extends Component {
         max-height: 100%;
       }
       
-      .cover > .filter {
-        position: absolute;
-        top: 0;
-        width: 100%;
-        height: 100%;
-      }
-      
       .control-panel {
         box-sizing: border-box;
         width: 60%;
@@ -448,7 +441,6 @@ class PlaylistCard extends Component {
       </style>
       <div class="cover">
         <img class="cover" src="${this.displayedSong.cover}" alt="cover" />
-        <div class="filter"></div>
       </div>
       <div class="control-panel ${this.size}">
         <div class="header">
