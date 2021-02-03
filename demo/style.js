@@ -52,10 +52,7 @@ export const waveStyle = css`
     background-size: 50% 100px;
   }
   .waveAnimation .waveTop {
-    animation: move-wave 3s;
-    -webkit-animation: move-wave 3s;
-    -webkit-animation-delay: 1s;
-    animation-delay: 1s;
+    animation: move_wave 6s linear infinite;
   }
   .waveMiddle {
     background-size: 50% 120px;
