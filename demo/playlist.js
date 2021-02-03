@@ -23,11 +23,13 @@ class PlaylistPage extends LitElement {
   toggleConnect () {
     this.connected = !this.connected
     if (this.connected) {
-      this.shadowRoot.querySelector('kokoro-provider')
-        .connect(window.player)
+      this.shadowRoot.querySelectorAll('kokoro-provider').forEach((provider) => {
+        provider.connect(window.player)
+      })
     } else {
-      this.shadowRoot.querySelector('kokoro-provider')
-        .disconnect()
+      this.shadowRoot.querySelectorAll('kokoro-provider').forEach((provider) => {
+        provider.disconnect()
+      })
     }
   }
 

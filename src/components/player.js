@@ -46,6 +46,11 @@ class Player extends Component {
         background-color: #000;
       }
       
+      .main-window.disconnected {
+        opacity: 0.85;
+        backdrop-filter: blur(4px);
+      }
+      
       .main-window.dark .underlay > .background {
         opacity: 0.94;
         filter: blur(40px);
@@ -205,6 +210,10 @@ class Player extends Component {
         left: 100%;
       }
       
+      .main-window > .playlist-panel.hide {
+        display: block;
+      }
+      
       .playlist-panel {
         position: absolute;
         top: 0;
@@ -339,6 +348,30 @@ class Player extends Component {
         font-size: 20px;
         cursor: pointer;
       }
+
+      .playlist-panel > .playlist-clear {
+        position: absolute;
+        top: 65px;
+        left: 12px;
+        font-size: 20px;
+        cursor: pointer;
+      }
+      
+      .disconnected-panel {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+      }
+      
+      .main-window > div.hide {
+        display: none;
+      }
     `
   }
 
@@ -364,11 +397,14 @@ class Player extends Component {
           --kokoro-border-radius: 0;
         }
       </style>
-      <div class="main-window ${this.darkMode ? 'dark' : ''}">
+      <div class="main-window ${this.darkMode ? 'dark' : ''} ${this.isConnected ? '' : 'disconnected'}">
         <div class="handle-bar">
           <div class="move-handle"></div>
         </div>
-        <div class="control-box">
+        <div class="disconnected-panel ${this.isConnected ? 'hide' : ''}">
+          Kokoro 播放器未连接
+        </div>
+        <div class="control-box ${this.isConnected ? '' : 'hide'}">
           <div class="control-panel panel ${this.isVolumeControlShown ? 'hide' : ''}">
             <a class="btn"><i class="icon icon-lyrics"></i></a>
             <a class="btn" @click="${this.nextPlayOrder}"><i class="icon icon-${this.playOrder === PLAY_ORDER_SINGLE
@@ -408,16 +444,16 @@ class Player extends Component {
             @kokoro-change="${(e) => { if (e.detail.commit) this.setCurrentProgress(e.detail.progress) }}"
           ></kokoro-progress>
         </div>
-        <div class="cover-box">
+        <div class="cover-box ${this.isConnected ? '' : 'hide'}">
           ${this.currentSong ? html`
             <img src="${this.currentSong.cover}" />
           ` : ''}
         </div>
-        <div class="lyrics-box">
+        <div class="lyrics-box ${this.isConnected ? '' : 'hide'}">
           <h1>${this.currentSong?.title}</h1>
           <h2>${this.currentSong?.artist}</h2>
         </div>
-        <div class="playlist-panel ${this.isPlaylistShowing ? '' : 'hide'}">
+        <div class="playlist-panel ${this.isConnected && this.isPlaylistShowing ? '' : 'hide'}">
           <div class="playlist">
             ${this.playlist.map((song, index) => html`
               <div class="playlist-item-box" @click="${() => { this.setCurrentSong(song, index) }}">
@@ -434,13 +470,23 @@ class Player extends Component {
             class="playlist-close"
             @click="${() => { this.isPlaylistShowing = !this.isPlaylistShowing }}"
           ><i class="icon icon-close"></i></a>
+          ${this.playlist.length ? html`
+            <a
+              class="playlist-clear"
+              @click="${() => { this.clearPlaylist() }}"
+            ><i class="icon icon-clear"></i></a>`
+          : ''}
         </div>
-        <div class="underlay">
+        <div class="underlay ${this.isConnected ? '' : 'hide'}">
           <div class="background"></div>
           <div class="filter"></div>
         </div>
       </div>
     `
+  }
+
+  get isConnected () {
+    return !!this.context.kokoro
   }
 
   setCurrentSong (song, index) {
@@ -450,6 +496,10 @@ class Player extends Component {
 
   removeSong (index) {
     this.context.kokoro?.removeSong(index)
+  }
+
+  clearPlaylist () {
+    this.context.kokoro?.clearPlaylist()
   }
 
   prev () {
