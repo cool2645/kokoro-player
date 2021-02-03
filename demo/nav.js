@@ -2,8 +2,7 @@ import { LitElement, html, css } from 'lit-element'
 
 export const routes = [
   { path: '/', component: 'solo-page', title: 'Solo' },
-  { path: '/playlist', component: 'playlist-page', title: 'Playlist' },
-  { path: '/lyrics', component: 'lyrics-page', title: 'Lyrics' }
+  { path: '/playlist', component: 'playlist-page', title: 'Playlist' }
 ]
 
 class NavBar extends LitElement {

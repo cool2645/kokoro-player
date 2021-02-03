@@ -11,6 +11,7 @@ class Player extends Component {
     return {
       currentSong: { type: Object },
       playing: { type: Object },
+      index: { type: Number },
       player: { type: Object },
       playlist: { type: Array },
       darkMode: { type: Boolean },
@@ -196,6 +197,8 @@ class Player extends Component {
         margin: 0;
         font-weight: normal;
         text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
       }
       
       .lyrics-box h2 {
@@ -204,6 +207,8 @@ class Player extends Component {
         margin: 0;
         font-weight: normal;
         text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
       }
       
       .playlist-panel.hide {
@@ -233,7 +238,6 @@ class Player extends Component {
         right: 0;
         bottom: 0;
         width: calc(100% - 36px);
-        counter-reset: songs;
         padding: 26px 37px 26px 10px;
         box-sizing: border-box;
         overflow-x: hidden;
@@ -295,18 +299,10 @@ class Player extends Component {
         border-left: 5px rgba(251, 251, 251, 0.2) solid;
         border-bottom: 23px rgba(251, 251, 251, 0.2) solid;
       }
-      
-      .playlist .playlist-item::before {
-        counter-increment: songs;
-        content: counter(songs);
-        float: left;
-        line-height: 42px;
-      }
 
       .playlist .playlist-item > .title {
         font-size: 14px;
         line-height: 22px;
-        margin-left: 20px;
         margin-right: 24px;
         overflow: hidden;
         text-overflow: ellipsis;
@@ -315,7 +311,6 @@ class Player extends Component {
       .playlist .playlist-item > .artist {
         font-size: 12px;
         line-height: 16px;
-        margin-left: 20px;
         margin-right: 24px;
         overflow: hidden;
         text-overflow: ellipsis;
@@ -416,7 +411,7 @@ class Player extends Component {
             <a class="btn" @click="${this.next}"><i class="icon icon-next"></i></a>
             <a class="btn" @click="${() => { this.isVolumeControlShown = !this.isVolumeControlShown }}"
             ><i class="icon icon-volume"></i></a>
-            <a class="btn" @click="${() => { this.isPlaylistShowing = !this.isPlaylistShowing }}"
+            <a class="btn" @click="${this.togglePlaylist}"
             ><i class="icon icon-playlist"></i></a>
           </div>
           <div class="volume-playback-panel panel ${this.isVolumeControlShown ? '' : 'hide'}">
@@ -468,7 +463,7 @@ class Player extends Component {
           </div>
           <a
             class="playlist-close"
-            @click="${() => { this.isPlaylistShowing = !this.isPlaylistShowing }}"
+            @click="${this.togglePlaylist}"
           ><i class="icon icon-close"></i></a>
           ${this.playlist.length ? html`
             <a
@@ -487,6 +482,18 @@ class Player extends Component {
 
   get isConnected () {
     return !!this.context.kokoro
+  }
+
+  togglePlaylist () {
+    this.isPlaylistShowing = !this.isPlaylistShowing
+    if (this.isPlaylistShowing) {
+      if (this.index === 0) {
+        this.shadowRoot.querySelector('.playlist').scrollTop = 0
+      } else {
+        this.shadowRoot.querySelector(`.playlist > .playlist-item-box:nth-child(${this.index})`)
+          .scrollIntoView(true)
+      }
+    }
   }
 
   setCurrentSong (song, index) {
@@ -532,6 +539,7 @@ const mapStateToProps = (state) => {
     currentSong: state.playlist.songs[
       state.playlist.orderedList[state.playlist.orderedIndexOfPlaying]
     ],
+    index: state.playlist.orderedIndexOfPlaying,
     playlist: state.playlist.orderedList.map((id) => state.playlist.songs[id]),
     playing: state.playing,
     player: state.player,
