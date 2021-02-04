@@ -24,6 +24,7 @@ class Player extends Component {
       top: { type: Number },
       left: { type: Number },
       right: { type: Number },
+      bottom: { type: Number },
       shouldShowSmallWindow: { type: Boolean }
     }
   }
@@ -563,6 +564,25 @@ class Player extends Component {
     this.top = 100
     this.shouldShowSmallWindow = true
     this.right = (document.documentElement || document.body).clientWidth - 122
+    this.bottom = (document.documentElement || document.body).clientHeight - 100 - 122
+  }
+
+  firstUpdated (_) {
+    if (this.left + this.right !== (document.documentElement || document.body).clientWidth - 122) {
+      if (this.right === 0) {
+        this.left = (document.documentElement || document.body).clientWidth - 122
+      } else {
+        this.shouldShowSmallWindow = false
+      }
+    }
+    if (this.shouldShowSmallWindow &&
+      this.top + this.bottom !== (document.documentElement || document.body).clientHeight - 122) {
+      if (this.top !== 100) {
+        this.bottom = (document.documentElement || document.body).clientHeight - this.top - 122
+      } else {
+        this.top = (document.documentElement || document.body).clientHeight - this.bottom - 122
+      }
+    }
   }
 
   get shrinkToLeft () {
