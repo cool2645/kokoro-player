@@ -37,7 +37,7 @@ class Player extends Component {
         width: 315px;
         height: 560px;
         border-radius: 15px;
-        box-shadow: 0 0.96px 1px #666;
+        box-shadow: 0 0.96px 0.96px #666;
         background-color: #fbfbfb;
         color: var(--kokoro-primary-color);
         padding: 10px;
@@ -86,7 +86,7 @@ class Player extends Component {
         background-color: rgba(0, 0, 0, 0.6);
       }
       
-      .move-handle {
+      .main-window .move-handle {
         height: 8px;
         width: 50px;
         margin: 4px auto;
@@ -95,22 +95,22 @@ class Player extends Component {
         opacity: 0.94;
         cursor: grab;
       }
-      
-      .handle-bar {
+
+      .main-window .move-handle .handle-bar {
         overflow: hidden;
         margin-top: -4px;
         z-index: 2;
         position: relative;
       }
-      
-      .control-box {
+
+      .main-window > .control-box {
         height: 84px;
         font-size: 24px;
         position: relative;
         user-select: none;
       }
-      
-      .control-box > .panel {
+
+      .main-window > .control-box > .panel {
         position: absolute;
         top: 0;
         bottom: 0;
@@ -122,16 +122,16 @@ class Player extends Component {
         justify-content: space-evenly;
         align-items: center;
       }
-      
-      .control-panel.hide {
+
+      .main-window > .control-box .control-panel.hide {
         bottom: 100%;
       }
-      
-      .volume-playback-panel.hide {
+
+      .main-window > .control-box .volume-playback-panel.hide {
         top: 100%
       }
-      
-      .volume-playback-panel > .volume-playback-panel-close {
+
+      .main-window > .control-box  .volume-playback-panel > .volume-playback-panel-close {
         position: absolute;
         top: 4px;
         left: 4px;
@@ -139,7 +139,7 @@ class Player extends Component {
         cursor: pointer;
       }
 
-      .control-box .volume-playback-panel .btn {
+      .main-window > .control-box .volume-playback-panel .btn {
         width: 40%;
         display: flex;
         align-items: center;
@@ -147,26 +147,26 @@ class Player extends Component {
         cursor: initial;
       }
 
-      .control-box .volume-playback-panel .btn > kokoro-track {
+      .main-window > .control-box .volume-playback-panel .btn > kokoro-track {
         margin: 0 10px;
         flex: 1 1 auto;
       }
-      
-      .control-box .btn {
+
+      .main-window > .control-box .btn {
         display: inline-block;
         line-height: 1;
         cursor: pointer;
       }
-      
-      .control-box .btn > .icon {
+
+      .main-window > .control-box .btn > .icon {
         vertical-align: top;
       }
-      
-      .control-box .btn.play {
+
+      .main-window > .control-box .btn.play {
         font-size: 48px;
       }
 
-      kokoro-progress {
+      .main-window > .control-box kokoro-progress {
         position: absolute;
         bottom: 0;
         left: -10px;
@@ -174,24 +174,24 @@ class Player extends Component {
         transform: translateY(50%);
       }
       
-      .cover-box {
+      .main-window > .cover-box {
         box-sizing: border-box;
         height: 315px;
         padding: 20px;
         margin: 8px 0;
         user-select: none;
       }
-      
-      .cover-box > img {
+
+      .main-window > .cover-box > img {
         width: 100%;
       }
-      
-      .lyrics-box {
+
+      .main-window > .lyrics-box {
         padding: 0 10px;
         overflow: hidden;
       }
-      
-      .lyrics-box h1 {
+
+      .main-window > .lyrics-box h1 {
         font-size: 24px;
         line-height: 1.45;
         margin: 0;
@@ -200,8 +200,8 @@ class Player extends Component {
         overflow: hidden;
         white-space: nowrap;
       }
-      
-      .lyrics-box h2 {
+
+      .main-window > .lyrics-box h2 {
         font-size: 18px;
         line-height: 1.4;
         margin: 0;
@@ -367,6 +367,113 @@ class Player extends Component {
       .main-window > div.hide {
         display: none;
       }
+      
+      .small-window {
+        position: fixed;
+        left: 0;
+        top: 75px;
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        overflow: hidden;
+        background-color: #fbfbfb;
+        box-shadow: 0 0.96px 0.96px #666;
+        color: rgba(0, 0, 0, 0.8);
+        transform: scale(0.5);
+        transform-origin: left center;
+        transition: transform 250ms;
+      }
+      
+      .small-window:hover {
+        transform: scale(1);
+      }
+      
+      .small-window > .cover-box {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        opacity: 0.1;
+      }
+
+      .small-window > .control-box {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        margin: -1px;
+        display: grid;
+        grid-template-columns: repeat(2, 50%);
+        grid-template-rows: repeat(2, 50%);
+      }
+      
+      .small-window > .control-box .btn {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 20px;
+        cursor: pointer;
+      }
+
+      .small-window > .control-box > .btn {
+        border-right: 1px solid;
+        border-bottom: 1px solid;
+      }
+      
+      .small-window > .control-box > .move-handle {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%) scale(2.2);
+        width: 54px;
+        height: 54px;
+        border-radius: 50%;
+        border: 1px solid;
+        margin: 0;
+        background: radial-gradient(#fff, rgba(255, 255, 255, 0.99) 70%, rgba(255, 255, 255, 0.8));
+        overflow: hidden;
+        transition: transform 250ms;
+      }
+
+      .small-window:hover > .control-box > .move-handle {
+        transform: translate(-50%, -50%) scale(1);
+      }
+      
+      .small-window.spin > .control-box > .move-handle > .btn {
+        animation: spin 45s linear infinite;
+      }
+
+      .small-window > .control-box > .move-handle > .btn {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        font-size: 28px;
+        cursor: grab;
+      }
+
+      .small-window > .control-box > .move-handle > .move-handle-bg {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        opacity: 0.06;
+        z-index: -1;
+      }
+
+      .small-window.spin > .control-box > .move-handle > .move-handle-bg {
+        animation: spin 45s linear infinite;
+      }
+
+      @keyframes spin {
+        100% { 
+          transform: rotate(-360deg);
+        }
+      }
     `
   }
 
@@ -475,6 +582,29 @@ class Player extends Component {
         <div class="underlay ${this.isConnected ? '' : 'hide'}">
           <div class="background"></div>
           <div class="filter"></div>
+        </div>
+      </div>
+      <div class="small-window ${this.currentSong ? 'spin' : ''}">
+        <div
+          class="cover-box"
+          style="background: url('${this.currentSong?.cover}') center / cover"
+        ></div>
+        <div
+          class="control-box"
+        >
+          <a class="btn" @click="${this.togglePlay}"><i
+            class="icon icon-${this.paused ? 'play' : 'pause'}"
+          ></i></a>
+          <a class="btn"><i class="icon icon-lyrics"></i></a>
+          <a class="btn" @click="${this.prev}"><i class="icon icon-previous"></i></a>
+          <a class="btn" @click="${this.next}"><i class="icon icon-next"></i></a>
+          <div class="move-handle">
+            <a class="btn"><i class="icon icon-note"></i></a>
+            <div
+              class="move-handle-bg"
+              style="background: url('${this.currentSong?.cover}') center / cover"
+            ></div>
+          </div>
         </div>
       </div>
     `
