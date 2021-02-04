@@ -432,6 +432,7 @@ class Player extends Component {
         display: grid;
         grid-template-columns: repeat(2, 50%);
         grid-template-rows: repeat(2, 50%);
+        transform: rotate(45deg);
       }
       
       .small-window > .control-box .btn {
@@ -440,6 +441,10 @@ class Player extends Component {
         align-items: center;
         font-size: 20px;
         cursor: pointer;
+      }
+      
+      .small-window > .control-box .btn .icon {
+        transform: rotate(-45deg);
       }
 
       .small-window > .control-box > .btn {
@@ -456,7 +461,7 @@ class Player extends Component {
         position: absolute;
         left: 50%;
         top: 50%;
-        transform: translate(-50%, -50%) scale(2.3);
+        transform: translate(-50%, -50%) rotate(-45deg) scale(2.3);
         width: 54px;
         height: 54px;
         border-radius: 50%;
@@ -465,6 +470,10 @@ class Player extends Component {
         background: radial-gradient(#fff, rgba(255, 255, 255, 0.99) 70%, rgba(255, 255, 255, 0.8));
         overflow: hidden;
         transition: transform 250ms;
+      }
+
+      .small-window > .control-box > .move-handle .btn .icon {
+        transform: none;
       }
 
       .small-window.dark > .control-box > .move-handle {
@@ -477,11 +486,11 @@ class Player extends Component {
       }
 
       .small-window:hover > .control-box > .move-handle {
-        transform: translate(-50%, -50%) scale(1);
+        transform: translate(-50%, -50%) rotate(-45deg) scale(1);
       }
 
       .small-window.disconnected:hover > .control-box > .move-handle {
-        transform: translate(-50%, -50%) scale(2.3);
+        transform: translate(-50%, -50%) rotate(-45deg) scale(2.3);
       }
       
       .small-window.spin > .control-box > .move-handle > .btn {
@@ -637,7 +646,7 @@ class Player extends Component {
         </div>
       </div>
       <div class="small-window ${
-        this.isConnected && this.currentSong ? 'spin' : ''
+        this.isConnected && !this.paused ? 'spin' : ''
       } ${this.darkMode ? 'dark' : ''} ${this.isConnected ? '' : 'disconnected'}">
         <div
           class="cover-box"
@@ -649,9 +658,9 @@ class Player extends Component {
           <a class="btn" @click="${this.togglePlay}"><i
             class="icon icon-${this.paused ? 'play' : 'pause'}"
           ></i></a>
-          <a class="btn"><i class="icon icon-lyrics"></i></a>
-          <a class="btn" @click="${this.prev}"><i class="icon icon-previous"></i></a>
           <a class="btn" @click="${this.next}"><i class="icon icon-next"></i></a>
+          <a class="btn" @click="${this.prev}"><i class="icon icon-previous"></i></a>
+          <a class="btn"><i class="icon icon-lyrics"></i></a>
           <div class="move-handle">
             <a class="btn"><i class="icon icon-note"></i></a>
             <div
