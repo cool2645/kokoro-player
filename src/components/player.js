@@ -37,7 +37,7 @@ class Player extends Component {
         width: 315px;
         height: 560px;
         border-radius: 15px;
-        box-shadow: 0 0.96px 0.96px #666;
+        box-shadow: 0 0.3px 0.96px #666;
         background-color: #fbfbfb;
         color: var(--kokoro-primary-color);
         padding: 10px;
@@ -377,7 +377,8 @@ class Player extends Component {
         border-radius: 50%;
         overflow: hidden;
         background-color: #fbfbfb;
-        box-shadow: 0 0.96px 0.96px #666;
+        border: 1px #bbb solid;
+        box-shadow: 0 0.3px 0.96px #666;
         color: var(--kokoro-primary-color);
         transform: scale(0.5);
         transform-origin: left center;
@@ -385,12 +386,22 @@ class Player extends Component {
       }
 
       .small-window.dark {
+        border: none;
         background-color: #000;
         box-shadow: 0 0 3px #eee;
       }
       
       .small-window:hover {
         transform: scale(1);
+      }
+
+      .small-window.disconnected:hover {
+        transform: scale(0.5);
+      }
+
+      .small-window.disconnected {
+        opacity: 0.85;
+        backdrop-filter: blur(4px);
       }
       
       .small-window > .cover-box {
@@ -400,6 +411,10 @@ class Player extends Component {
         right: 0;
         bottom: 0;
         opacity: 0.1;
+      }
+
+      .small-window.disconnected > .cover-box {
+        display: none;
       }
       
       .small-window.dark > .cover-box {
@@ -428,27 +443,33 @@ class Player extends Component {
       }
 
       .small-window > .control-box > .btn {
-        border-right: 1px solid;
-        border-bottom: 1px solid;
+        border-right: 1px #bbb solid;
+        border-bottom: 1px #bbb solid;
       }
 
       .small-window.dark > .control-box > .btn {
-        box-shadow: 0 0 1px #eee;
+        border: none;
+        box-shadow: 0 0 2px;
       }
       
       .small-window > .control-box > .move-handle {
         position: absolute;
         left: 50%;
         top: 50%;
-        transform: translate(-50%, -50%) scale(2.2);
+        transform: translate(-50%, -50%) scale(2.3);
         width: 54px;
         height: 54px;
         border-radius: 50%;
-        border: 1px solid;
+        border: 1px #bbb solid;
         margin: 0;
         background: radial-gradient(#fff, rgba(255, 255, 255, 0.99) 70%, rgba(255, 255, 255, 0.8));
         overflow: hidden;
         transition: transform 250ms;
+      }
+
+      .small-window.dark > .control-box > .move-handle {
+        border: none;
+        box-shadow: 0 0 4px;
       }
 
       .small-window.dark > .control-box > .move-handle {
@@ -457,6 +478,10 @@ class Player extends Component {
 
       .small-window:hover > .control-box > .move-handle {
         transform: translate(-50%, -50%) scale(1);
+      }
+
+      .small-window.disconnected:hover > .control-box > .move-handle {
+        transform: translate(-50%, -50%) scale(2.3);
       }
       
       .small-window.spin > .control-box > .move-handle > .btn {
@@ -490,6 +515,10 @@ class Player extends Component {
 
       .small-window.spin > .control-box > .move-handle > .move-handle-bg {
         animation: spin 45s linear infinite;
+      }
+
+      .small-window.disconnected > .control-box > .move-handle > .move-handle-bg {
+        display: none;
       }
 
       @keyframes spin {
@@ -607,7 +636,9 @@ class Player extends Component {
           <div class="filter"></div>
         </div>
       </div>
-      <div class="small-window ${this.currentSong ? 'spin' : ''} ${this.darkMode ? 'dark' : ''}">
+      <div class="small-window ${
+        this.isConnected && this.currentSong ? 'spin' : ''
+      } ${this.darkMode ? 'dark' : ''} ${this.isConnected ? '' : 'disconnected'}">
         <div
           class="cover-box"
           style="background: url('${this.currentSong?.cover}') center / cover"
