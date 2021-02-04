@@ -378,10 +378,15 @@ class Player extends Component {
         overflow: hidden;
         background-color: #fbfbfb;
         box-shadow: 0 0.96px 0.96px #666;
-        color: rgba(0, 0, 0, 0.8);
+        color: var(--kokoro-primary-color);
         transform: scale(0.5);
         transform-origin: left center;
         transition: transform 250ms;
+      }
+
+      .small-window.dark {
+        background-color: #000;
+        box-shadow: 0 0 3px #eee;
       }
       
       .small-window:hover {
@@ -395,6 +400,11 @@ class Player extends Component {
         right: 0;
         bottom: 0;
         opacity: 0.1;
+      }
+      
+      .small-window.dark > .cover-box {
+        opacity: 0.4;
+        filter: blur(40px);
       }
 
       .small-window > .control-box {
@@ -421,6 +431,10 @@ class Player extends Component {
         border-right: 1px solid;
         border-bottom: 1px solid;
       }
+
+      .small-window.dark > .control-box > .btn {
+        box-shadow: 0 0 1px #eee;
+      }
       
       .small-window > .control-box > .move-handle {
         position: absolute;
@@ -435,6 +449,10 @@ class Player extends Component {
         background: radial-gradient(#fff, rgba(255, 255, 255, 0.99) 70%, rgba(255, 255, 255, 0.8));
         overflow: hidden;
         transition: transform 250ms;
+      }
+
+      .small-window.dark > .control-box > .move-handle {
+        background: #000;
       }
 
       .small-window:hover > .control-box > .move-handle {
@@ -463,6 +481,11 @@ class Player extends Component {
         bottom: 0;
         opacity: 0.06;
         z-index: -1;
+      }
+
+      .small-window.dark > .control-box > .move-handle > .move-handle-bg {
+        opacity: 0.94;
+        filter: blur(36px);
       }
 
       .small-window.spin > .control-box > .move-handle > .move-handle-bg {
@@ -584,7 +607,7 @@ class Player extends Component {
           <div class="filter"></div>
         </div>
       </div>
-      <div class="small-window ${this.currentSong ? 'spin' : ''}">
+      <div class="small-window ${this.currentSong ? 'spin' : ''} ${this.darkMode ? 'dark' : ''}">
         <div
           class="cover-box"
           style="background: url('${this.currentSong?.cover}') center / cover"
