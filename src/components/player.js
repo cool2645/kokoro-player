@@ -19,7 +19,12 @@ class Player extends Component {
       played: { type: Number },
       buffered: { type: Array },
       isVolumeControlShown: { type: Boolean },
-      isPlaylistShowing: { type: Boolean }
+      isPlaylistShowing: { type: Boolean },
+      dragging: { type: Boolean },
+      top: { type: Number },
+      left: { type: Number },
+      right: { type: Number },
+      shouldShowSmallWindow: { type: Boolean }
     }
   }
 
@@ -29,11 +34,17 @@ class Player extends Component {
       :host {
         position: fixed;
       }
+      
+      .move-handle, .btn {
+        user-select: none;
+      }
+      
+      .move-handle.dragging {
+        cursor: grabbing !important;
+      }
 
       .main-window {
         position: fixed;
-        top: 100px;
-        left: 100px;
         width: 315px;
         height: 560px;
         border-radius: 15px;
@@ -370,8 +381,6 @@ class Player extends Component {
       
       .small-window {
         position: fixed;
-        left: 0;
-        top: 75px;
         width: 120px;
         height: 120px;
         border-radius: 50%;
@@ -381,7 +390,6 @@ class Player extends Component {
         box-shadow: 0 0.3px 0.96px #666;
         color: var(--kokoro-primary-color);
         transform: scale(0.5);
-        transform-origin: left center;
         transition: transform 250ms;
       }
 
@@ -391,7 +399,7 @@ class Player extends Component {
         box-shadow: 0 0 3px #eee;
       }
       
-      .small-window:hover {
+      .small-window:hover, .small-window.dragging {
         transform: scale(1);
       }
 
@@ -470,6 +478,7 @@ class Player extends Component {
         background: radial-gradient(#fff, rgba(255, 255, 255, 0.99) 70%, rgba(255, 255, 255, 0.8));
         overflow: hidden;
         transition: transform 250ms;
+        cursor: grab;
       }
 
       .small-window > .control-box > .move-handle .btn .icon {
@@ -504,7 +513,7 @@ class Player extends Component {
         right: 0;
         bottom: 0;
         font-size: 28px;
-        cursor: grab;
+        cursor: inherit;
       }
 
       .small-window > .control-box > .move-handle > .move-handle-bg {
@@ -542,6 +551,24 @@ class Player extends Component {
     return !this.currentSong || this.playing.paused
   }
 
+  get isConnected () {
+    return !!this.context.kokoro
+  }
+
+  constructor () {
+    super()
+    this.drag = this.drag.bind(this)
+    this.stopDragging = this.stopDragging.bind(this)
+    this.left = 0
+    this.top = 100
+    this.shouldShowSmallWindow = true
+    this.right = (document.documentElement || document.body).offsetWidth - 122
+  }
+
+  get shrinkToLeft () {
+    return this.left < ((document.documentElement || document.body).offsetWidth / 2) - 61
+  }
+
   isCurrentSong (song) {
     return SrcUtil.same(this.currentSong?.src, song.src)
   }
@@ -549,7 +576,9 @@ class Player extends Component {
   render () {
     return html`
       <style>
-        .underlay > .background {
+        .main-window > .underlay > .background,
+        .small-window > .cover-box,
+        .small-window > .control-box > .move-handle > .move-handle-bg {
           background: url("${this.currentSong?.cover}") no-repeat scroll center center / cover;
         }
         :host {
@@ -559,10 +588,23 @@ class Player extends Component {
           --kokoro-secondary-color: ${this.darkMode ? '#8e8e8e' : 'rgba(0, 0, 0, 0.4)'};
           --kokoro-border-radius: 0;
         }
+        .main-window {
+          visibility: ${this.shouldShowSmallWindow ? 'hidden' : 'visible'};
+        }
+        .small-window {
+          visibility: ${this.shouldShowSmallWindow ? 'visible' : 'hidden'};
+          transform-origin: ${this.shrinkToLeft ? 'left' : 'right'} center;
+        }
       </style>
-      <div class="main-window ${this.darkMode ? 'dark' : ''} ${this.isConnected ? '' : 'disconnected'}">
+      <div
+        class="main-window ${this.darkMode ? 'dark' : ''} ${this.isConnected ? '' : 'disconnected'}"
+        style="top: ${this.top}px; left: ${this.left}px"
+      >
         <div class="handle-bar">
-          <div class="move-handle"></div>
+          <div
+            class="move-handle ${this.dragging ? 'dragging' : ''}"
+            @mousedown="${this.startDragging}"
+          ></div>
         </div>
         <div class="disconnected-panel ${this.isConnected ? 'hide' : ''}">
           Kokoro 播放器未连接
@@ -647,11 +689,12 @@ class Player extends Component {
       </div>
       <div class="small-window ${
         this.isConnected && !this.paused ? 'spin' : ''
-      } ${this.darkMode ? 'dark' : ''} ${this.isConnected ? '' : 'disconnected'}">
-        <div
-          class="cover-box"
-          style="background: url('${this.currentSong?.cover}') center / cover"
-        ></div>
+      } ${this.darkMode ? 'dark' : ''} ${this.isConnected ? '' : 'disconnected'
+      } ${this.dragging ? 'dragging' : ''}"
+           style="top: ${this.top}px; ${this.shrinkToLeft
+             ? `left: ${this.left}px;` : `right: ${this.right}px`}"
+      >
+        <div class="cover-box"></div>
         <div
           class="control-box"
         >
@@ -661,20 +704,80 @@ class Player extends Component {
           <a class="btn" @click="${this.next}"><i class="icon icon-next"></i></a>
           <a class="btn" @click="${this.prev}"><i class="icon icon-previous"></i></a>
           <a class="btn"><i class="icon icon-lyrics"></i></a>
-          <div class="move-handle">
+          <div
+            class="move-handle ${this.dragging ? 'dragging' : ''}"
+            @mousedown="${this.startDragging}"
+          >
             <a class="btn"><i class="icon icon-note"></i></a>
-            <div
-              class="move-handle-bg"
-              style="background: url('${this.currentSong?.cover}') center / cover"
-            ></div>
+            <div class="move-handle-bg"></div>
           </div>
         </div>
       </div>
     `
   }
 
-  get isConnected () {
-    return !!this.context.kokoro
+  startDragging (e) {
+    this.dragging = true
+    e = (typeof window.TouchEvent !== 'undefined' && e instanceof window.TouchEvent)
+      ? e.changedTouches[0]
+      : e
+    this.cursorX = e.clientX
+    this.cursorY = e.clientY
+    this.drag(e)
+    if (e.type === 'mousedown') {
+      document.addEventListener('mousemove', this.drag)
+      document.addEventListener('mouseup', this.stopDragging)
+    }
+    if (e.type === 'touchstart') {
+      document.addEventListener('touchmove', this.drag)
+      document.addEventListener('touchend', this.stopDragging)
+      document.addEventListener('touchcancel', this.stopDragging)
+    }
+  }
+
+  drag (e) {
+    e = (typeof window.TouchEvent !== 'undefined' && e instanceof window.TouchEvent)
+      ? e.changedTouches[0]
+      : e
+    this.left += e.clientX - this.cursorX
+    this.right -= e.clientX - this.cursorX
+    this.top += e.clientY - this.cursorY
+    this.cursorX = e.clientX
+    this.cursorY = e.clientY
+    if (!this.shouldShowSmallWindow) {
+      const ssw = this.left <= -62.5 || this.left >= (document.documentElement || document.body).offsetWidth - 272.5
+      if (ssw) {
+        this.left = this.cursorX - 61
+        this.top = this.cursorY - 61
+        this.right = (document.documentElement || document.body).offsetWidth - this.cursorX - 61
+        this.shouldShowSmallWindow = true
+      }
+    } else {
+      const ssw = this.left <= 65 || this.left >= (document.documentElement || document.body).offsetWidth - 187
+      if (!ssw) {
+        this.left = this.cursorX - 167.5
+        this.top = this.cursorY - 16
+        this.shouldShowSmallWindow = false
+      }
+    }
+  }
+
+  stopDragging () {
+    this.dragging = false
+    if (this.top < 0) this.top = 0
+    if (this.shouldShowSmallWindow && this.shrinkToLeft) {
+      this.left = 0
+      this.right = (document.documentElement || document.body).offsetWidth - 122
+    }
+    if (this.shouldShowSmallWindow && !this.shrinkToLeft) {
+      this.right = 0
+      this.left = (document.documentElement || document.body).offsetWidth - 122
+    }
+    document.removeEventListener('mousemove', this.drag)
+    document.removeEventListener('mouseup', this.stopDragging)
+    document.removeEventListener('touchmove', this.drag)
+    document.removeEventListener('touchend', this.stopDragging)
+    document.removeEventListener('touchcancel', this.stopDragging)
   }
 
   togglePlaylist () {
