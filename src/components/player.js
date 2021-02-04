@@ -374,6 +374,7 @@ class Player extends Component {
         flex-direction: column;
         justify-content: center;
         align-items: center;
+        z-index: -1;
       }
       
       .main-window > div.hide {
@@ -400,7 +401,7 @@ class Player extends Component {
         box-shadow: 0 0 3px #eee;
       }
       
-      .small-window:hover, .small-window.dragging {
+      .small-window:hover, .small-window.dragging, .small-window.dragging.disconnected:hover {
         transform: scale(1);
       }
 
