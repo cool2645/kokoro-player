@@ -562,11 +562,11 @@ class Player extends Component {
     this.left = 0
     this.top = 100
     this.shouldShowSmallWindow = true
-    this.right = (document.documentElement || document.body).offsetWidth - 122
+    this.right = (document.documentElement || document.body).clientWidth - 122
   }
 
   get shrinkToLeft () {
-    return this.left < ((document.documentElement || document.body).offsetWidth / 2) - 61
+    return this.left < ((document.documentElement || document.body).clientWidth / 2) - 61
   }
 
   isCurrentSong (song) {
@@ -745,15 +745,15 @@ class Player extends Component {
     this.cursorX = e.clientX
     this.cursorY = e.clientY
     if (!this.shouldShowSmallWindow) {
-      const ssw = this.left <= -62.5 || this.left >= (document.documentElement || document.body).offsetWidth - 272.5
+      const ssw = this.left <= -62.5 || this.left >= (document.documentElement || document.body).clientWidth - 272.5
       if (ssw) {
         this.left = this.cursorX - 61
         this.top = this.cursorY - 61
-        this.right = (document.documentElement || document.body).offsetWidth - this.cursorX - 61
+        this.right = (document.documentElement || document.body).clientWidth - this.cursorX - 61
         this.shouldShowSmallWindow = true
       }
     } else {
-      const ssw = this.left <= 65 || this.left >= (document.documentElement || document.body).offsetWidth - 187
+      const ssw = this.left <= 65 || this.left >= (document.documentElement || document.body).clientWidth - 187
       if (!ssw) {
         this.left = this.cursorX - 167.5
         this.top = this.cursorY - 16
@@ -765,13 +765,19 @@ class Player extends Component {
   stopDragging () {
     this.dragging = false
     if (this.top < 0) this.top = 0
+    const bottomSafeArea = this.shouldShowSmallWindow
+      ? (document.documentElement || document.body).clientHeight - 122
+      : (document.documentElement || document.body).clientHeight - 36
+    if (this.top > bottomSafeArea) {
+      this.top = bottomSafeArea
+    }
     if (this.shouldShowSmallWindow && this.shrinkToLeft) {
       this.left = 0
-      this.right = (document.documentElement || document.body).offsetWidth - 122
+      this.right = (document.documentElement || document.body).clientWidth - 122
     }
     if (this.shouldShowSmallWindow && !this.shrinkToLeft) {
       this.right = 0
-      this.left = (document.documentElement || document.body).offsetWidth - 122
+      this.left = (document.documentElement || document.body).clientWidth - 122
     }
     document.removeEventListener('mousemove', this.drag)
     document.removeEventListener('mouseup', this.stopDragging)
