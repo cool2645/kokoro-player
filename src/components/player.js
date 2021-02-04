@@ -604,6 +604,7 @@ class Player extends Component {
           <div
             class="move-handle ${this.dragging ? 'dragging' : ''}"
             @mousedown="${this.startDragging}"
+            @touchstart="${this.startDragging}"
           ></div>
         </div>
         <div class="disconnected-panel ${this.isConnected ? 'hide' : ''}">
@@ -707,6 +708,7 @@ class Player extends Component {
           <div
             class="move-handle ${this.dragging ? 'dragging' : ''}"
             @mousedown="${this.startDragging}"
+            @touchstart="${this.startDragging}"
           >
             <a class="btn"><i class="icon icon-note"></i></a>
             <div class="move-handle-bg"></div>
@@ -718,11 +720,11 @@ class Player extends Component {
 
   startDragging (e) {
     this.dragging = true
-    e = (typeof window.TouchEvent !== 'undefined' && e instanceof window.TouchEvent)
+    const e1 = (typeof window.TouchEvent !== 'undefined' && e instanceof window.TouchEvent)
       ? e.changedTouches[0]
       : e
-    this.cursorX = e.clientX
-    this.cursorY = e.clientY
+    this.cursorX = e1.clientX
+    this.cursorY = e1.clientY
     this.drag(e)
     if (e.type === 'mousedown') {
       document.addEventListener('mousemove', this.drag)
