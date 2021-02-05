@@ -25,6 +25,7 @@ class Player extends Component {
       left: { type: Number },
       right: { type: Number },
       bottom: { type: Number },
+      mobileDefaultSide: { type: String },
       shouldShowSmallWindow: { type: Boolean },
       shouldMobileShowMainWindow: { type: Boolean },
       shrinkToLeft: { type: Boolean }
@@ -754,6 +755,10 @@ class Player extends Component {
     return !!this.context.kokoro
   }
 
+  get isMobile () {
+    return (document.documentElement || document.body).clientWidth <= 500
+  }
+
   constructor () {
     super()
     this.drag = this.drag.bind(this)
@@ -762,12 +767,22 @@ class Player extends Component {
     this.top = 100
     this.shouldShowSmallWindow = true
     this.shouldMobileShowMainWindow = false
+    this.mobileDefaultSide = 'left'
     this.right = (document.documentElement || document.body).clientWidth - 122
     this.bottom = (document.documentElement || document.body).clientHeight - 100 - 122
   }
 
   firstUpdated (_) {
-    if (this.left + this.right !== (document.documentElement || document.body).clientWidth - 122) {
+    if (this.isMobile) {
+      if (this.mobileDefaultSide === 'right') {
+        this.right = 0
+        this.left = (document.documentElement || document.body).clientWidth - 122
+      } else {
+        this.left = 0
+        this.right = (document.documentElement || document.body).clientWidth - 122
+      }
+      this.shouldShowSmallWindow = true
+    } else if (this.left + this.right !== (document.documentElement || document.body).clientWidth - 122) {
       if (this.right === 0) {
         this.left = (document.documentElement || document.body).clientWidth - 122
       } else {
@@ -1074,7 +1089,7 @@ class Player extends Component {
     this.cursorX = e.clientX
     this.shrinkToLeft = this.cursorX < ((document.documentElement || document.body).clientWidth / 2)
     this.cursorY = e.clientY
-    if ((document.documentElement || document.body).clientWidth <= 500) {
+    if (this.isMobile) {
       this.shouldShowSmallWindow = true
       return
     }
@@ -1099,7 +1114,7 @@ class Player extends Component {
   stopDragging () {
     this.dragging = false
     if (this.top < 0) this.top = 0
-    const bottomSafeArea = (document.documentElement || document.body).clientWidth <= 500
+    const bottomSafeArea = this.isMobile
       ? (document.documentElement || document.body).clientHeight - 20
       : this.shouldShowSmallWindow
         ? (document.documentElement || document.body).clientHeight - 122
@@ -1124,8 +1139,7 @@ class Player extends Component {
 
   togglePlaylist () {
     this.isPlaylistShowing = !this.isPlaylistShowing
-    const selector = (document.documentElement || document.body).clientWidth <= 500
-      ? '.mobile .playlist' : '.playlist'
+    const selector = this.isMobile ? '.mobile .playlist' : '.playlist'
     if (this.isPlaylistShowing) {
       if (this.index === 0) {
         this.shadowRoot.querySelector(selector).scrollTop = 0

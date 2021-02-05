@@ -124,6 +124,7 @@ class PlaylistPage extends LitElement {
               ?darkMode="${this.darkMode}"
               top="100"
               left="0"
+              mobileDefaultSide="right"
             ></kokoro-player>
           </kokoro-provider>
         </div>
@@ -181,6 +182,7 @@ class PlaylistPage extends LitElement {
       darkMode` : ''}
       top="100"
       left="0"
+      mobileDefaultSide="right"
     ></kokoro-player>
   </kokoro-provider>
 </body>
