@@ -337,8 +337,8 @@ class Player extends Component {
       .playlist .playlist-item > .remove {
         float: right;
         display: block;
-        line-height: 42px;
-        height: 42px;
+        line-height: 38px;
+        height: 38px;
         font-size: 16px;
         visibility: hidden;
         transform: rotate(-180deg);
