@@ -26,7 +26,8 @@ class Player extends Component {
       right: { type: Number },
       bottom: { type: Number },
       shouldShowSmallWindow: { type: Boolean },
-      shouldMobileShowMainWindow: { type: Boolean }
+      shouldMobileShowMainWindow: { type: Boolean },
+      shrinkToLeft: { type: Boolean }
     }
   }
 
@@ -782,10 +783,7 @@ class Player extends Component {
       }
     }
     this.cursorX = this.left
-  }
-
-  get shrinkToLeft () {
-    return this.cursorX < ((document.documentElement || document.body).clientWidth / 2)
+    this.shrinkToLeft = this.cursorX < ((document.documentElement || document.body).clientWidth / 2)
   }
 
   isCurrentSong (song) {
@@ -1051,6 +1049,7 @@ class Player extends Component {
       ? e.changedTouches[0]
       : e
     this.cursorX = e1.clientX
+    this.shrinkToLeft = this.cursorX < ((document.documentElement || document.body).clientWidth / 2)
     this.cursorY = e1.clientY
     this.drag(e)
     if (e.type === 'mousedown') {
@@ -1073,6 +1072,7 @@ class Player extends Component {
     this.right -= e.clientX - this.cursorX
     this.top += e.clientY - this.cursorY
     this.cursorX = e.clientX
+    this.shrinkToLeft = this.cursorX < ((document.documentElement || document.body).clientWidth / 2)
     this.cursorY = e.clientY
     if ((document.documentElement || document.body).clientWidth <= 500) return
     if (!this.shouldShowSmallWindow) {
