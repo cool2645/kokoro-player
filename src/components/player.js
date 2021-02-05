@@ -25,7 +25,8 @@ class Player extends Component {
       left: { type: Number },
       right: { type: Number },
       bottom: { type: Number },
-      shouldShowSmallWindow: { type: Boolean }
+      shouldShowSmallWindow: { type: Boolean },
+      shouldMobileShowMainWindow: { type: Boolean }
     }
   }
 
@@ -241,7 +242,7 @@ class Player extends Component {
         backdrop-filter: blur(1px);
         border-radius: 15px;
         overflow: hidden;
-        transition: left 200ms;
+        transition: left 200ms, top 200ms;
       }
       
       .playlist {
@@ -345,7 +346,7 @@ class Player extends Component {
       }
 
       .playlist .playlist-item > .remove > .icon {
-        vertical-align: middle;
+        vertical-align: top;
       }
       
       .playlist-panel > .playlist-close {
@@ -504,8 +505,8 @@ class Player extends Component {
         transform: translate(-50%, -50%) rotate(-45deg) scale(2.3);
       }
       
-      .small-window.spin > .control-box > .move-handle > .btn {
-        animation: spin 45s linear infinite;
+      .small-window.spin-rev > .control-box > .move-handle > .btn {
+        animation: spin-rev 45s linear infinite;
       }
 
       .small-window > .control-box > .move-handle > .btn {
@@ -533,8 +534,8 @@ class Player extends Component {
         filter: blur(36px);
       }
 
-      .small-window.spin > .control-box > .move-handle > .move-handle-bg {
-        animation: spin 45s linear infinite;
+      .small-window.spin-rev > .control-box > .move-handle > .move-handle-bg {
+        animation: spin-rev 45s linear infinite;
       }
 
       .small-window.disconnected > .control-box > .move-handle > .move-handle-bg {
@@ -577,6 +578,7 @@ class Player extends Component {
         display: flex;
         justify-content: center;
         align-items: center;
+        transform: scale(0.9);
       }
 
       .small-window-mobile.left > .icon {
@@ -586,8 +588,125 @@ class Player extends Component {
       .small-window-mobile.right > .icon {
         left: 0;
       }
+      
+      .main-window.mobile {
+        display: none;
+        flex-direction: column;
+        justify-content: space-around;
+        position: fixed;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        width: auto;
+        height: auto;
+        visibility: visible;
+        border-radius: 0;
+        transition: left 250ms, right 250ms;
+        z-index: 9999;
+      }
+
+      .main-window.mobile.hide {
+        left: 100%;
+        right: -100%;
+      }
+
+      .main-window.mobile > .cover-box .btn {
+        font-size: 24px;
+        position: relative;
+        left: -15px;
+        top: -4px;
+        cursor: pointer;
+      }
+
+      .main-window.mobile > .cover-box img {
+        border-radius: 50%;
+        position: absolute;
+        width: 100%;
+        animation: spin 45s linear infinite;
+      }
+      
+      .main-window.mobile .underlay {
+        border-radius: 0;
+      }
+
+      .main-window.mobile > .cover-box {
+        width: auto;
+        height: auto;
+        padding: 28px 0 calc(100% - 28px) 0;
+        margin-left: 28px;
+        margin-right: 28px;
+        position: relative;
+      }
+
+      .main-window.mobile > .lyrics-box {
+        flex: 1 1 auto;
+      }
+
+      .main-window.mobile > .control-box kokoro-progress {
+        position: absolute;
+        top: 0;
+        left: -10px;
+        right: -10px;
+        transform: translateY(-50%);
+      }
+
+      .main-window.mobile > .control-box  .volume-playback-panel > .volume-playback-panel-close {
+        top: 50%;
+        transform: translateY(-50%);
+      }
+      
+      .mobile .playlist-panel.hide {
+        top: 100%;
+        left: 0;
+      }
+      
+      .mobile .playlist-panel {
+        top: 20%;
+        border-radius: 15px 15px 0 0;
+      }
+      
+      .mobile .playlist > .playlist-item-box:hover {
+        transform: scale(1);
+      }
+      
+      .mobile .playlist {
+        width: calc(100% - 52px);
+        margin: 60px 26px 26px 26px;
+        padding: 0;
+      }
+      
+      .mobile .playlist-panel > .playlist-close {
+        top: 20px;
+        left: 26px;
+      }
+      
+      .mobile .playlist-panel > .playlist-clear {
+        top: 20px;
+        left: auto;
+        right: 26px;
+      }
+      
+      .mobile .playlist-panel-mask {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        cursor: pointer;
+      }
+
+      .mobile .playlist-panel-mask.hide {
+        display: none;
+      }
 
       @keyframes spin {
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+
+      @keyframes spin-rev {
         100% { 
           transform: rotate(-360deg);
         }
@@ -600,6 +719,10 @@ class Player extends Component {
 
         .small-window-mobile {
           display: block;
+        }
+        
+        .main-window.mobile {
+          display: flex;
         }
       }
     `
@@ -620,6 +743,7 @@ class Player extends Component {
     this.left = 0
     this.top = 100
     this.shouldShowSmallWindow = true
+    this.shouldMobileShowMainWindow = false
     this.right = (document.documentElement || document.body).clientWidth - 122
     this.bottom = (document.documentElement || document.body).clientHeight - 100 - 122
   }
@@ -767,16 +891,14 @@ class Player extends Component {
         </div>
       </div>
       <div class="small-window ${
-        this.isConnected && !this.paused ? 'spin' : ''
+        this.isConnected && !this.paused ? 'spin-rev' : ''
       } ${this.darkMode ? 'dark' : ''} ${this.isConnected ? '' : 'disconnected'
       } ${this.dragging ? 'dragging' : ''}"
            style="top: ${this.top}px; ${this.shrinkToLeft
              ? `left: ${this.left}px;` : `right: ${this.right}px`}"
       >
         <div class="cover-box"></div>
-        <div
-          class="control-box"
-        >
+        <div class="control-box">
           <a class="btn" @click="${this.togglePlay}"><i
             class="icon icon-${this.paused ? 'play' : 'pause'}"
           ></i></a>
@@ -799,10 +921,106 @@ class Player extends Component {
         style="top: ${this.top}px"
         @mousedown="${this.startDragging}"
         @touchstart="${this.startDragging}"
+        @click="${this.toggleMainWindow}"
       >
         <i class="icon icon-note"></i>
       </div>
+      <div
+        class="main-window mobile ${this.darkMode ? 'dark' : ''
+        } ${this.isConnected ? '' : 'disconnected'} ${this.shouldMobileShowMainWindow ? '' : 'hide'}"
+      >
+        <div class="disconnected-panel ${this.isConnected ? 'hide' : ''}">
+          Kokoro 播放器未连接
+        </div>
+        <div class="cover-box ${this.isConnected ? '' : 'hide'}">
+          ${this.currentSong ? html`
+            <img src="${this.currentSong.cover}" />
+          ` : ''}
+          <a class="btn" @click="${this.toggleMainWindow}"
+          ><i class="icon icon-back"></i></a>
+        </div>
+        <div class="lyrics-box ${this.isConnected ? '' : 'hide'}">
+          <h1>${this.currentSong?.title}</h1>
+          <h2>${this.currentSong?.artist}</h2>
+        </div>
+        <div class="control-box ${this.isConnected ? '' : 'hide'}">
+          <div class="control-panel panel ${this.isVolumeControlShown ? 'hide' : ''}">
+            <a class="btn"><i class="icon icon-lyrics"></i></a>
+            <a class="btn" @click="${this.nextPlayOrder}"><i class="icon icon-${this.playOrder === PLAY_ORDER_SINGLE
+      ? 'solo' : this.playOrder === PLAY_ORDER_SHUFFLE ? 'shuffle' : 'loop'}"></i></a>
+            <a class="btn" @click="${this.prev}"><i class="icon icon-previous"></i></a>
+            <a class="btn play" @click="${this.togglePlay}"><i
+              class="icon icon-${this.paused ? 'play' : 'pause'}-circle"
+            ></i></a>
+            <a class="btn" @click="${this.next}"><i class="icon icon-next"></i></a>
+            <a class="btn" @click="${() => { this.isVolumeControlShown = !this.isVolumeControlShown }}"
+            ><i class="icon icon-volume"></i></a>
+            <a class="btn" @click="${this.togglePlaylist}"
+            ><i class="icon icon-playlist"></i></a>
+          </div>
+          <div class="volume-playback-panel panel ${this.isVolumeControlShown ? '' : 'hide'}">
+            <a class="btn volume"
+               @mouseenter="${this.showVolumeTrack}"
+               @mouseleave="${this.closeVolumeTrack}"
+            >
+              <i class="icon icon-volume"></i>
+              <kokoro-track
+                id="volume-track"
+                .played="${this.player.volume}"
+                .buffered="${[0, 1]}"
+                @kokoro-change="${(e) => this.setVolume(e.detail.progress)}"
+              ></kokoro-track>
+            </a>
+            <a class="volume-playback-panel-close"
+               @click="${() => { this.isVolumeControlShown = !this.isVolumeControlShown }}"
+            ><i class="icon icon-close"></i></a>
+          </div>
+          <kokoro-progress
+            .played="${this.played}"
+            .buffered="${this.buffered}"
+            .currentTime="${this.playing.currentTime}"
+            .totalTime="${this.playing.totalTime}"
+            @kokoro-change="${(e) => { if (e.detail.commit) this.setCurrentProgress(e.detail.progress) }}"
+          ></kokoro-progress>
+        </div>
+        <div
+          class="playlist-panel-mask ${this.isConnected && this.isPlaylistShowing ? '' : 'hide'}"
+          @click="${this.togglePlaylist}"
+        ></div>
+        <div class="playlist-panel ${this.isConnected && this.isPlaylistShowing ? '' : 'hide'}">
+          <div class="playlist">
+            ${this.playlist.map((song, index) => html`
+              <div class="playlist-item-box" @click="${() => { this.setCurrentSong(song, index) }}">
+                <div class="playlist-item ${this.isCurrentSong(song) ? 'current' : ''}">
+                  <a class="remove" @click="${() => { this.removeSong(index) }}"
+                  ><i class="icon icon-close"></i></a>
+                  <div class="title">${song.title}</div>
+                  <div class="artist">${song.artist} - ${song.album}</div>
+                </div>
+              </div>
+            `)}
+          </div>
+          <a
+            class="playlist-close"
+            @click="${this.togglePlaylist}"
+          ><i class="icon icon-close"></i></a>
+          ${this.playlist.length ? html`
+            <a
+              class="playlist-clear"
+              @click="${() => { this.clearPlaylist() }}"
+            ><i class="icon icon-clear"></i></a>`
+      : ''}
+        </div>
+        <div class="underlay ${this.isConnected ? '' : 'hide'}">
+          <div class="background"></div>
+          <div class="filter"></div>
+        </div>
+      </div>
     `
+  }
+
+  toggleMainWindow () {
+    this.shouldMobileShowMainWindow = !this.shouldMobileShowMainWindow
   }
 
   startDragging (e) {
@@ -825,7 +1043,7 @@ class Player extends Component {
   }
 
   drag (e) {
-    e.preventDefault()
+    if (e.type === 'touchmove') e.preventDefault()
     e = (typeof window.TouchEvent !== 'undefined' && e instanceof window.TouchEvent)
       ? e.changedTouches[0]
       : e
@@ -880,11 +1098,13 @@ class Player extends Component {
 
   togglePlaylist () {
     this.isPlaylistShowing = !this.isPlaylistShowing
+    const selector = (document.documentElement || document.body).clientWidth <= 500
+      ? '.mobile .playlist' : '.playlist'
     if (this.isPlaylistShowing) {
       if (this.index === 0) {
-        this.shadowRoot.querySelector('.playlist').scrollTop = 0
+        this.shadowRoot.querySelector(selector).scrollTop = 0
       } else {
-        this.shadowRoot.querySelector(`.playlist > .playlist-item-box:nth-child(${this.index})`)
+        this.shadowRoot.querySelector(`${selector} > .playlist-item-box:nth-child(${this.index})`)
           .scrollIntoView(true)
       }
     }
