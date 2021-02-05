@@ -699,6 +699,15 @@ class Player extends Component {
       .mobile .playlist-panel-mask.hide {
         display: none;
       }
+      
+      .mobile .playlist > .playlist-item-box > .playlist-item {
+        display: block;
+      }
+      
+      .mobile .playlist > .playlist-item-box > .playlist-item > .remove {
+        visibility: visible;
+        transform: none !important;
+      }
 
       @keyframes spin {
         100% {
