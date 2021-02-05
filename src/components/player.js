@@ -1140,7 +1140,7 @@ class Player extends Component {
   togglePlaylist () {
     this.isPlaylistShowing = !this.isPlaylistShowing
     const selector = this.isMobile ? '.mobile .playlist' : '.playlist'
-    if (this.isPlaylistShowing) {
+    if (this.isPlaylistShowing && typeof this.index === 'number') {
       if (this.index === 0) {
         this.shadowRoot.querySelector(selector).scrollTop = 0
       } else {
