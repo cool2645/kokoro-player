@@ -619,6 +619,14 @@ class Player extends Component {
         cursor: pointer;
       }
 
+      .mobile .disconnected-panel .btn {
+        font-size: 24px;
+        position: absolute;
+        top: 34px;
+        left: 20px;
+        cursor: pointer;
+      }
+
       .main-window.mobile > .cover-box img {
         border-radius: 50%;
         position: absolute;
@@ -940,13 +948,13 @@ class Player extends Component {
       >
         <div class="disconnected-panel ${this.isConnected ? 'hide' : ''}">
           Kokoro 播放器未连接
+          <a class="btn" @click="${this.toggleMainWindow}"><i class="icon icon-back"></i></a>
         </div>
         <div class="cover-box ${this.isConnected ? '' : 'hide'}">
           ${this.currentSong ? html`
             <img src="${this.currentSong.cover}" />
           ` : ''}
-          <a class="btn" @click="${this.toggleMainWindow}"
-          ><i class="icon icon-back"></i></a>
+          <a class="btn" @click="${this.toggleMainWindow}"><i class="icon icon-back"></i></a>
         </div>
         <div class="lyrics-box ${this.isConnected ? '' : 'hide'}">
           <h1>${this.currentSong?.title}</h1>
