@@ -202,7 +202,8 @@ class Player extends Component {
       }
 
       .main-window > .lyrics-box {
-        padding: 0 10px;
+        margin-top: -10px;
+        padding: 10px;
         overflow: hidden;
       }
 
@@ -594,7 +595,7 @@ class Player extends Component {
       .main-window.mobile {
         display: none;
         flex-direction: column;
-        justify-content: space-around;
+        justify-content: space-between;
         position: fixed;
         top: 0;
         left: 0;
@@ -642,15 +643,22 @@ class Player extends Component {
 
       .main-window.mobile > .cover-box {
         width: auto;
-        height: auto;
+        height: 0;
         padding: 28px 0 calc(100% - 28px) 0;
         margin-left: 28px;
         margin-right: 28px;
+        line-height: 0;
         position: relative;
       }
 
       .main-window.mobile > .lyrics-box {
         flex: 1 1 auto;
+        max-height: 200px;
+        box-sizing: border-box;
+      }
+
+      .main-window.mobile > .control-box {
+        margin: 10px 0;
       }
 
       .main-window.mobile > .control-box kokoro-progress {
