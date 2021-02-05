@@ -1021,6 +1021,11 @@ class Player extends Component {
 
   toggleMainWindow () {
     this.shouldMobileShowMainWindow = !this.shouldMobileShowMainWindow
+    if (this.shouldMobileShowMainWindow) {
+      document.body.style.overflow = 'hidden'
+    } else {
+      document.body.style.overflow = ''
+    }
   }
 
   startDragging (e) {
