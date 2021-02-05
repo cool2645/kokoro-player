@@ -610,8 +610,8 @@ class Player extends Component {
       }
 
       .main-window.mobile.hide {
-        left: 100%;
-        right: -100%;
+        left: calc(100% + 5px);
+        right: calc(-100% - 5px);
       }
 
       .main-window.mobile > .cover-box .btn {
