@@ -1074,6 +1074,7 @@ class Player extends Component {
     this.top += e.clientY - this.cursorY
     this.cursorX = e.clientX
     this.cursorY = e.clientY
+    if ((document.documentElement || document.body).clientWidth <= 500) return
     if (!this.shouldShowSmallWindow) {
       const ssw = this.left <= -62.5 || this.left >= (document.documentElement || document.body).clientWidth - 272.5
       if (ssw) {
