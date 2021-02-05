@@ -540,10 +540,66 @@ class Player extends Component {
       .small-window.disconnected > .control-box > .move-handle > .move-handle-bg {
         display: none;
       }
+      
+      .small-window-mobile {
+        position: fixed;
+        width: 30px;
+        height: 20px;
+        background: var(--kokoro-black);
+        backdrop-filter: blur(4px);
+        color: var(--kokoro-white);
+        font-size: 12px;
+        display: none;
+        cursor: pointer;
+      }
+      
+      .small-window-mobile.left {
+        left: 0;
+        border-radius: 0 10px 10px 0;
+      }
+
+      .small-window-mobile.right {
+        right: 0;
+        border-radius: 10px 0 0 10px;
+      }
+      
+      .small-window-mobile.dark {
+        background: var(--kokoro-white);
+        color: var(--kokoro-black);
+      }
+      
+      .small-window-mobile > .icon {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        width: 20px;
+        border-radius: 10px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .small-window-mobile.left > .icon {
+        right: 0;
+      }
+
+      .small-window-mobile.right > .icon {
+        left: 0;
+      }
 
       @keyframes spin {
         100% { 
           transform: rotate(-360deg);
+        }
+      }
+      
+      @media screen and (max-width: 500px) {
+        .small-window, .main-window {
+          display: none;
+        }
+
+        .small-window-mobile {
+          display: block;
         }
       }
     `
@@ -584,10 +640,11 @@ class Player extends Component {
         this.top = (document.documentElement || document.body).clientHeight - this.bottom - 122
       }
     }
+    this.cursorX = this.left
   }
 
   get shrinkToLeft () {
-    return this.left < ((document.documentElement || document.body).clientWidth / 2) - 61
+    return this.cursorX < ((document.documentElement || document.body).clientWidth / 2)
   }
 
   isCurrentSong (song) {
@@ -736,6 +793,15 @@ class Player extends Component {
           </div>
         </div>
       </div>
+      <div
+        class="small-window-mobile ${this.shrinkToLeft
+          ? 'left' : 'right'} ${this.darkMode ? 'dark' : ''}"
+        style="top: ${this.top}px"
+        @mousedown="${this.startDragging}"
+        @touchstart="${this.startDragging}"
+      >
+        <i class="icon icon-note"></i>
+      </div>
     `
   }
 
@@ -752,13 +818,14 @@ class Player extends Component {
       document.addEventListener('mouseup', this.stopDragging)
     }
     if (e.type === 'touchstart') {
-      document.addEventListener('touchmove', this.drag)
+      document.addEventListener('touchmove', this.drag, { passive: false })
       document.addEventListener('touchend', this.stopDragging)
       document.addEventListener('touchcancel', this.stopDragging)
     }
   }
 
   drag (e) {
+    e.preventDefault()
     e = (typeof window.TouchEvent !== 'undefined' && e instanceof window.TouchEvent)
       ? e.changedTouches[0]
       : e
@@ -788,9 +855,11 @@ class Player extends Component {
   stopDragging () {
     this.dragging = false
     if (this.top < 0) this.top = 0
-    const bottomSafeArea = this.shouldShowSmallWindow
-      ? (document.documentElement || document.body).clientHeight - 122
-      : (document.documentElement || document.body).clientHeight - 36
+    const bottomSafeArea = (document.documentElement || document.body).clientWidth <= 500
+      ? (document.documentElement || document.body).clientHeight - 20
+      : this.shouldShowSmallWindow
+        ? (document.documentElement || document.body).clientHeight - 122
+        : (document.documentElement || document.body).clientHeight - 36
     if (this.top > bottomSafeArea) {
       this.top = bottomSafeArea
     }
