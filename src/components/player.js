@@ -1,5 +1,6 @@
 import { html, css } from 'lit-element'
 import { PLAY_ORDER_SHUFFLE, PLAY_ORDER_SINGLE } from 'kokoro'
+import { Lrc, Runner } from 'lrc-kit'
 
 import { Component } from '../utils/component'
 import { connect } from '../utils/lit-redux'
@@ -11,6 +12,11 @@ class Player extends Component {
     return {
       currentSong: { type: Object },
       playing: { type: Object },
+      lyrics: { type: Object },
+      lang: { type: String },
+      langAvailable: { type: Array },
+      pnKind: { type: String },
+      pnKindAvailable: { type: Array },
       index: { type: Number },
       player: { type: Object },
       playlist: { type: Array },
@@ -26,6 +32,10 @@ class Player extends Component {
       right: { type: Number },
       bottom: { type: Number },
       mobileDefaultSide: { type: String },
+      desktopLyricsTop: { type: Number },
+      desktopLyricsLeft: { type: Number },
+      desktopLyricsColorSchemes: { type: Array },
+      desktopLyricsColorSchemeIndex: { type: Number },
       shouldShowSmallWindow: { type: Boolean },
       shouldMobileShowMainWindow: { type: Boolean },
       shrinkToLeft: { type: Boolean }
@@ -38,11 +48,11 @@ class Player extends Component {
       :host {
         position: fixed;
       }
-      
+
       .move-handle, .btn {
         user-select: none;
       }
-      
+
       .move-handle.dragging {
         cursor: grabbing !important;
       }
@@ -61,12 +71,12 @@ class Player extends Component {
       .main-window.dark {
         background-color: #000;
       }
-      
+
       .main-window.disconnected {
         opacity: 0.85;
         backdrop-filter: blur(4px);
       }
-      
+
       .main-window.dark .underlay > .background {
         opacity: 0.94;
         filter: blur(40px);
@@ -82,7 +92,7 @@ class Player extends Component {
         border-radius: 15px;
         overflow: hidden;
       }
-      
+
       .underlay > .background {
         position: absolute;
         top: -50px;
@@ -91,7 +101,7 @@ class Player extends Component {
         bottom: -50px;
         opacity: 0.06;
       }
-      
+
       .dark .underlay > .filter {
         position: absolute;
         top: 0;
@@ -100,7 +110,7 @@ class Player extends Component {
         bottom: 0;
         background-color: rgba(0, 0, 0, 0.6);
       }
-      
+
       .main-window .move-handle {
         height: 8px;
         width: 50px;
@@ -146,7 +156,7 @@ class Player extends Component {
         top: 100%
       }
 
-      .main-window > .control-box  .volume-playback-panel > .volume-playback-panel-close {
+      .main-window > .control-box .volume-playback-panel > .volume-playback-panel-close {
         position: absolute;
         top: 4px;
         left: 4px;
@@ -188,7 +198,7 @@ class Player extends Component {
         right: -10px;
         transform: translateY(50%);
       }
-      
+
       .main-window > .cover-box {
         box-sizing: border-box;
         height: 315px;
@@ -226,15 +236,15 @@ class Player extends Component {
         overflow: hidden;
         white-space: nowrap;
       }
-      
+
       .playlist-panel.hide {
         left: 100%;
       }
-      
+
       .main-window > .playlist-panel.hide {
         display: block;
       }
-      
+
       .playlist-panel {
         position: absolute;
         top: 0;
@@ -247,7 +257,7 @@ class Player extends Component {
         overflow: hidden;
         transition: left 200ms, top 200ms;
       }
-      
+
       .playlist {
         position: absolute;
         top: 0;
@@ -259,7 +269,7 @@ class Player extends Component {
         overflow-x: hidden;
         overflow-y: auto;
       }
-      
+
       .dark .playlist-panel {
         background-color: rgba(0, 0, 0, 0.9);
       }
@@ -274,7 +284,7 @@ class Player extends Component {
         vertical-align: top;
         position: relative;
       }
-      
+
       .playlist > .playlist-item-box {
         transition: transform 250ms ease-in-out;
         transform-origin: left center;
@@ -286,7 +296,7 @@ class Player extends Component {
       .playlist > .playlist-item-box:hover {
         transform: scale(1.1);
       }
-      
+
       .playlist > .playlist-item-box:hover > .playlist-item {
         border-left: 3px var(--kokoro-primary-color) solid;
       }
@@ -299,7 +309,7 @@ class Player extends Component {
       .dark .playlist .playlist-item.current {
         background: rgba(251, 251, 251, 0.2);
       }
-      
+
       .playlist > .playlist-item-box > .playlist-item.current::after {
         content: '';
         position: absolute;
@@ -351,7 +361,7 @@ class Player extends Component {
       .playlist .playlist-item > .remove > .icon {
         vertical-align: top;
       }
-      
+
       .playlist-panel > .playlist-close {
         position: absolute;
         top: 30px;
@@ -367,7 +377,7 @@ class Player extends Component {
         font-size: 20px;
         cursor: pointer;
       }
-      
+
       .disconnected-panel {
         position: absolute;
         top: 0;
@@ -380,11 +390,11 @@ class Player extends Component {
         align-items: center;
         z-index: -1;
       }
-      
+
       .main-window > div.hide {
         display: none;
       }
-      
+
       .small-window {
         position: fixed;
         width: 120px;
@@ -404,7 +414,7 @@ class Player extends Component {
         background-color: #000;
         box-shadow: 0 0 3px #eee;
       }
-      
+
       .small-window:hover, .small-window.dragging, .small-window.dragging.disconnected:hover {
         transform: scale(1);
       }
@@ -417,7 +427,7 @@ class Player extends Component {
         opacity: 0.85;
         backdrop-filter: blur(4px);
       }
-      
+
       .small-window > .cover-box {
         position: absolute;
         top: 0;
@@ -430,7 +440,7 @@ class Player extends Component {
       .small-window.disconnected > .cover-box {
         display: none;
       }
-      
+
       .small-window.dark > .cover-box {
         opacity: 0.4;
         filter: blur(40px);
@@ -448,7 +458,7 @@ class Player extends Component {
         grid-template-rows: repeat(2, 50%);
         transform: rotate(45deg);
       }
-      
+
       .small-window > .control-box .btn {
         display: flex;
         justify-content: center;
@@ -456,7 +466,7 @@ class Player extends Component {
         font-size: 20px;
         cursor: pointer;
       }
-      
+
       .small-window > .control-box .btn .icon {
         transform: rotate(-45deg);
       }
@@ -470,7 +480,7 @@ class Player extends Component {
         border: none;
         box-shadow: 0 0 2px;
       }
-      
+
       .small-window > .control-box > .move-handle {
         position: absolute;
         left: 50%;
@@ -507,7 +517,7 @@ class Player extends Component {
       .small-window.disconnected:hover > .control-box > .move-handle {
         transform: translate(-50%, -50%) rotate(-45deg) scale(2.3);
       }
-      
+
       .small-window.spin-rev > .control-box > .move-handle > .btn {
         animation: spin-rev 45s linear infinite;
       }
@@ -544,7 +554,7 @@ class Player extends Component {
       .small-window.disconnected > .control-box > .move-handle > .move-handle-bg {
         display: none;
       }
-      
+
       .small-window-mobile {
         position: fixed;
         width: 30px;
@@ -556,7 +566,7 @@ class Player extends Component {
         display: none;
         cursor: pointer;
       }
-      
+
       .small-window-mobile.left {
         left: 0;
         border-radius: 0 10px 10px 0;
@@ -566,12 +576,12 @@ class Player extends Component {
         right: 0;
         border-radius: 10px 0 0 10px;
       }
-      
+
       .small-window-mobile.dark {
         background: var(--kokoro-white);
         color: var(--kokoro-black);
       }
-      
+
       .small-window-mobile > .icon {
         position: absolute;
         top: 0;
@@ -591,7 +601,7 @@ class Player extends Component {
       .small-window-mobile.right > .icon {
         left: 0;
       }
-      
+
       .main-window.mobile {
         display: none;
         flex-direction: column;
@@ -636,7 +646,7 @@ class Player extends Component {
         width: 100%;
         animation: spin 45s linear infinite;
       }
-      
+
       .main-window.mobile .underlay {
         border-radius: 0;
       }
@@ -669,42 +679,42 @@ class Player extends Component {
         transform: translateY(-50%);
       }
 
-      .main-window.mobile > .control-box  .volume-playback-panel > .volume-playback-panel-close {
+      .main-window.mobile > .control-box .volume-playback-panel > .volume-playback-panel-close {
         top: 50%;
         transform: translateY(-50%);
       }
-      
+
       .mobile .playlist-panel.hide {
         top: 100%;
         left: 0;
       }
-      
+
       .mobile .playlist-panel {
         top: 20%;
         border-radius: 15px 15px 0 0;
       }
-      
+
       .mobile .playlist > .playlist-item-box:hover {
         transform: scale(1);
       }
-      
+
       .mobile .playlist {
         width: calc(100% - 52px);
         margin: 60px 26px 26px 26px;
         padding: 0;
       }
-      
+
       .mobile .playlist-panel > .playlist-close {
         top: 20px;
         left: 26px;
       }
-      
+
       .mobile .playlist-panel > .playlist-clear {
         top: 20px;
         left: auto;
         right: 26px;
       }
-      
+
       .mobile .playlist-panel-mask {
         position: absolute;
         top: 0;
@@ -717,11 +727,11 @@ class Player extends Component {
       .mobile .playlist-panel-mask.hide {
         display: none;
       }
-      
+
       .mobile .playlist > .playlist-item-box > .playlist-item {
         display: block;
       }
-      
+
       .mobile .playlist > .playlist-item-box > .playlist-item > .remove {
         visibility: visible;
         transform: none !important;
@@ -734,11 +744,11 @@ class Player extends Component {
       }
 
       @keyframes spin-rev {
-        100% { 
+        100% {
           transform: rotate(-360deg);
         }
       }
-      
+
       @media screen and (max-width: 500px) {
         .small-window, .main-window {
           display: none;
@@ -747,10 +757,30 @@ class Player extends Component {
         .small-window-mobile {
           display: block;
         }
-        
+
         .main-window.mobile {
           display: flex;
         }
+      }
+
+      .desktop-lyrics-window {
+        position: fixed;
+        width: 90%;
+        max-width: 600px;
+        height: 100px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .desktop-lyrics {
+        background-clip: text;
+        -webkit-background-clip: text;
+        color: transparent;
+        font-size: 30px;
+        white-space: pre;
+        line-height: normal;
       }
     `
   }
@@ -778,6 +808,13 @@ class Player extends Component {
     this.mobileDefaultSide = 'left'
     this.right = (document.documentElement || document.body).clientWidth - 122
     this.bottom = (document.documentElement || document.body).clientHeight - 100 - 122
+    this.desktopLyricsColorSchemes = [
+      { name: '夕阳', value: 'linear-gradient(-1deg, #e92201, #fb9c17, #e92201)' },
+      { name: '蓝天', value: 'linear-gradient(-1deg, #0145d3, #118cfa, #0145d3)' },
+      { name: '星野', value: 'linear-gradient(-1deg, #a5c9e5, #9da9eb, #c6bde2)' },
+      { name: '山峦', value: 'linear-gradient(-1deg, #1dbf76, #67d74d, #1dbf76)' }
+    ]
+    this.desktopLyricsColorSchemeIndex = 0
   }
 
   firstUpdated (_) {
@@ -807,6 +844,9 @@ class Player extends Component {
     }
     this.cursorX = this.left
     this.shrinkToLeft = this.cursorX < ((document.documentElement || document.body).clientWidth / 2)
+    this.desktopLyricsTop = 100
+    this.desktopLyricsLeft = (document.documentElement || document.body).clientWidth / 2 -
+      this.shadowRoot.querySelector('#desktop-lyrics-window').offsetWidth / 2
   }
 
   isCurrentSong (song) {
@@ -834,6 +874,9 @@ class Player extends Component {
         .small-window {
           visibility: ${this.shouldShowSmallWindow ? 'visible' : 'hidden'};
           transform-origin: ${this.shrinkToLeft ? 'left' : 'right'} center;
+        }
+        .desktop-lyrics {
+          background: ${this.desktopLyricsColorSchemes[this.desktopLyricsColorSchemeIndex]?.value};
         }
       </style>
       <div
@@ -1054,6 +1097,13 @@ class Player extends Component {
           <div class="filter"></div>
         </div>
       </div>
+      <div
+        id="desktop-lyrics-window"
+        class="desktop-lyrics-window"
+        style="left: ${this.desktopLyricsLeft}px; top: ${this.desktopLyricsTop}px"
+      >
+        <span class="desktop-lyrics">${this.lyrics?.currentSentence}</span>
+      </div>
     `
   }
 
@@ -1196,11 +1246,80 @@ class Player extends Component {
   }
 }
 
+const parseLrcLyrics = (function () {
+  let originalLyrics = null
+  let originalTranslationLyrics = null
+  let parsedLyrics = null
+  let parsedTranslationLyrics = null
+  let lrcRunner
+  let translationLrcRunner
+  return (lyrics, time, totalTime, lang) => {
+    if (!lyrics) return null
+    if (!originalLyrics || lyrics.value !== originalLyrics) {
+      originalLyrics = lyrics.value
+      parsedLyrics = Lrc.parse(lyrics.value)
+      parsedLyrics.lyrics.sort((a, b) => (a.timestamp - b.timestamp))
+      lrcRunner = new Runner(parsedLyrics)
+    }
+    if (lang && lyrics.translations) {
+      const transLyrics = lyrics.translations.find((l) => l.lang === lang)
+      if (transLyrics && transLyrics.value !== originalTranslationLyrics) {
+        originalTranslationLyrics = transLyrics.value
+        parsedTranslationLyrics = Lrc.parse(transLyrics.value)
+        parsedTranslationLyrics.lyrics.sort((a, b) => (a.timestamp - b.timestamp))
+        translationLrcRunner = new Runner(parsedTranslationLyrics)
+      }
+    }
+    lrcRunner.timeUpdate(time)
+    if (translationLrcRunner) translationLrcRunner.timeUpdate(time)
+    const currentLyric = lrcRunner.curLyric()
+    let nextLyric
+    if (lrcRunner.curIndex() + 1 >= parsedLyrics.lyrics.length) {
+      nextLyric = { timestamp: totalTime, content: '' }
+    } else {
+      nextLyric = lrcRunner.getLyric(lrcRunner.curIndex() + 1)
+    }
+    return {
+      lyrics: parsedLyrics,
+      currentSentence: currentLyric.content,
+      currentSentenceStart: currentLyric.timestamp,
+      currentSentenceEnd: nextLyric.timestamp,
+      currentSentenceTranslation: translationLrcRunner ? translationLrcRunner.curLyric() : null,
+      nextSentence: nextLyric.content,
+      nextSentenceTranslation: translationLrcRunner
+        ? translationLrcRunner.curIndex() + 1 >= parsedTranslationLyrics.lyrics.length
+          ? '' : translationLrcRunner.getLyric(translationLrcRunner.curIndex() + 1)
+        : null
+    }
+  }
+})()
+
+const parseLyrics = (lyrics, currentTime, totalTime, lang, pnKind) => {
+  if (!lyrics) return null
+  if (lyrics.type === 'lrc') {
+    return parseLrcLyrics(lyrics, currentTime, totalTime, lang)
+  }
+  console.error(`Unsupported lyrics type: ${lyrics.type}`)
+  return null
+}
+
+const getLangAvailable = (lyrics) => {
+  if (!lyrics) return null
+  if (lyrics.type === 'lrc') {
+    if (!lyrics.translations) return []
+    return lyrics.translations.map((t) => t.lang)
+  }
+  console.error(`Unsupported lyrics type: ${lyrics.type}`)
+  return []
+}
+
 const mapStateToProps = (state) => {
   return {
-    currentSong: state.playlist.songs[
-      state.playlist.orderedList[state.playlist.orderedIndexOfPlaying]
-    ],
+    currentSong: state.playing.song,
+    lyrics: parseLyrics(state.playing.song.lyrics,
+      state.playing.currentTime, state.playing.totalTime),
+    langAvailable: getLangAvailable(state.playing.song.lyrics),
+    pnKindAvailable: [],
     index: state.playlist.orderedIndexOfPlaying,
     playlist: state.playlist.orderedList.map((id) => state.playlist.songs[id]),
     playing: state.playing,

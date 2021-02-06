@@ -44,6 +44,38 @@ class SoloPage extends LitElement {
     `
   }
 
+  firstUpdated (_) {
+    this.shadowRoot.querySelector('#if').lyrics = {
+      type: 'lrc',
+      value: `[ti:如果你能够做我男朋友]
+[ar:阮豆]
+[al:如果你能够做我男朋友]
+[00:00.000]作曲：久贤
+[00:01.000]作词：久贤
+[00:03.22]编曲：安苏羽
+[00:23.26][01:23.67]请问你是什么星座
+[00:25.45][01:25.27]能不能告诉我
+[00:27.76][01:27.83]你是狮子座还是水瓶座
+[00:29.82][01:30.26]不管是什么都很适合我
+[00:32.50][01:32.32]每天都会许个愿望
+[00:35.31][01:35.32]满足我的小幻想
+[00:37.93][01:37.87]我只是害羞
+[00:38.80][01:38.81]也怕出糗
+[00:40.55][01:40.06]想鼓起勇气说
+[00:41.92][01:41.99][02:02.58]如果你能够做我男朋友
+[00:44.73][01:44.99][02:04.83]那就请你牵我手
+[00:47.35][01:48.17][02:07.45]阳光 午后
+[00:50.10][01:49.79][02:09.76]散步或郊游
+[00:51.97][01:51.97][02:09.82]如果你能够做我男朋友
+[00:54.78][01:54.90][02:14.94]那就请你点点头
+[00:57.90][01:57.34][02:17.37]约定拉钩
+[01:00.79][02:19.74]现在就跟我走
+[02:00.02]现在就跟我
+[02:20.60]制作人：久贤
+[02:21.97]混音：贾佳`
+    }
+  }
+
   render () {
     return html`
       <div class="demo waveAnimation">
@@ -54,6 +86,7 @@ class SoloPage extends LitElement {
             <div class="landing">
               <kokoro-provider>
                 <kokoro-single-card
+                  id="if"
                   title="如果你能够做我男朋友"
                   artist="阮豆"
                   album="如果你能够做我男朋友"
@@ -73,6 +106,7 @@ class SoloPage extends LitElement {
               top="100"
               left="0"
               mobileDefaultSide="right"
+              desktopLyricsColorSchemeIndex="2"
             ></kokoro-player>
           </kokoro-provider>
         </div>
@@ -112,6 +146,7 @@ class SoloPage extends LitElement {
   <kokoro-provider>
     <!-- Single Song Card -->
     <kokoro-single-card
+      id="if"
       title="如果你能够做我男朋友"
       artist="阮豆"
       album="如果你能够做我男朋友"
@@ -130,6 +165,7 @@ class SoloPage extends LitElement {
       top="100"
       left="0"
       mobileDefaultSide="right"
+      desktopLyricsColorSchemeIndex="2"
     ></kokoro-player>
   </kokoro-provider>
 </body>

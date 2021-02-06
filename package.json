@@ -25,9 +25,10 @@
   },
   "homepage": "https://github.com/cool2645/kokoro-player#readme",
   "dependencies": {
-    "kokoro": "^0.1.0-beta.9",
+    "kokoro": "^0.1.0-beta.10",
     "lit-element": "^2.2.1",
     "lit-html": "^1.1.2",
+    "lrc-kit": "^1.1.1",
     "wc-context": "^0.8.0"
   },
   "devDependencies": {

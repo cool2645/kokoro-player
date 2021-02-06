@@ -3793,10 +3793,10 @@ kind-of@^6.0.0, kind-of@^6.0.2:
   resolved "https://registry.yarnpkg.com/kind-of/-/kind-of-6.0.3.tgz#07c05034a6c349fa06e24fa35aa76db4580ce4dd"
   integrity sha512-dcS1ul+9tmeD95T+x28/ehLgd9mENa3LsvDTtzm3vyBEO7RPptvAD+t44WVXaUjTBRcrpFeFlC8WCruUR456hw==
 
-kokoro@^0.1.0-beta.9:
-  version "0.1.0-beta.9"
-  resolved "https://registry.npmjs.org/kokoro/-/kokoro-0.1.0-beta.9.tgz#227e0ae9f05cab058068356ce4b0cbf087a57890"
-  integrity sha512-c+kKgd1+8FS1f0MseNdbkEVtu1A1B3fuKOB/ITvkZy+tb0EpFpvPxKnGdlA5B3751rTXNi4upUqa1VvkEA8ZcQ==
+kokoro@^0.1.0-beta.10:
+  version "0.1.0-beta.10"
+  resolved "https://registry.npmjs.org/kokoro/-/kokoro-0.1.0-beta.10.tgz#b038db45f565512ae7113b50b299db3e06ac0efa"
+  integrity sha512-Q6CbDsh/5DNHXlK+EpvnG4yQmqPvwoJ5uQPth0qGNSDeU44U502L/zcy1lPiF8AywEHOITmPQW5dCQJd8wYHRA==
   dependencies:
     redux "^4.0.4"
     redux-devtools-extension "^2.13.8"
@@ -3909,6 +3909,11 @@ lower-case@^1.1.1:
   version "1.1.4"
   resolved "https://registry.yarnpkg.com/lower-case/-/lower-case-1.1.4.tgz#9a2cabd1b9e8e0ae993a4bf7d5875c39c42e8eac"
   integrity sha1-miyr0bno4K6ZOkv31YdcOcQujqw=
+
+lrc-kit@^1.1.1:
+  version "1.1.1"
+  resolved "https://registry.npmjs.org/lrc-kit/-/lrc-kit-1.1.1.tgz#90f6e61fffad0a1fb3adba19ac438ef0b687be12"
+  integrity sha512-n7wRGLWWyjIXpgo4iZQkce/wzZlNUO7dzZKHvwZjFK3e4QaKYyVYasMfN6adpoOibkVVV2TniuGfAlqYf3vngg==
 
 lru-cache@^4.0.1:
   version "4.1.5"
