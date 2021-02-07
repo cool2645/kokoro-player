@@ -32,10 +32,11 @@ class Player extends Component {
       right: { type: Number },
       bottom: { type: Number },
       mobileDefaultSide: { type: String },
-      desktopLyricsTop: { type: Number },
-      desktopLyricsLeft: { type: Number },
+      desktopLyricsVerticalCenter: { type: Number },
+      desktopLyricsHorizontalCenter: { type: Number },
       desktopLyricsColorSchemes: { type: Array },
       desktopLyricsColorSchemeIndex: { type: Number },
+      desktopLyricsFontSize: { type: Number },
       shouldShowSmallWindow: { type: Boolean },
       shouldMobileShowMainWindow: { type: Boolean },
       shrinkToLeft: { type: Boolean }
@@ -767,7 +768,53 @@ class Player extends Component {
         position: fixed;
         width: 90%;
         max-width: 600px;
-        height: 100px;
+        transform: translate(-50%, -50%);
+        user-select: none;
+      }
+      
+      .desktop-lyrics-window:hover {
+        background: rgba(0, 0, 0, 0.6);
+        box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.6);
+        border-radius: 4px;
+        cursor: grab;
+      }
+      
+      .desktop-lyrics-window > .tool-bar {
+        position: absolute;
+        top: 6px;
+        left: 50%;
+        transform: translateX(-50%);
+        display: none;
+        color: var(--kokoro-white);
+        text-shadow: 0 0 1px var(--kokoro-white);
+        font-size: 14px;
+        line-height: 1;
+      }
+
+      .desktop-lyrics-window > .tool-bar > .btn {
+        margin: 0 3px;
+        cursor: pointer;
+      }
+
+      .desktop-lyrics-window > .tool-bar > .btn > .preview {
+        width: 14px;
+        height: 14px;
+        display: inline-block;
+        vertical-align: top;
+        border-radius: 2px;
+      }
+      
+      .desktop-lyrics-window:hover > .tool-bar {
+        display: flex;
+      }
+      
+      .desktop-lyrics-window > .desktop-lyrics-panel {
+        overflow: hidden;
+        position: absolute;
+        left: 0;
+        top: 0;
+        right: 0;
+        bottom: 0;
         display: flex;
         flex-direction: column;
         justify-content: center;
@@ -778,7 +825,6 @@ class Player extends Component {
         background-clip: text;
         -webkit-background-clip: text;
         color: transparent;
-        font-size: 30px;
         white-space: pre;
         line-height: normal;
       }
@@ -815,6 +861,7 @@ class Player extends Component {
       { name: '山峦', value: 'linear-gradient(-1deg, #1dbf76, #67d74d, #1dbf76)' }
     ]
     this.desktopLyricsColorSchemeIndex = 0
+    this.desktopLyricsFontSize = 30
   }
 
   firstUpdated (_) {
@@ -844,9 +891,17 @@ class Player extends Component {
     }
     this.cursorX = this.left
     this.shrinkToLeft = this.cursorX < ((document.documentElement || document.body).clientWidth / 2)
-    this.desktopLyricsTop = 100
-    this.desktopLyricsLeft = (document.documentElement || document.body).clientWidth / 2 -
-      this.shadowRoot.querySelector('#desktop-lyrics-window').offsetWidth / 2
+    this.desktopLyricsVerticalCenter = 150
+    this.desktopLyricsHorizontalCenter = (document.documentElement || document.body).clientWidth / 2
+  }
+
+  updated (changedProperties) {
+    if (changedProperties.get('playing') && this.lyrics) {
+      this.shadowRoot.querySelector('#desktop-lyrics-panel').scrollLeft =
+        (changedProperties.get('playing').currentTime - this.lyrics.currentSentenceStart) /
+        (this.lyrics.currentSentenceEnd - this.lyrics.currentSentenceStart) *
+        this.shadowRoot.querySelector('#desktop-lyrics-panel').scrollWidth
+    }
   }
 
   isCurrentSong (song) {
@@ -875,8 +930,12 @@ class Player extends Component {
           visibility: ${this.shouldShowSmallWindow ? 'visible' : 'hidden'};
           transform-origin: ${this.shrinkToLeft ? 'left' : 'right'} center;
         }
+        .desktop-lyrics-window {
+          height: ${this.desktopLyricsFontSize + 70}px;
+        }
         .desktop-lyrics {
           background: ${this.desktopLyricsColorSchemes[this.desktopLyricsColorSchemeIndex]?.value};
+          font-size: ${this.desktopLyricsFontSize}px;
         }
       </style>
       <div
@@ -895,7 +954,7 @@ class Player extends Component {
         </div>
         <div class="control-box ${this.isConnected ? '' : 'hide'}">
           <div class="control-panel panel ${this.isVolumeControlShown ? 'hide' : ''}">
-            <a class="btn"><i class="icon icon-lyrics"></i></a>
+            <a class="btn"><i class="icon icon-lyrics-on"></i></a>
             <a class="btn" @click="${this.nextPlayOrder}"><i class="icon icon-${this.playOrder === PLAY_ORDER_SINGLE
         ? 'solo' : this.playOrder === PLAY_ORDER_SHUFFLE ? 'shuffle' : 'loop'}"></i></a>
             <a class="btn" @click="${this.prev}"><i class="icon icon-previous"></i></a>
@@ -985,7 +1044,7 @@ class Player extends Component {
           ></i></a>
           <a class="btn" @click="${this.next}"><i class="icon icon-next"></i></a>
           <a class="btn" @click="${this.prev}"><i class="icon icon-previous"></i></a>
-          <a class="btn"><i class="icon icon-lyrics"></i></a>
+          <a class="btn"><i class="icon icon-lyrics-on"></i></a>
           <div
             class="move-handle ${this.dragging ? 'dragging' : ''}"
             @mousedown="${this.startDragging}"
@@ -1026,7 +1085,7 @@ class Player extends Component {
         </div>
         <div class="control-box ${this.isConnected ? '' : 'hide'}">
           <div class="control-panel panel ${this.isVolumeControlShown ? 'hide' : ''}">
-            <a class="btn"><i class="icon icon-lyrics"></i></a>
+            <a class="btn"><i class="icon icon-lyrics-on"></i></a>
             <a class="btn" @click="${this.nextPlayOrder}"><i class="icon icon-${this.playOrder === PLAY_ORDER_SINGLE
       ? 'solo' : this.playOrder === PLAY_ORDER_SHUFFLE ? 'shuffle' : 'loop'}"></i></a>
             <a class="btn" @click="${this.prev}"><i class="icon icon-previous"></i></a>
@@ -1100,11 +1159,43 @@ class Player extends Component {
       <div
         id="desktop-lyrics-window"
         class="desktop-lyrics-window"
-        style="left: ${this.desktopLyricsLeft}px; top: ${this.desktopLyricsTop}px"
+        style="left: ${this.desktopLyricsHorizontalCenter}px; top: ${this.desktopLyricsVerticalCenter}px"
       >
-        <span class="desktop-lyrics">${this.lyrics?.currentSentence}</span>
+        <div id="desktop-lyrics-panel" class="desktop-lyrics-panel">
+          <span class="desktop-lyrics">${this.lyrics?.currentSentence}</span>
+        </div>
+        <div class="tool-bar">
+          <a class="btn"><i class="icon icon-lock"></i></a>
+          <a class="btn" @click="${this.prev}"><i class="icon icon-left"></i></a>
+          <a class="btn" @click="${this.togglePlay}"
+          ><i class="icon icon-${this.paused ? 'play' : 'pause'}"></i></a>
+          <a class="btn" @click="${this.next}"><i class="icon icon-right"></i></a>
+          <a class="btn" @click="${() => { this.desktopLyricsFontSize -= 4 }}"
+          ><i class="icon icon-font-smaller"></i></a>
+          <a class="btn" @click="${() => { this.desktopLyricsFontSize += 4 }}"
+          ><i class="icon icon-font-larger"></i></a>
+          <a
+            class="btn"
+            title="${this.desktopLyricsColorSchemes[this.desktopLyricsColorSchemeIndex].name}"
+            @click="${this.nextDesktopLyricsColorScheme}"
+          >
+            <i class="icon icon-font-color"></i>
+            <i
+              class="preview"
+              style="background: ${this.desktopLyricsColorSchemes[this.desktopLyricsColorSchemeIndex].value}"
+            ></i>
+          </a>
+        </div>
       </div>
     `
+  }
+
+  nextDesktopLyricsColorScheme () {
+    if (this.desktopLyricsColorSchemeIndex + 1 === this.desktopLyricsColorSchemes.length) {
+      this.desktopLyricsColorSchemeIndex = 0
+    } else {
+      this.desktopLyricsColorSchemeIndex++
+    }
   }
 
   toggleMainWindow () {

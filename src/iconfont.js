@@ -8,6 +8,26 @@ export const iconfont = css`
     -moz-osx-font-smoothing: grayscale;
   }
 
+  .icon-check:before {
+    content: "\\e63f";
+  }
+
+  .icon-lock:before {
+    content: "\\e62e";
+  }
+
+  .icon-font-smaller:before {
+    content: "\\e635";
+  }
+
+  .icon-font-larger:before {
+    content: "\\e6fe";
+  }
+
+  .icon-font-color:before {
+    content: "\\e62d";
+  }
+
   .icon-note:before {
     content: "\\e6ce";
   }
@@ -38,6 +58,26 @@ export const iconfont = css`
 
   .icon-lyrics:before {
     content: "\\e61b";
+  }
+  
+  .icon-lyrics-on {
+    position: relative;
+    line-height: 1;
+  }
+
+  .icon-lyrics-on:before {
+    content: "\\e61b";
+  }
+
+  .icon-lyrics-on:after {
+    content: "\\e63f";
+    font-size: 1em;
+    transform: scale(0.4);
+    transform-origin: bottom right;
+    position: absolute;
+    right: 0.1em;
+    bottom: 0;
+    line-height: 1;
   }
 
   .icon-volume:before {
