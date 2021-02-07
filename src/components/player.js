@@ -1087,7 +1087,7 @@ class Player extends Component {
         </div>
       </div>
       <kokoro-desktop-lyrics
-        class="${this.isDesktopLyricsShowing ? '' : 'hide'}"
+        class="${this.isDesktopLyricsShowing && this.isConnected && this.currentSong ? '' : 'hide'}"
         .lyrics="${this.lyrics}"
         .currentTime="${this.playing?.currentTime || 0}"
         .verticalCenter="${this.desktopLyricsVerticalCenter}"
@@ -1247,9 +1247,9 @@ class Player extends Component {
 const mapStateToProps = (state) => {
   return {
     currentSong: state.playing.song,
-    lyrics: parseLyrics(state.playing.song.lyrics,
+    lyrics: parseLyrics(state.playing.song?.lyrics,
       state.playing.currentTime, state.playing.totalTime),
-    langAvailable: getLangAvailable(state.playing.song.lyrics),
+    langAvailable: getLangAvailable(state.playing.song?.lyrics),
     pnKindAvailable: [],
     index: state.playlist.orderedIndexOfPlaying,
     playlist: state.playlist.orderedList.map((id) => state.playlist.songs[id]),

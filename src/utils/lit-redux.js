@@ -20,14 +20,16 @@ export const connect = (mapStateToProps) => (ClassName) => {
       const updatedPropKeys = Object.keys(updatedProps)
       updatedPropKeys.forEach(key => {
         if (this[key] !== updatedProps[key]) {
-          if (typeof updatedProps[key] === 'object') {
+          if (updatedProps[key] === undefined || updatedProps[key] === null ||
+            typeof updatedProps[key] !== 'object'
+          ) {
+            this[key] = updatedProps[key]
+          } else {
             if (updatedProps[key] instanceof Array) {
               this[key] = [...updatedProps[key]]
             } else {
               this[key] = { ...updatedProps[key] }
             }
-          } else {
-            this[key] = updatedProps[key]
           }
         }
       })
