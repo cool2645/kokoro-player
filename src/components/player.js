@@ -777,6 +777,7 @@ class Player extends Component {
         max-width: 600px;
         transform: translate(-50%, -50%);
         user-select: none;
+        padding: 35px 20px;
       }
       
       .desktop-lyrics-window:hover {
@@ -872,15 +873,16 @@ class Player extends Component {
       
       .desktop-lyrics-window > .desktop-lyrics-panel {
         overflow: hidden;
-        position: absolute;
-        left: 0;
-        top: 0;
-        right: 0;
-        bottom: 0;
+        width: 100%;
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
+      }
+
+      .desktop-lyrics-window > .desktop-lyrics-panel > .lyrics-track {
+        max-width: 100%;
+        overflow: hidden;
       }
 
       .desktop-lyrics {
@@ -888,6 +890,8 @@ class Player extends Component {
         -webkit-background-clip: text;
         color: transparent;
         white-space: pre;
+        line-height: normal;
+        display: inline-block;
         line-height: normal;
       }
     `
@@ -963,10 +967,10 @@ class Player extends Component {
 
   updated (changedProperties) {
     if (changedProperties.get('playing') && this.lyrics) {
-      this.shadowRoot.querySelector('#desktop-lyrics-panel').scrollLeft =
+      this.shadowRoot.querySelector('#desktop-lyrics-track').scrollLeft =
         (changedProperties.get('playing').currentTime - this.lyrics.currentSentenceStart) /
         (this.lyrics.currentSentenceEnd - this.lyrics.currentSentenceStart) *
-        this.shadowRoot.querySelector('#desktop-lyrics-panel').scrollWidth
+        this.shadowRoot.querySelector('#desktop-lyrics-track').scrollWidth
     }
   }
 
@@ -995,9 +999,6 @@ class Player extends Component {
         .small-window {
           visibility: ${this.shouldShowSmallWindow ? 'visible' : 'hidden'};
           transform-origin: ${this.shrinkToLeft ? 'left' : 'right'} center;
-        }
-        .desktop-lyrics-window {
-          height: ${this.desktopLyricsFontSize + 70}px;
         }
         .desktop-lyrics {
           background: ${this.desktopLyricsColorSchemes[this.desktopLyricsColorSchemeIndex]?.value};
@@ -1236,8 +1237,10 @@ class Player extends Component {
         @mousedown="${this.desktopLyricsStartDragging}"
         @touchstart="${this.desktopLyricsStartDragging}"
       >
-        <div id="desktop-lyrics-panel" class="desktop-lyrics-panel">
-          <span class="desktop-lyrics">${this.lyrics?.currentSentence}</span>
+        <div class="desktop-lyrics-panel">
+          <div id="desktop-lyrics-track" class="lyrics-track">
+            <span class="desktop-lyrics">${this.lyrics?.currentSentence}</span>
+          </div>
         </div>
         <div class="tool-bar">
           <a class="btn" @click="${() => { this.isDesktopLyricsLocked = !this.isDesktopLyricsLocked }}"
