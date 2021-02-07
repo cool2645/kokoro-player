@@ -8,6 +8,18 @@ export const iconfont = css`
     -moz-osx-font-smoothing: grayscale;
   }
 
+  .icon-pinyin:before {
+    content: "\\e6ef";
+  }
+
+  .icon-setting:before {
+    content: "\\e696";
+  }
+
+  .icon-translate:before {
+    content: "\\e7f8";
+  }
+
   .icon-check:before {
     content: "\\e63f";
   }

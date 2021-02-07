@@ -1,11 +1,12 @@
 import { html, css } from 'lit-element'
 import { PLAY_ORDER_SHUFFLE, PLAY_ORDER_SINGLE } from 'kokoro'
-import { Lrc, Runner } from 'lrc-kit'
 
+import { iconfont } from '../iconfont'
 import { Component } from '../utils/component'
 import { connect } from '../utils/lit-redux'
-import { iconfont } from '../iconfont'
 import { SrcUtil } from '../utils/srcutil'
+import { parseLyrics, getLangAvailable } from '../utils/lyrics'
+import './desktop-lyrics'
 
 class Player extends Component {
   static get properties () {
@@ -27,14 +28,12 @@ class Player extends Component {
       isVolumeControlShown: { type: Boolean },
       isPlaylistShowing: { type: Boolean },
       isDesktopLyricsShowing: { type: Boolean },
-      isDesktopLyricsLocked: { type: Boolean },
       dragging: { type: Boolean },
       top: { type: Number },
       left: { type: Number },
       right: { type: Number },
       bottom: { type: Number },
       mobileDefaultSide: { type: String },
-      desktopLyricsDragging: { type: Boolean },
       desktopLyricsVerticalCenter: { type: Number },
       desktopLyricsHorizontalCenter: { type: Number },
       desktopLyricsColorSchemes: { type: Array },
@@ -767,132 +766,8 @@ class Player extends Component {
         }
       }
 
-      .desktop-lyrics-window.hide {
+      kokoro-desktop-lyrics.hide {
         display: none;
-      }
-
-      .desktop-lyrics-window {
-        position: fixed;
-        width: 90%;
-        max-width: 600px;
-        transform: translate(-50%, -50%);
-        user-select: none;
-        padding: 35px 20px;
-      }
-      
-      .desktop-lyrics-window:hover {
-        background: rgba(0, 0, 0, 0.6);
-        box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.6);
-        border-radius: 4px;
-        cursor: grab;
-      }
-
-      .desktop-lyrics-window.locked:hover {
-        background: none;
-        box-shadow: none;
-        cursor: inherit;
-      }
-
-      .desktop-lyrics-window.dragging {
-        cursor: grabbing;
-      }
-      
-      .desktop-lyrics-window > .tool-bar {
-        position: absolute;
-        top: 6px;
-        left: 50%;
-        transform: translateX(-50%);
-        display: none;
-        font-size: 14px;
-        line-height: 1;
-      }
-
-      .desktop-lyrics-window > .btn.close {
-        display: none;
-        position: absolute;
-        top: 6px;
-        left: 6px;
-        line-height: 1;
-      }
-
-      .desktop-lyrics-window > .btn.close > .icon {
-        vertical-align: top;
-      }
-
-      .desktop-lyrics-window:hover > .btn.close {
-        display: block;
-      }
-
-      .desktop-lyrics-window.locked:hover > .btn.close {
-        display: none;
-      }
-      
-      .desktop-lyrics-window .btn {
-        color: var(--kokoro-white);
-        text-shadow: 0 0 1px var(--kokoro-white);
-        font-size: 14px;
-        cursor: pointer;
-      }
-      
-      .desktop-lyrics-window > .btn.lock {
-        position: absolute;
-        top: 0;
-        left: 50%;
-        transform: translateX(-50%);
-        padding: 1px 4px;
-        border-radius: 4px;
-        display: none;
-        color: transparent;
-        background-clip: text;
-        -webkit-background-clip: text;
-      }
-
-      .desktop-lyrics-window.locked:hover > .btn.lock {
-        display: block;
-      }
-
-      .desktop-lyrics-window > .tool-bar > .btn {
-        margin: 0 3px;
-      }
-
-      .desktop-lyrics-window > .tool-bar > .btn > .preview {
-        width: 14px;
-        height: 14px;
-        display: inline-block;
-        vertical-align: top;
-        border-radius: 2px;
-      }
-      
-      .desktop-lyrics-window:hover > .tool-bar {
-        display: flex;
-      }
-
-      .desktop-lyrics-window.locked:hover > .tool-bar {
-        display: none;
-      }
-      
-      .desktop-lyrics-window > .desktop-lyrics-panel {
-        overflow: hidden;
-        width: 100%;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-      }
-
-      .desktop-lyrics-window > .desktop-lyrics-panel > .lyrics-track {
-        max-width: 100%;
-        overflow: hidden;
-      }
-
-      .desktop-lyrics {
-        background-clip: text;
-        -webkit-background-clip: text;
-        color: transparent;
-        white-space: pre;
-        line-height: normal;
-        display: inline-block;
-        line-height: normal;
       }
     `
   }
@@ -913,8 +788,6 @@ class Player extends Component {
     super()
     this.drag = this.drag.bind(this)
     this.stopDragging = this.stopDragging.bind(this)
-    this.desktopLyricsDrag = this.desktopLyricsDrag.bind(this)
-    this.desktopLyricsStopDragging = this.desktopLyricsStopDragging.bind(this)
     this.left = 0
     this.top = 100
     this.shouldShowSmallWindow = true
@@ -922,6 +795,7 @@ class Player extends Component {
     this.mobileDefaultSide = 'left'
     this.right = (document.documentElement || document.body).clientWidth - 122
     this.bottom = (document.documentElement || document.body).clientHeight - 100 - 122
+    this.isDesktopLyricsShowing = true
     this.desktopLyricsColorSchemes = [
       { name: '夕阳', value: 'linear-gradient(-1deg, #e92201, #fb9c17, #e92201)' },
       { name: '蓝天', value: 'linear-gradient(-1deg, #0145d3, #118cfa, #0145d3)' },
@@ -930,8 +804,6 @@ class Player extends Component {
     ]
     this.desktopLyricsColorSchemeIndex = 0
     this.desktopLyricsFontSize = 30
-    this.isDesktopLyricsShowing = true
-    this.isDesktopLyricsLocked = false
   }
 
   firstUpdated (_) {
@@ -965,15 +837,6 @@ class Player extends Component {
     this.desktopLyricsHorizontalCenter = (document.documentElement || document.body).clientWidth / 2
   }
 
-  updated (changedProperties) {
-    if (changedProperties.get('playing') && this.lyrics) {
-      this.shadowRoot.querySelector('#desktop-lyrics-track').scrollLeft =
-        (changedProperties.get('playing').currentTime - this.lyrics.currentSentenceStart) /
-        (this.lyrics.currentSentenceEnd - this.lyrics.currentSentenceStart) *
-        this.shadowRoot.querySelector('#desktop-lyrics-track').scrollWidth
-    }
-  }
-
   isCurrentSong (song) {
     return SrcUtil.same(this.currentSong?.src, song.src)
   }
@@ -1000,13 +863,6 @@ class Player extends Component {
           visibility: ${this.shouldShowSmallWindow ? 'visible' : 'hidden'};
           transform-origin: ${this.shrinkToLeft ? 'left' : 'right'} center;
         }
-        .desktop-lyrics {
-          background: ${this.desktopLyricsColorSchemes[this.desktopLyricsColorSchemeIndex]?.value};
-          font-size: ${this.desktopLyricsFontSize}px;
-        }
-        .desktop-lyrics-window > .btn.lock {
-          background: ${this.desktopLyricsColorSchemes[this.desktopLyricsColorSchemeIndex]?.value};
-        }
       </style>
       <div
         class="main-window ${this.darkMode ? 'dark' : ''} ${this.isConnected ? '' : 'disconnected'}"
@@ -1024,7 +880,7 @@ class Player extends Component {
         </div>
         <div class="control-box ${this.isConnected ? '' : 'hide'}">
           <div class="control-panel panel ${this.isVolumeControlShown ? 'hide' : ''}">
-            <a class="btn" @click="${() => { this.isDesktopLyricsShowing = !this.isDesktopLyricsShowing }}"
+            <a class="btn" @click="${this.toggleDesktopLyrics}"
             ><i class="icon icon-lyrics${this.isDesktopLyricsShowing ? '-on' : ''}"></i></a>
             <a class="btn" @click="${this.nextPlayOrder}"><i class="icon icon-${this.playOrder === PLAY_ORDER_SINGLE
         ? 'solo' : this.playOrder === PLAY_ORDER_SHUFFLE ? 'shuffle' : 'loop'}"></i></a>
@@ -1115,7 +971,7 @@ class Player extends Component {
           ></i></a>
           <a class="btn" @click="${this.next}"><i class="icon icon-next"></i></a>
           <a class="btn" @click="${this.prev}"><i class="icon icon-previous"></i></a>
-          <a class="btn" @click="${() => { this.isDesktopLyricsShowing = !this.isDesktopLyricsShowing }}"
+          <a class="btn" @click="${this.toggleDesktopLyrics}"
           ><i class="icon icon-lyrics${this.isDesktopLyricsShowing ? '-on' : ''}"></i></a>
           <div
             class="move-handle ${this.dragging ? 'dragging' : ''}"
@@ -1157,7 +1013,7 @@ class Player extends Component {
         </div>
         <div class="control-box ${this.isConnected ? '' : 'hide'}">
           <div class="control-panel panel ${this.isVolumeControlShown ? 'hide' : ''}">
-            <a class="btn" @click="${() => { this.isDesktopLyricsShowing = !this.isDesktopLyricsShowing }}"
+            <a class="btn" @click="${this.toggleDesktopLyrics}"
             ><i class="icon icon-lyrics${this.isDesktopLyricsShowing ? '-on' : ''}"></i></a>
             <a class="btn" @click="${this.nextPlayOrder}"><i class="icon icon-${this.playOrder === PLAY_ORDER_SINGLE
       ? 'solo' : this.playOrder === PLAY_ORDER_SHUFFLE ? 'shuffle' : 'loop'}"></i></a>
@@ -1229,60 +1085,23 @@ class Player extends Component {
           <div class="filter"></div>
         </div>
       </div>
-      <div
-        id="desktop-lyrics-window"
-        class="desktop-lyrics-window ${this.desktopLyricsDragging ? 'dragging' : ''
-        } ${this.isDesktopLyricsShowing ? '' : 'hide'} ${this.isDesktopLyricsLocked ? 'locked' : ''}"
-        style="left: ${this.desktopLyricsHorizontalCenter}px; top: ${this.desktopLyricsVerticalCenter}px"
-        @mousedown="${this.desktopLyricsStartDragging}"
-        @touchstart="${this.desktopLyricsStartDragging}"
-      >
-        <div class="desktop-lyrics-panel">
-          <div id="desktop-lyrics-track" class="lyrics-track">
-            <span class="desktop-lyrics">${this.lyrics?.currentSentence}</span>
-          </div>
-        </div>
-        <div class="tool-bar">
-          <a class="btn" @click="${() => { this.isDesktopLyricsLocked = !this.isDesktopLyricsLocked }}"
-          ><i class="icon icon-lock"></i></a>
-          <a class="btn" @click="${this.prev}"><i class="icon icon-left"></i></a>
-          <a class="btn" @click="${this.togglePlay}"
-          ><i class="icon icon-${this.paused ? 'play' : 'pause'}"></i></a>
-          <a class="btn" @click="${this.next}"><i class="icon icon-right"></i></a>
-          <a class="btn" @click="${() => { if (this.desktopLyricsFontSize > 10) this.desktopLyricsFontSize -= 4 }}"
-          ><i class="icon icon-font-smaller"></i></a>
-          <a class="btn" @click="${() => { this.desktopLyricsFontSize += 4 }}"
-          ><i class="icon icon-font-larger"></i></a>
-          <a
-            class="btn"
-            title="${this.desktopLyricsColorSchemes[this.desktopLyricsColorSchemeIndex].name}"
-            @click="${this.nextDesktopLyricsColorScheme}"
-          >
-            <i class="icon icon-font-color"></i>
-            <i
-              class="preview"
-              style="background: ${this.desktopLyricsColorSchemes[this.desktopLyricsColorSchemeIndex].value}"
-            ></i>
-          </a>
-        </div>
-        <a 
-          class="btn close"
-          @click="${() => { this.isDesktopLyricsShowing = !this.isDesktopLyricsShowing }}"
-        ><i class="icon icon-close"></i></a>
-        <a
-          class="btn lock"
-          @click="${() => { this.isDesktopLyricsLocked = !this.isDesktopLyricsLocked }}"
-        ><i class="icon icon-lock"></i></a>
-      </div>
+      <kokoro-desktop-lyrics
+        class="${this.isDesktopLyricsShowing ? '' : 'hide'}"
+        .lyrics="${this.lyrics}"
+        .currentTime="${this.playing?.currentTime || 0}"
+        .verticalCenter="${this.desktopLyricsVerticalCenter}"
+        .horizontalCenter="${this.desktopLyricsHorizontalCenter}"
+        .colorSchemes="${this.desktopLyricsColorSchemes}"
+        .colorSchemeIndex="${this.desktopLyricsColorSchemeIndex}"
+        .fontSize="${this.desktopLyricsFontSize}"
+        .paused="${this.paused}"
+        @kokoro-action="${(e) => this[e.detail.action]()}"
+      ></kokoro-desktop-lyrics>
     `
   }
 
-  nextDesktopLyricsColorScheme () {
-    if (this.desktopLyricsColorSchemeIndex + 1 === this.desktopLyricsColorSchemes.length) {
-      this.desktopLyricsColorSchemeIndex = 0
-    } else {
-      this.desktopLyricsColorSchemeIndex++
-    }
+  toggleDesktopLyrics () {
+    this.isDesktopLyricsShowing = !this.isDesktopLyricsShowing
   }
 
   toggleMainWindow () {
@@ -1292,46 +1111,6 @@ class Player extends Component {
     } else {
       document.body.style.overflow = ''
     }
-  }
-
-  desktopLyricsStartDragging (e) {
-    if (this.isDesktopLyricsLocked) return
-    this.desktopLyricsDragging = true
-    const e1 = (typeof window.TouchEvent !== 'undefined' && e instanceof window.TouchEvent)
-      ? e.changedTouches[0]
-      : e
-    this.cursorX = e1.clientX
-    this.cursorY = e1.clientY
-    this.desktopLyricsDrag(e)
-    if (e.type === 'mousedown') {
-      document.addEventListener('mousemove', this.desktopLyricsDrag)
-      document.addEventListener('mouseup', this.desktopLyricsStopDragging)
-    }
-    if (e.type === 'touchstart') {
-      document.addEventListener('touchmove', this.desktopLyricsDrag, { passive: false })
-      document.addEventListener('touchend', this.desktopLyricsStopDragging)
-      document.addEventListener('touchcancel', this.desktopLyricsStopDragging)
-    }
-  }
-
-  desktopLyricsDrag (e) {
-    if (e.type === 'touchmove') e.preventDefault()
-    e = (typeof window.TouchEvent !== 'undefined' && e instanceof window.TouchEvent)
-      ? e.changedTouches[0]
-      : e
-    this.desktopLyricsHorizontalCenter += e.clientX - this.cursorX
-    this.desktopLyricsVerticalCenter += e.clientY - this.cursorY
-    this.cursorX = e.clientX
-    this.cursorY = e.clientY
-  }
-
-  desktopLyricsStopDragging () {
-    this.desktopLyricsDragging = false
-    document.removeEventListener('mousemove', this.desktopLyricsDrag)
-    document.removeEventListener('mouseup', this.desktopLyricsStopDragging)
-    document.removeEventListener('touchmove', this.desktopLyricsDrag)
-    document.removeEventListener('touchend', this.desktopLyricsStopDragging)
-    document.removeEventListener('touchcancel', this.desktopLyricsStopDragging)
   }
 
   startDragging (e) {
@@ -1462,73 +1241,6 @@ class Player extends Component {
   setVolume (volume) {
     this.context.kokoro?.setVolume(volume)
   }
-}
-
-const parseLrcLyrics = (function () {
-  let originalLyrics = null
-  let originalTranslationLyrics = null
-  let parsedLyrics = null
-  let parsedTranslationLyrics = null
-  let lrcRunner
-  let translationLrcRunner
-  return (lyrics, time, totalTime, lang) => {
-    if (!lyrics) return null
-    if (!originalLyrics || lyrics.value !== originalLyrics) {
-      originalLyrics = lyrics.value
-      parsedLyrics = Lrc.parse(lyrics.value)
-      parsedLyrics.lyrics.sort((a, b) => (a.timestamp - b.timestamp))
-      lrcRunner = new Runner(parsedLyrics)
-    }
-    if (lang && lyrics.translations) {
-      const transLyrics = lyrics.translations.find((l) => l.lang === lang)
-      if (transLyrics && transLyrics.value !== originalTranslationLyrics) {
-        originalTranslationLyrics = transLyrics.value
-        parsedTranslationLyrics = Lrc.parse(transLyrics.value)
-        parsedTranslationLyrics.lyrics.sort((a, b) => (a.timestamp - b.timestamp))
-        translationLrcRunner = new Runner(parsedTranslationLyrics)
-      }
-    }
-    lrcRunner.timeUpdate(time)
-    if (translationLrcRunner) translationLrcRunner.timeUpdate(time)
-    const currentLyric = lrcRunner.curLyric()
-    let nextLyric
-    if (lrcRunner.curIndex() + 1 >= parsedLyrics.lyrics.length) {
-      nextLyric = { timestamp: totalTime, content: '' }
-    } else {
-      nextLyric = lrcRunner.getLyric(lrcRunner.curIndex() + 1)
-    }
-    return {
-      lyrics: parsedLyrics,
-      currentSentence: currentLyric.content,
-      currentSentenceStart: currentLyric.timestamp,
-      currentSentenceEnd: nextLyric.timestamp,
-      currentSentenceTranslation: translationLrcRunner ? translationLrcRunner.curLyric() : null,
-      nextSentence: nextLyric.content,
-      nextSentenceTranslation: translationLrcRunner
-        ? translationLrcRunner.curIndex() + 1 >= parsedTranslationLyrics.lyrics.length
-          ? '' : translationLrcRunner.getLyric(translationLrcRunner.curIndex() + 1)
-        : null
-    }
-  }
-})()
-
-const parseLyrics = (lyrics, currentTime, totalTime, lang, pnKind) => {
-  if (!lyrics) return null
-  if (lyrics.type === 'lrc') {
-    return parseLrcLyrics(lyrics, currentTime, totalTime, lang)
-  }
-  console.error(`Unsupported lyrics type: ${lyrics.type}`)
-  return null
-}
-
-const getLangAvailable = (lyrics) => {
-  if (!lyrics) return null
-  if (lyrics.type === 'lrc') {
-    if (!lyrics.translations) return []
-    return lyrics.translations.map((t) => t.lang)
-  }
-  console.error(`Unsupported lyrics type: ${lyrics.type}`)
-  return []
 }
 
 const mapStateToProps = (state) => {
