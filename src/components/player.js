@@ -32,6 +32,7 @@ class Player extends Component {
       right: { type: Number },
       bottom: { type: Number },
       mobileDefaultSide: { type: String },
+      desktopLyricsDragging: { type: Boolean },
       desktopLyricsVerticalCenter: { type: Number },
       desktopLyricsHorizontalCenter: { type: Number },
       desktopLyricsColorSchemes: { type: Array },
@@ -778,6 +779,10 @@ class Player extends Component {
         border-radius: 4px;
         cursor: grab;
       }
+
+      .desktop-lyrics-window.dragging {
+        cursor: grabbing;
+      }
       
       .desktop-lyrics-window > .tool-bar {
         position: absolute;
@@ -847,6 +852,8 @@ class Player extends Component {
     super()
     this.drag = this.drag.bind(this)
     this.stopDragging = this.stopDragging.bind(this)
+    this.desktopLyricsDrag = this.desktopLyricsDrag.bind(this)
+    this.desktopLyricsStopDragging = this.desktopLyricsStopDragging.bind(this)
     this.left = 0
     this.top = 100
     this.shouldShowSmallWindow = true
@@ -1158,8 +1165,10 @@ class Player extends Component {
       </div>
       <div
         id="desktop-lyrics-window"
-        class="desktop-lyrics-window"
+        class="desktop-lyrics-window ${this.desktopLyricsDragging ? 'dragging' : ''}"
         style="left: ${this.desktopLyricsHorizontalCenter}px; top: ${this.desktopLyricsVerticalCenter}px"
+        @mousedown="${this.desktopLyricsStartDragging}"
+        @touchstart="${this.desktopLyricsStartDragging}"
       >
         <div id="desktop-lyrics-panel" class="desktop-lyrics-panel">
           <span class="desktop-lyrics">${this.lyrics?.currentSentence}</span>
@@ -1205,6 +1214,45 @@ class Player extends Component {
     } else {
       document.body.style.overflow = ''
     }
+  }
+
+  desktopLyricsStartDragging (e) {
+    this.desktopLyricsDragging = true
+    const e1 = (typeof window.TouchEvent !== 'undefined' && e instanceof window.TouchEvent)
+      ? e.changedTouches[0]
+      : e
+    this.cursorX = e1.clientX
+    this.cursorY = e1.clientY
+    this.desktopLyricsDrag(e)
+    if (e.type === 'mousedown') {
+      document.addEventListener('mousemove', this.desktopLyricsDrag)
+      document.addEventListener('mouseup', this.desktopLyricsStopDragging)
+    }
+    if (e.type === 'touchstart') {
+      document.addEventListener('touchmove', this.desktopLyricsDrag, { passive: false })
+      document.addEventListener('touchend', this.desktopLyricsStopDragging)
+      document.addEventListener('touchcancel', this.desktopLyricsStopDragging)
+    }
+  }
+
+  desktopLyricsDrag (e) {
+    if (e.type === 'touchmove') e.preventDefault()
+    e = (typeof window.TouchEvent !== 'undefined' && e instanceof window.TouchEvent)
+      ? e.changedTouches[0]
+      : e
+    this.desktopLyricsHorizontalCenter += e.clientX - this.cursorX
+    this.desktopLyricsVerticalCenter += e.clientY - this.cursorY
+    this.cursorX = e.clientX
+    this.cursorY = e.clientY
+  }
+
+  desktopLyricsStopDragging () {
+    this.desktopLyricsDragging = false
+    document.removeEventListener('mousemove', this.desktopLyricsDrag)
+    document.removeEventListener('mouseup', this.desktopLyricsStopDragging)
+    document.removeEventListener('touchmove', this.desktopLyricsDrag)
+    document.removeEventListener('touchend', this.desktopLyricsStopDragging)
+    document.removeEventListener('touchcancel', this.desktopLyricsStopDragging)
   }
 
   startDragging (e) {
