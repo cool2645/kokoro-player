@@ -7,6 +7,7 @@ import { connect } from '../utils/lit-redux'
 import { SrcUtil } from '../utils/srcutil'
 import { parseLyrics, getLangAvailable } from '../utils/lyrics'
 import './desktop-lyrics'
+import locale from '../utils/locale'
 
 class Player extends Component {
   static get properties () {
@@ -876,7 +877,7 @@ class Player extends Component {
           ></div>
         </div>
         <div class="disconnected-panel ${this.isConnected ? 'hide' : ''}">
-          Kokoro 播放器未连接
+          ${locale.disconnected}
         </div>
         <div class="control-box ${this.isConnected ? '' : 'hide'}">
           <div class="control-panel panel ${this.isVolumeControlShown ? 'hide' : ''}">
@@ -998,7 +999,7 @@ class Player extends Component {
         } ${this.isConnected ? '' : 'disconnected'} ${this.shouldMobileShowMainWindow ? '' : 'hide'}"
       >
         <div class="disconnected-panel ${this.isConnected ? 'hide' : ''}">
-          Kokoro 播放器未连接
+          ${locale.disconnected}
           <a class="btn" @click="${this.toggleMainWindow}"><i class="icon icon-back"></i></a>
         </div>
         <div class="cover-box ${this.isConnected ? '' : 'hide'}">

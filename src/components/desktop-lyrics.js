@@ -1,6 +1,7 @@
 import { html, css, LitElement } from 'lit-element'
 
 import { iconfont } from '../iconfont'
+import locale from '../utils/locale'
 
 export default class DesktopLyrics extends LitElement {
   static get properties () {
@@ -191,7 +192,8 @@ export default class DesktopLyrics extends LitElement {
       >
         <div class="desktop-lyrics-panel">
           <div id="desktop-lyrics-track" class="lyrics-track">
-            <span class="desktop-lyrics">${this.lyrics?.currentSentence}</span>
+            <span class="desktop-lyrics"
+            >${this.lyrics ? this.lyrics.currentSentence : locale.banner}</span>
           </div>
         </div>
         <div class="tool-bar">

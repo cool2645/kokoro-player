@@ -5,6 +5,7 @@ import { connect } from '../utils/lit-redux'
 import { Component } from '../utils/component'
 import { iconfont } from '../iconfont'
 import { SrcUtil } from '../utils/srcutil'
+import locale from '../utils/locale'
 
 class PlaylistCard extends Component {
   static get properties () {
@@ -485,7 +486,7 @@ class PlaylistCard extends Component {
                   icon="play"
                   size="${this.size}"
                   @click="${this.playNow}"
-                >播放全部
+                >${locale.playAll}
                 </kokoro-button>
                 ${this.songSrcList?.length ? this.isFollowingPlaylist
                   ? html`
@@ -494,7 +495,7 @@ class PlaylistCard extends Component {
                       icon="ok"
                       size="${this.size}"
                       disabled
-                    >已添加
+                    >${locale.added}
                     </kokoro-button>`
                   : html`
                     <kokoro-button
@@ -502,7 +503,7 @@ class PlaylistCard extends Component {
                       icon="play-next"
                       size="${this.size}"
                       @click="${this.playNext}"
-                    >添加到列表
+                    >${locale.addToPlaylist}
                     </kokoro-button>`
                 : ''}`
             : html`
@@ -511,7 +512,7 @@ class PlaylistCard extends Component {
                 icon="warn"
                 size="${this.size}"
                 disabled
-              >未连接到 Kokoro 播放器
+              >${locale.disconnected}
               </kokoro-button>`
           }
         </div>

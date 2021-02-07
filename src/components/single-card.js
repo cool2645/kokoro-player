@@ -8,6 +8,7 @@ import './track'
 import './progress'
 import { iconfont } from '../iconfont'
 import { SrcUtil } from '../utils/srcutil'
+import locale from '../utils/locale'
 
 class SingleCard extends Component {
   static get properties () {
@@ -341,7 +342,7 @@ class SingleCard extends Component {
                   icon="play"
                   size="${this.size}"
                   @click="${this.playNow}"
-                >立即播放</kokoro-button>
+                >${locale.playNow}</kokoro-button>
                 ${this.needShowPlayNext ? this.isNextSong
                   ? html`
                     <kokoro-button
@@ -349,14 +350,14 @@ class SingleCard extends Component {
                       icon="ok"
                       size="${this.size}"
                       disabled
-                    >已添加</kokoro-button>`
+                    >${locale.added}</kokoro-button>`
                   : html`
                     <kokoro-button
                       type="bordered"
                       icon="play-next"
                       size="${this.size}"
                       @click="${this.playNext}"
-                    >下一首播放</kokoro-button>`
+                    >${locale.playNext}</kokoro-button>`
                 : ''}`
             : html`
               <kokoro-button
@@ -364,7 +365,7 @@ class SingleCard extends Component {
                 icon="warn"
                 size="${this.size}"
                 disabled
-              >未连接到 Kokoro 播放器</kokoro-button>`
+              >${locale.disconnected}</kokoro-button>`
           }
         </div>
       </div>
