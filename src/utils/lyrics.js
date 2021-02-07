@@ -15,14 +15,23 @@ export const parseLrcLyrics = (function () {
       parsedLyrics.lyrics.sort((a, b) => (a.timestamp - b.timestamp))
       lrcRunner = new Runner(parsedLyrics)
     }
+    let transLyrics
     if (lang && lyrics.translations) {
-      const transLyrics = lyrics.translations.find((l) => l.lang === lang)
+      transLyrics = lyrics.translations.find((l) => l.lang.toLowerCase() === lang.toLowerCase())
+      if (!transLyrics) {
+        lang = lang.split('-')[0].split('_')[0].toLowerCase()
+        transLyrics = lyrics.translations.find((l) => l.lang.toLowerCase().startsWith(lang))
+      }
       if (transLyrics && transLyrics.value !== originalTranslationLyrics) {
         originalTranslationLyrics = transLyrics.value
         parsedTranslationLyrics = Lrc.parse(transLyrics.value)
         parsedTranslationLyrics.lyrics.sort((a, b) => (a.timestamp - b.timestamp))
         translationLrcRunner = new Runner(parsedTranslationLyrics)
+      } else {
+        originalTranslationLyrics = null
       }
+    } else {
+      originalTranslationLyrics = null
     }
     lrcRunner.timeUpdate(time)
     if (translationLrcRunner) translationLrcRunner.timeUpdate(time)
@@ -35,10 +44,12 @@ export const parseLrcLyrics = (function () {
     }
     return {
       lyrics: parsedLyrics,
+      lang: transLyrics?.lang || null,
+      langName: transLyrics?.name || null,
       currentSentence: currentLyric.content,
       currentSentenceStart: currentLyric.timestamp,
       currentSentenceEnd: nextLyric.timestamp,
-      currentSentenceTranslation: translationLrcRunner ? translationLrcRunner.curLyric() : null,
+      currentSentenceTranslation: translationLrcRunner ? translationLrcRunner.curLyric().content : null,
       nextSentence: nextLyric.content,
       nextSentenceTranslation: translationLrcRunner
         ? translationLrcRunner.curIndex() + 1 >= parsedTranslationLyrics.lyrics.length

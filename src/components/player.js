@@ -15,6 +15,7 @@ class Player extends Component {
       currentSong: { type: Object },
       playing: { type: Object },
       lyrics: { type: Object },
+      parsedLyrics: { type: Object },
       lang: { type: String },
       langAvailable: { type: Array },
       pnKind: { type: String },
@@ -805,6 +806,7 @@ class Player extends Component {
     ]
     this.desktopLyricsColorSchemeIndex = 0
     this.desktopLyricsFontSize = 30
+    this.lang = navigator.languages?.length ? navigator.languages[0] : navigator.language
   }
 
   firstUpdated (_) {
@@ -836,6 +838,13 @@ class Player extends Component {
     this.shrinkToLeft = this.cursorX < ((document.documentElement || document.body).clientWidth / 2)
     this.desktopLyricsVerticalCenter = 150
     this.desktopLyricsHorizontalCenter = (document.documentElement || document.body).clientWidth / 2
+  }
+
+  updated (changedProperties) {
+    if (changedProperties.has('playing') || changedProperties.has('lyrics') || changedProperties.has('lang')) {
+      this.parsedLyrics = parseLyrics(this.lyrics,
+        this.playing.currentTime, this.playing.totalTime, this.lang)
+    }
   }
 
   isCurrentSong (song) {
@@ -1088,7 +1097,7 @@ class Player extends Component {
       </div>
       <kokoro-desktop-lyrics
         class="${this.isDesktopLyricsShowing && this.isConnected && this.currentSong ? '' : 'hide'}"
-        .lyrics="${this.lyrics}"
+        .lyrics="${this.parsedLyrics}"
         .currentTime="${this.playing?.currentTime || 0}"
         .verticalCenter="${this.desktopLyricsVerticalCenter}"
         .horizontalCenter="${this.desktopLyricsHorizontalCenter}"
@@ -1096,7 +1105,9 @@ class Player extends Component {
         .colorSchemeIndex="${this.desktopLyricsColorSchemeIndex}"
         .fontSize="${this.desktopLyricsFontSize}"
         .paused="${this.paused}"
+        .langAvailable="${this.langAvailable}"
         @kokoro-action="${(e) => this[e.detail.action]()}"
+        @kokoro-change="${(e) => { this.lang = e.detail.lang }}"
       ></kokoro-desktop-lyrics>
     `
   }
@@ -1247,8 +1258,7 @@ class Player extends Component {
 const mapStateToProps = (state) => {
   return {
     currentSong: state.playing.song,
-    lyrics: parseLyrics(state.playing.song?.lyrics,
-      state.playing.currentTime, state.playing.totalTime),
+    lyrics: state.playing.song?.lyrics,
     langAvailable: getLangAvailable(state.playing.song?.lyrics),
     pnKindAvailable: [],
     index: state.playlist.orderedIndexOfPlaying,

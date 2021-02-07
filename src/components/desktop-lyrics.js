@@ -15,7 +15,8 @@ export default class DesktopLyrics extends LitElement {
       colorSchemeIndex: { type: Number },
       fontSize: { type: Number },
       isLocked: { type: Boolean },
-      paused: { type: Boolean }
+      paused: { type: Boolean },
+      langAvailable: { type: Array }
     }
   }
 
@@ -142,6 +143,7 @@ export default class DesktopLyrics extends LitElement {
       .desktop-lyrics-window > .desktop-lyrics-panel > .lyrics-track {
         max-width: 100%;
         overflow: hidden;
+        line-height: normal;
       }
 
       .desktop-lyrics {
@@ -151,7 +153,6 @@ export default class DesktopLyrics extends LitElement {
         white-space: pre;
         line-height: normal;
         display: inline-block;
-        line-height: normal;
       }
     `
   }
@@ -164,12 +165,17 @@ export default class DesktopLyrics extends LitElement {
   }
 
   updated (changedProperties) {
-    if (changedProperties.get('currentTime') && this.lyrics) {
+    if (changedProperties.has('currentTime') && this.lyrics) {
       this.shadowRoot.querySelector('#desktop-lyrics-track').scrollLeft =
-        (changedProperties.get('currentTime') - this.lyrics.currentSentenceStart) /
+        (this.currentTime - this.lyrics.currentSentenceStart) /
         (this.lyrics.currentSentenceEnd - this.lyrics.currentSentenceStart) *
-        this.shadowRoot.querySelector('#desktop-lyrics-track').scrollWidth
+        this.shadowRoot.querySelector('#desktop-lyrics-track').scrollWidth -
+        this.shadowRoot.querySelector('#desktop-lyrics-track').clientWidth / 2
     }
+  }
+
+  get notStartedYet () {
+    return this.paused && this.currentTime === 0
   }
 
   render () {
@@ -178,6 +184,9 @@ export default class DesktopLyrics extends LitElement {
         .desktop-lyrics {
           background: ${this.colorSchemes[this.colorSchemeIndex]?.value};
           font-size: ${this.fontSize}px;
+        }
+        .translation-track .desktop-lyrics {
+          font-size: ${(this.fontSize + 10) / 2}px;
         }
         .desktop-lyrics-window > .btn.lock {
           background: ${this.colorSchemes[this.colorSchemeIndex]?.value};
@@ -193,8 +202,15 @@ export default class DesktopLyrics extends LitElement {
         <div class="desktop-lyrics-panel">
           <div id="desktop-lyrics-track" class="lyrics-track">
             <span class="desktop-lyrics"
-            >${this.lyrics ? this.lyrics.currentSentence : locale.banner}</span>
+            >${this.lyrics && !this.notStartedYet ? this.lyrics.currentSentence : locale.banner}</span>
           </div>
+          ${this.lyrics && !this.notStartedYet && this.lyrics?.lang && this.lyrics.currentSentenceTranslation
+            ? html`
+              <div class="lyrics-track translation-track"">
+                <span class="desktop-lyrics"
+                >${this.lyrics.currentSentenceTranslation}</span>
+              </div>`
+            : ''}
         </div>
         <div class="tool-bar">
           <a class="btn" @click="${() => { this.isLocked = !this.isLocked }}"
@@ -218,6 +234,10 @@ export default class DesktopLyrics extends LitElement {
               style="background: ${this.colorSchemes[this.colorSchemeIndex].value}"
             ></i>
           </a>
+          ${this.langAvailable?.length ? html`
+            <a class="btn" @click="${this.nextLang}"
+            >${this.lyrics?.langName || this.lyrics?.lang || html`<i class="icon icon-translate"></i>`}</a>
+          ` : ''}
         </div>
         <a
           class="btn close"
@@ -229,6 +249,17 @@ export default class DesktopLyrics extends LitElement {
         ><i class="icon icon-lock"></i></a>
       </div>
     `
+  }
+
+  nextLang () {
+    let index = this.langAvailable.indexOf(this.lyrics?.lang)
+    index++
+    if (index === this.langAvailable.length) index = -1
+    this.dispatchEvent(new window.CustomEvent('kokoro-change', {
+      detail: {
+        lang: this.langAvailable[index] || null
+      }
+    }))
   }
 
   nextDesktopLyricsColorScheme () {
