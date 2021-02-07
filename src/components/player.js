@@ -26,6 +26,7 @@ class Player extends Component {
       buffered: { type: Array },
       isVolumeControlShown: { type: Boolean },
       isPlaylistShowing: { type: Boolean },
+      isDesktopLyricsShowing: { type: Boolean },
       dragging: { type: Boolean },
       top: { type: Number },
       left: { type: Number },
@@ -765,6 +766,10 @@ class Player extends Component {
         }
       }
 
+      .desktop-lyrics-window.hide {
+        display: none;
+      }
+
       .desktop-lyrics-window {
         position: fixed;
         width: 90%;
@@ -790,15 +795,35 @@ class Player extends Component {
         left: 50%;
         transform: translateX(-50%);
         display: none;
-        color: var(--kokoro-white);
-        text-shadow: 0 0 1px var(--kokoro-white);
         font-size: 14px;
         line-height: 1;
       }
 
+      .desktop-lyrics-window > .btn.close {
+        display: none;
+        position: absolute;
+        top: 6px;
+        left: 6px;
+        line-height: 1;
+      }
+
+      .desktop-lyrics-window > .btn.close > .icon {
+        vertical-align: top;
+      }
+
+      .desktop-lyrics-window:hover > .btn.close {
+        display: block;
+      }
+      
+      .desktop-lyrics-window .btn {
+        color: var(--kokoro-white);
+        text-shadow: 0 0 1px var(--kokoro-white);
+        font-size: 14px;
+        cursor: pointer;
+      }
+
       .desktop-lyrics-window > .tool-bar > .btn {
         margin: 0 3px;
-        cursor: pointer;
       }
 
       .desktop-lyrics-window > .tool-bar > .btn > .preview {
@@ -869,6 +894,7 @@ class Player extends Component {
     ]
     this.desktopLyricsColorSchemeIndex = 0
     this.desktopLyricsFontSize = 30
+    this.isDesktopLyricsShowing = true
   }
 
   firstUpdated (_) {
@@ -961,7 +987,8 @@ class Player extends Component {
         </div>
         <div class="control-box ${this.isConnected ? '' : 'hide'}">
           <div class="control-panel panel ${this.isVolumeControlShown ? 'hide' : ''}">
-            <a class="btn"><i class="icon icon-lyrics-on"></i></a>
+            <a class="btn" @click="${() => { this.isDesktopLyricsShowing = !this.isDesktopLyricsShowing }}"
+            ><i class="icon icon-lyrics${this.isDesktopLyricsShowing ? '-on' : ''}"></i></a>
             <a class="btn" @click="${this.nextPlayOrder}"><i class="icon icon-${this.playOrder === PLAY_ORDER_SINGLE
         ? 'solo' : this.playOrder === PLAY_ORDER_SHUFFLE ? 'shuffle' : 'loop'}"></i></a>
             <a class="btn" @click="${this.prev}"><i class="icon icon-previous"></i></a>
@@ -1051,7 +1078,8 @@ class Player extends Component {
           ></i></a>
           <a class="btn" @click="${this.next}"><i class="icon icon-next"></i></a>
           <a class="btn" @click="${this.prev}"><i class="icon icon-previous"></i></a>
-          <a class="btn"><i class="icon icon-lyrics-on"></i></a>
+          <a class="btn" @click="${() => { this.isDesktopLyricsShowing = !this.isDesktopLyricsShowing }}"
+          ><i class="icon icon-lyrics${this.isDesktopLyricsShowing ? '-on' : ''}"></i></a>
           <div
             class="move-handle ${this.dragging ? 'dragging' : ''}"
             @mousedown="${this.startDragging}"
@@ -1092,7 +1120,8 @@ class Player extends Component {
         </div>
         <div class="control-box ${this.isConnected ? '' : 'hide'}">
           <div class="control-panel panel ${this.isVolumeControlShown ? 'hide' : ''}">
-            <a class="btn"><i class="icon icon-lyrics-on"></i></a>
+            <a class="btn" @click="${() => { this.isDesktopLyricsShowing = !this.isDesktopLyricsShowing }}"
+            ><i class="icon icon-lyrics${this.isDesktopLyricsShowing ? '-on' : ''}"></i></a>
             <a class="btn" @click="${this.nextPlayOrder}"><i class="icon icon-${this.playOrder === PLAY_ORDER_SINGLE
       ? 'solo' : this.playOrder === PLAY_ORDER_SHUFFLE ? 'shuffle' : 'loop'}"></i></a>
             <a class="btn" @click="${this.prev}"><i class="icon icon-previous"></i></a>
@@ -1165,7 +1194,8 @@ class Player extends Component {
       </div>
       <div
         id="desktop-lyrics-window"
-        class="desktop-lyrics-window ${this.desktopLyricsDragging ? 'dragging' : ''}"
+        class="desktop-lyrics-window ${this.desktopLyricsDragging ? 'dragging' : ''
+        } ${this.isDesktopLyricsShowing ? '' : 'hide'}"
         style="left: ${this.desktopLyricsHorizontalCenter}px; top: ${this.desktopLyricsVerticalCenter}px"
         @mousedown="${this.desktopLyricsStartDragging}"
         @touchstart="${this.desktopLyricsStartDragging}"
@@ -1179,7 +1209,7 @@ class Player extends Component {
           <a class="btn" @click="${this.togglePlay}"
           ><i class="icon icon-${this.paused ? 'play' : 'pause'}"></i></a>
           <a class="btn" @click="${this.next}"><i class="icon icon-right"></i></a>
-          <a class="btn" @click="${() => { this.desktopLyricsFontSize -= 4 }}"
+          <a class="btn" @click="${() => { if (this.desktopLyricsFontSize > 10) this.desktopLyricsFontSize -= 4 }}"
           ><i class="icon icon-font-smaller"></i></a>
           <a class="btn" @click="${() => { this.desktopLyricsFontSize += 4 }}"
           ><i class="icon icon-font-larger"></i></a>
@@ -1195,6 +1225,10 @@ class Player extends Component {
             ></i>
           </a>
         </div>
+        <a 
+          class="btn close"
+          @click="${() => { this.isDesktopLyricsShowing = !this.isDesktopLyricsShowing }}"
+        ><i class="icon icon-close"></i></a>
       </div>
     `
   }
