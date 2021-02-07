@@ -27,6 +27,7 @@ class Player extends Component {
       isVolumeControlShown: { type: Boolean },
       isPlaylistShowing: { type: Boolean },
       isDesktopLyricsShowing: { type: Boolean },
+      isDesktopLyricsLocked: { type: Boolean },
       dragging: { type: Boolean },
       top: { type: Number },
       left: { type: Number },
@@ -785,6 +786,12 @@ class Player extends Component {
         cursor: grab;
       }
 
+      .desktop-lyrics-window.locked:hover {
+        background: none;
+        box-shadow: none;
+        cursor: inherit;
+      }
+
       .desktop-lyrics-window.dragging {
         cursor: grabbing;
       }
@@ -814,12 +821,33 @@ class Player extends Component {
       .desktop-lyrics-window:hover > .btn.close {
         display: block;
       }
+
+      .desktop-lyrics-window.locked:hover > .btn.close {
+        display: none;
+      }
       
       .desktop-lyrics-window .btn {
         color: var(--kokoro-white);
         text-shadow: 0 0 1px var(--kokoro-white);
         font-size: 14px;
         cursor: pointer;
+      }
+      
+      .desktop-lyrics-window > .btn.lock {
+        position: absolute;
+        top: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        padding: 1px 4px;
+        border-radius: 4px;
+        display: none;
+        color: transparent;
+        background-clip: text;
+        -webkit-background-clip: text;
+      }
+
+      .desktop-lyrics-window.locked:hover > .btn.lock {
+        display: block;
       }
 
       .desktop-lyrics-window > .tool-bar > .btn {
@@ -836,6 +864,10 @@ class Player extends Component {
       
       .desktop-lyrics-window:hover > .tool-bar {
         display: flex;
+      }
+
+      .desktop-lyrics-window.locked:hover > .tool-bar {
+        display: none;
       }
       
       .desktop-lyrics-window > .desktop-lyrics-panel {
@@ -895,6 +927,7 @@ class Player extends Component {
     this.desktopLyricsColorSchemeIndex = 0
     this.desktopLyricsFontSize = 30
     this.isDesktopLyricsShowing = true
+    this.isDesktopLyricsLocked = false
   }
 
   firstUpdated (_) {
@@ -969,6 +1002,9 @@ class Player extends Component {
         .desktop-lyrics {
           background: ${this.desktopLyricsColorSchemes[this.desktopLyricsColorSchemeIndex]?.value};
           font-size: ${this.desktopLyricsFontSize}px;
+        }
+        .desktop-lyrics-window > .btn.lock {
+          background: ${this.desktopLyricsColorSchemes[this.desktopLyricsColorSchemeIndex]?.value};
         }
       </style>
       <div
@@ -1195,7 +1231,7 @@ class Player extends Component {
       <div
         id="desktop-lyrics-window"
         class="desktop-lyrics-window ${this.desktopLyricsDragging ? 'dragging' : ''
-        } ${this.isDesktopLyricsShowing ? '' : 'hide'}"
+        } ${this.isDesktopLyricsShowing ? '' : 'hide'} ${this.isDesktopLyricsLocked ? 'locked' : ''}"
         style="left: ${this.desktopLyricsHorizontalCenter}px; top: ${this.desktopLyricsVerticalCenter}px"
         @mousedown="${this.desktopLyricsStartDragging}"
         @touchstart="${this.desktopLyricsStartDragging}"
@@ -1204,7 +1240,8 @@ class Player extends Component {
           <span class="desktop-lyrics">${this.lyrics?.currentSentence}</span>
         </div>
         <div class="tool-bar">
-          <a class="btn"><i class="icon icon-lock"></i></a>
+          <a class="btn" @click="${() => { this.isDesktopLyricsLocked = !this.isDesktopLyricsLocked }}"
+          ><i class="icon icon-lock"></i></a>
           <a class="btn" @click="${this.prev}"><i class="icon icon-left"></i></a>
           <a class="btn" @click="${this.togglePlay}"
           ><i class="icon icon-${this.paused ? 'play' : 'pause'}"></i></a>
@@ -1229,6 +1266,10 @@ class Player extends Component {
           class="btn close"
           @click="${() => { this.isDesktopLyricsShowing = !this.isDesktopLyricsShowing }}"
         ><i class="icon icon-close"></i></a>
+        <a
+          class="btn lock"
+          @click="${() => { this.isDesktopLyricsLocked = !this.isDesktopLyricsLocked }}"
+        ><i class="icon icon-lock"></i></a>
       </div>
     `
   }
@@ -1251,6 +1292,7 @@ class Player extends Component {
   }
 
   desktopLyricsStartDragging (e) {
+    if (this.isDesktopLyricsLocked) return
     this.desktopLyricsDragging = true
     const e1 = (typeof window.TouchEvent !== 'undefined' && e instanceof window.TouchEvent)
       ? e.changedTouches[0]
