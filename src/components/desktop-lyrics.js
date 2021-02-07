@@ -240,7 +240,6 @@ export default class DesktopLyrics extends LitElement {
   }
 
   startDragging (e) {
-    if (this.isLocked) return
     this.dragging = true
     const e1 = (typeof window.TouchEvent !== 'undefined' && e instanceof window.TouchEvent)
       ? e.changedTouches[0]
