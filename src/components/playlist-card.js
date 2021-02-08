@@ -6,12 +6,14 @@ import { Component } from '../utils/component'
 import { iconfont } from '../iconfont'
 import { SrcUtil } from '../utils/srcutil'
 import locale from '../utils/locale'
+import { parseLyrics } from '../utils/lyrics'
 
 class PlaylistCard extends Component {
   static get properties () {
     return {
       title: { type: String },
       songs: { type: Array },
+      parsedLyrics: { type: Object },
       primaryColor: { type: String },
       secondaryColor: { type: String },
       backgroundColor: { type: String },
@@ -96,7 +98,7 @@ class PlaylistCard extends Component {
       .song {
         font-weight: normal;
         font-size: 16px;
-        line-height: 1.25;
+        line-height: 1.4;
         margin: 2px 0;
         white-space: nowrap;
         overflow: hidden;
@@ -411,6 +413,17 @@ class PlaylistCard extends Component {
             ? 'small' : 'mini'
   }
 
+  updated (changedProperties) {
+    if (changedProperties.has('currentTime') || changedProperties.has('totalTime') ||
+      changedProperties.has('lyrics')) {
+      if (this.isCurrentSong) {
+        this.parsedLyrics = parseLyrics(this.displayedSong.lyrics, this.currentTime, this.totalTime)
+      } else {
+        this.parsedLyrics = null
+      }
+    }
+  }
+
   disconnectedCallback () {
     super.disconnectedCallback()
     this.resizeObserver?.disconnect()
@@ -453,8 +466,8 @@ class PlaylistCard extends Component {
             -
             ${this.title ? this.displayedSong.artist : this.displayedSong.album}
           </h2>
+          <div class="song lyrics">${this.parsedLyrics?.currentSentence}</div>
         </div>
-        <div class="lyrics"></div>
         <div class="control ${this.isCurrentPlaylist ? 'current' : ''}">
           ${this.isConnected
             ? this.isCurrentPlaylist
