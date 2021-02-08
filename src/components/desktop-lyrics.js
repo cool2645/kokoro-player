@@ -34,7 +34,8 @@ export default class DesktopLyrics extends LitElement {
       .desktop-lyrics-window {
         position: fixed;
         width: 90%;
-        max-width: 600px;
+        box-sizing: border-box;
+        max-width: 700px;
         transform: translate(-50%, -50%);
         user-select: none;
         padding: 35px 20px;
@@ -65,6 +66,7 @@ export default class DesktopLyrics extends LitElement {
         display: none;
         font-size: 14px;
         line-height: 1;
+        white-space: nowrap;
       }
 
       .desktop-lyrics-window > .btn.close {
