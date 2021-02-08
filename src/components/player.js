@@ -27,7 +27,7 @@ class Player extends Component {
       playOrder: { type: String },
       played: { type: Number },
       buffered: { type: Array },
-      isVolumeControlShown: { type: Boolean },
+      isVolumeControlShowing: { type: Boolean },
       isPlaylistShowing: { type: Boolean },
       isDesktopLyricsShowing: { type: Boolean },
       dragging: { type: Boolean },
@@ -41,6 +41,7 @@ class Player extends Component {
       desktopLyricsColorSchemes: { type: Array },
       desktopLyricsColorSchemeIndex: { type: Number },
       desktopLyricsFontSize: { type: Number },
+      desktopLyricsMobileFontSize: { type: Number },
       shouldShowSmallWindow: { type: Boolean },
       shouldMobileShowMainWindow: { type: Boolean },
       shrinkToLeft: { type: Boolean }
@@ -806,6 +807,7 @@ class Player extends Component {
     ]
     this.desktopLyricsColorSchemeIndex = 0
     this.desktopLyricsFontSize = 30
+    this.desktopLyricsMobileFontSize = 14
     this.lang = navigator.languages?.length ? navigator.languages[0] : navigator.language
   }
 
@@ -889,7 +891,7 @@ class Player extends Component {
           ${locale.disconnected}
         </div>
         <div class="control-box ${this.isConnected ? '' : 'hide'}">
-          <div class="control-panel panel ${this.isVolumeControlShown ? 'hide' : ''}">
+          <div class="control-panel panel ${this.isVolumeControlShowing ? 'hide' : ''}">
             <a class="btn" @click="${this.toggleDesktopLyrics}"
             ><i class="icon icon-lyrics${this.isDesktopLyricsShowing ? '-on' : ''}"></i></a>
             <a class="btn" @click="${this.nextPlayOrder}"><i class="icon icon-${this.playOrder === PLAY_ORDER_SINGLE
@@ -899,12 +901,12 @@ class Player extends Component {
               class="icon icon-${this.paused ? 'play' : 'pause'}-circle"
             ></i></a>
             <a class="btn" @click="${this.next}"><i class="icon icon-next"></i></a>
-            <a class="btn" @click="${() => { this.isVolumeControlShown = !this.isVolumeControlShown }}"
+            <a class="btn" @click="${() => { this.isVolumeControlShowing = !this.isVolumeControlShowing }}"
             ><i class="icon icon-volume"></i></a>
             <a class="btn" @click="${this.togglePlaylist}"
             ><i class="icon icon-playlist"></i></a>
           </div>
-          <div class="volume-playback-panel panel ${this.isVolumeControlShown ? '' : 'hide'}">
+          <div class="volume-playback-panel panel ${this.isVolumeControlShowing ? '' : 'hide'}">
             <a class="btn volume"
                @mouseenter="${this.showVolumeTrack}"
                @mouseleave="${this.closeVolumeTrack}"
@@ -918,7 +920,7 @@ class Player extends Component {
               ></kokoro-track>
             </a>
             <a class="volume-playback-panel-close"
-               @click="${() => { this.isVolumeControlShown = !this.isVolumeControlShown }}"
+               @click="${() => { this.isVolumeControlShowing = !this.isVolumeControlShowing }}"
             ><i class="icon icon-close"></i></a>
           </div>
           <kokoro-progress
@@ -1022,7 +1024,7 @@ class Player extends Component {
           <h2>${this.currentSong?.artist}</h2>
         </div>
         <div class="control-box ${this.isConnected ? '' : 'hide'}">
-          <div class="control-panel panel ${this.isVolumeControlShown ? 'hide' : ''}">
+          <div class="control-panel panel ${this.isVolumeControlShowing ? 'hide' : ''}">
             <a class="btn" @click="${this.toggleDesktopLyrics}"
             ><i class="icon icon-lyrics${this.isDesktopLyricsShowing ? '-on' : ''}"></i></a>
             <a class="btn" @click="${this.nextPlayOrder}"><i class="icon icon-${this.playOrder === PLAY_ORDER_SINGLE
@@ -1032,12 +1034,12 @@ class Player extends Component {
               class="icon icon-${this.paused ? 'play' : 'pause'}-circle"
             ></i></a>
             <a class="btn" @click="${this.next}"><i class="icon icon-next"></i></a>
-            <a class="btn" @click="${() => { this.isVolumeControlShown = !this.isVolumeControlShown }}"
+            <a class="btn" @click="${() => { this.isVolumeControlShowing = !this.isVolumeControlShowing }}"
             ><i class="icon icon-volume"></i></a>
             <a class="btn" @click="${this.togglePlaylist}"
             ><i class="icon icon-playlist"></i></a>
           </div>
-          <div class="volume-playback-panel panel ${this.isVolumeControlShown ? '' : 'hide'}">
+          <div class="volume-playback-panel panel ${this.isVolumeControlShowing ? '' : 'hide'}">
             <a class="btn volume"
                @mouseenter="${this.showVolumeTrack}"
                @mouseleave="${this.closeVolumeTrack}"
@@ -1051,7 +1053,7 @@ class Player extends Component {
               ></kokoro-track>
             </a>
             <a class="volume-playback-panel-close"
-               @click="${() => { this.isVolumeControlShown = !this.isVolumeControlShown }}"
+               @click="${() => { this.isVolumeControlShowing = !this.isVolumeControlShowing }}"
             ><i class="icon icon-close"></i></a>
           </div>
           <kokoro-progress
@@ -1104,6 +1106,7 @@ class Player extends Component {
         .colorSchemes="${this.desktopLyricsColorSchemes}"
         .colorSchemeIndex="${this.desktopLyricsColorSchemeIndex}"
         .fontSize="${this.desktopLyricsFontSize}"
+        .mobileFontSize="${this.desktopLyricsMobileFontSize}"
         .paused="${this.paused}"
         .langAvailable="${this.langAvailable}"
         @kokoro-action="${(e) => this[e.detail.action]()}"

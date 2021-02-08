@@ -14,9 +14,11 @@ export default class DesktopLyrics extends LitElement {
       colorSchemes: { type: Array },
       colorSchemeIndex: { type: Number },
       fontSize: { type: Number },
+      mobileFontSize: { type: Number },
       isLocked: { type: Boolean },
       paused: { type: Boolean },
-      langAvailable: { type: Array }
+      langAvailable: { type: Array },
+      isSettingsBarShowing: { type: Boolean }
     }
   }
 
@@ -39,22 +41,24 @@ export default class DesktopLyrics extends LitElement {
         transform: translate(-50%, -50%);
         user-select: none;
         padding: 35px 20px;
+        cursor: grab;
       }
 
       .desktop-lyrics-window:hover {
         background: rgba(0, 0, 0, 0.6);
         box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.6);
         border-radius: 4px;
-        cursor: grab;
       }
 
-      .desktop-lyrics-window.locked:hover {
+      .desktop-lyrics-window.locked:hover,
+      .mobile-lyrics-window.locked:hover {
         background: none;
         box-shadow: none;
         cursor: inherit;
       }
 
-      .desktop-lyrics-window.dragging {
+      .desktop-lyrics-window.dragging,
+      .mobile-lyrics-window.dragging {
         cursor: grabbing;
       }
 
@@ -89,14 +93,19 @@ export default class DesktopLyrics extends LitElement {
         display: none;
       }
 
-      .desktop-lyrics-window .btn {
+      .desktop-lyrics-window .btn,
+      .mobile-lyrics-window .btn {
         color: var(--kokoro-white);
-        text-shadow: 0 0 1px var(--kokoro-white);
         font-size: 14px;
         cursor: pointer;
       }
 
-      .desktop-lyrics-window > .btn.lock {
+      .desktop-lyrics-window .btn {
+        text-shadow: 0 0 1px var(--kokoro-white);
+      }
+
+      .desktop-lyrics-window > .btn.lock,
+      .mobile-lyrics-window > .btn.lock {
         position: absolute;
         top: 0;
         left: 50%;
@@ -109,7 +118,8 @@ export default class DesktopLyrics extends LitElement {
         -webkit-background-clip: text;
       }
 
-      .desktop-lyrics-window.locked:hover > .btn.lock {
+      .desktop-lyrics-window.locked:hover > .btn.lock,
+      .mobile-lyrics-window.locked:hover > .btn.lock {
         display: block;
       }
 
@@ -117,11 +127,15 @@ export default class DesktopLyrics extends LitElement {
         margin: 0 3px;
       }
 
-      .desktop-lyrics-window > .tool-bar > .btn > .preview {
+      .btn > .icon {
+        vertical-align: middle;
+      }
+
+      .preview {
         width: 14px;
         height: 14px;
         display: inline-block;
-        vertical-align: top;
+        vertical-align: middle;
         border-radius: 2px;
       }
 
@@ -133,7 +147,8 @@ export default class DesktopLyrics extends LitElement {
         display: none;
       }
 
-      .desktop-lyrics-window > .desktop-lyrics-panel {
+      .desktop-lyrics-window > .desktop-lyrics-panel,
+      .mobile-lyrics-window > .desktop-lyrics-panel {
         overflow: hidden;
         width: 100%;
         display: flex;
@@ -142,10 +157,14 @@ export default class DesktopLyrics extends LitElement {
         align-items: center;
       }
 
-      .desktop-lyrics-window > .desktop-lyrics-panel > .lyrics-track {
+      .desktop-lyrics-window > .desktop-lyrics-panel > .lyrics-track,
+      .mobile-lyrics-window > .desktop-lyrics-panel > .lyrics-track {
         max-width: 100%;
-        overflow: hidden;
         line-height: normal;
+      }
+
+      .desktop-lyrics-window > .desktop-lyrics-panel > .lyrics-track {
+        overflow: hidden;
       }
 
       .desktop-lyrics {
@@ -155,6 +174,76 @@ export default class DesktopLyrics extends LitElement {
         white-space: pre;
         line-height: normal;
         display: inline-block;
+      }
+
+      .mobile-lyrics-window.hide {
+        display: none;
+      }
+      
+      .mobile-lyrics-window {
+        display: none;
+        position: fixed;
+        left: 50%;
+        width: 95%;
+        box-sizing: border-box;
+        transform: translate(-50%, -50%);
+        user-select: none;
+        cursor: grab;
+      }
+
+      .mobile-lyrics-window:hover {
+        background: rgba(0, 0, 0, 0.6);
+      }
+
+      .mobile-lyrics-window > .tool-bar {
+        visibility: hidden;
+        display: flex;
+        justify-content: space-between;
+      }
+
+      .mobile-lyrics-window:hover > .tool-bar {
+        visibility: visible;
+      }
+
+      .mobile-lyrics-window.locked:hover > .tool-bar {
+        visibility: hidden;
+      }
+
+      .mobile-lyrics-window > .tool-bar.top .btn {
+        padding: 4px 8px 0 8px;
+      }
+
+      .mobile-lyrics-window > .tool-bar.middle {
+        margin: 10px 0;
+      }
+
+      .mobile-lyrics-window > .tool-bar.middle .btn {
+        padding: 0 8px 0 8px;
+        font-size: 18px;
+      }
+
+      .mobile-lyrics-window > .tool-bar.bottom {
+        display: block;
+      }
+
+      .mobile-lyrics-window > .tool-bar.bottom.hide {
+        display: none;
+      }
+
+      .mobile-lyrics-window > .tool-bar.bottom > * {
+        display: inline-block;
+        margin-bottom: 10px;
+        padding: 0 10px;
+      }
+
+      @media screen and (max-width: 500px) {
+        .desktop-lyrics-window {
+          display: none;
+        }
+
+        .mobile-lyrics-window {
+          display: block;
+        }
       }
     `
   }
@@ -190,12 +279,21 @@ export default class DesktopLyrics extends LitElement {
         .translation-track .desktop-lyrics {
           font-size: ${(this.fontSize + 10) / 2}px;
         }
-        .desktop-lyrics-window > .btn.lock {
+        .desktop-lyrics-window > .btn.lock,
+        .mobile-lyrics-window > .btn.lock {
           background: ${this.colorSchemes[this.colorSchemeIndex]?.value};
+        }
+
+        @media screen and (max-width: 500px) {
+          .desktop-lyrics {
+            font-size: ${this.mobileFontSize}px;
+          }
+          .translation-track .desktop-lyrics {
+            font-size: ${(this.mobileFontSize + 10) / 2}px;
+          }
         }
       </style>
       <div
-        id="desktop-lyrics-window"
         class="desktop-lyrics-window ${this.dragging ? 'dragging' : ''} ${this.isLocked ? 'locked' : ''}"
         style="left: ${this.horizontalCenter}px; top: ${this.verticalCenter}px"
         @mousedown="${this.startDragging}"
@@ -250,16 +348,93 @@ export default class DesktopLyrics extends LitElement {
           @click="${() => { this.isLocked = !this.isLocked }}"
         ><i class="icon icon-lock"></i></a>
       </div>
+      <div
+        class="mobile-lyrics-window ${this.dragging ? 'dragging' : ''} ${this.isLocked ? 'locked' : ''}"
+        style="top: ${this.verticalCenter}px"
+        @mousedown="${this.startDragging}"
+        @touchstart="${this.startDragging}"
+      >
+        <div class="tool-bar top">
+          <a
+            class="btn close"
+            @click="${this.toggleDesktopLyrics}"
+          ><i class="icon icon-close"></i></a>
+          <span></span>
+        </div>
+        <div class="desktop-lyrics-panel">
+          <div class="lyrics-track">
+            <span class="desktop-lyrics"
+            >${this.lyrics && !this.notStartedYet ? this.lyrics.currentSentence : locale.banner}</span>
+          </div>
+          ${this.lyrics && !this.notStartedYet && this.lyrics?.lang && this.lyrics.currentSentenceTranslation
+            ? html`
+              <div class="lyrics-track translation-track"">
+                <span class="desktop-lyrics"
+                >${this.lyrics.currentSentenceTranslation}</span>
+              </div>`
+            : ''}
+        </div>
+        <div class="tool-bar middle">
+          <a
+            class="btn settings"
+            @click="${() => { this.isSettingsBarShowing = !this.isSettingsBarShowing }}"
+          ><i class="icon icon-setting"></i></a>
+          <div class="control">
+            <a class="btn" @click="${this.prev}"><i class="icon icon-left"></i></a>
+            <a class="btn" @click="${this.togglePlay}"
+            ><i class="icon icon-${this.paused ? 'play' : 'pause'}"></i></a>
+            <a class="btn" @click="${this.next}"><i class="icon icon-right"></i></a>
+          </div>
+          <a
+            class="btn lock"
+            @click="${() => { this.isLocked = !this.isLocked }}"
+          ><i class="icon icon-lock"></i></a>
+        </div>
+        <div class="tool-bar bottom ${this.isSettingsBarShowing ? '' : 'hide'}">
+          <a class="btn" @click="${() => { if (this.mobileFontSize > 10) this.mobileFontSize -= 2 }}"
+          ><i class="icon icon-font-smaller"></i></a>
+          <a class="btn" @click="${() => { this.mobileFontSize += 2 }}"
+          ><i class="icon icon-font-larger"></i></a>
+          ${this.colorSchemes.map((colorScheme, index) => html`
+            <a
+              class="btn"
+              title="${colorScheme.name}"
+              @click="${() => { this.colorSchemeIndex = index }}"
+            >
+              <i
+                class="preview"
+                style="background: ${colorScheme.value}"
+              ></i>
+            </a>
+          `)}
+          ${this.langAvailable?.length ? html`
+            <a class="btn" @click="${this.nextLang}"
+            ><i class="icon icon-translate"></i></a>
+          ` : ''}
+          ${this.langAvailable?.map((lang) => html`
+            <a class="btn" @click="${() => this.setLang(lang.lang)}"
+            >${lang.name || lang.lang}</a>
+          `)}
+        </div>
+        <a
+          class="btn lock"
+          @click="${() => { this.isLocked = !this.isLocked }}"
+        ><i class="icon icon-lock"></i></a>
+      </div>
     `
   }
 
   nextLang () {
-    let index = this.langAvailable.indexOf(this.lyrics?.lang)
+    let index = this.langAvailable.findIndex((lang) => lang.lang === this.lyrics?.lang)
     index++
     if (index === this.langAvailable.length) index = -1
+    this.setLang(this.langAvailable[index].lang)
+  }
+
+  setLang (lang) {
     this.dispatchEvent(new window.CustomEvent('kokoro-change', {
       detail: {
-        lang: this.langAvailable[index] || null
+        lang: lang || null
       }
     }))
   }

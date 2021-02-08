@@ -266,7 +266,8 @@ window.player.setPlaylist([{
 [04:01.63]就这样永恒延续
 `
     }, {
-      lang: 'Romaji',
+      lang: 'phonetic-latin',
+      name: 'Rōmaji',
       value: `[ar:whiteeeen]
 [ti:あの頃～ジンジンバオヂュオニー～ (zerokoi ver.)]
 [al:ゼロ恋]
@@ -299,7 +300,7 @@ window.player.setPlaylist([{
 [01:56.70][04:59.58]kagayaku manten no yozora ni
 [02:02.71][05:05.68]kegare naki bokura futari de kawashita
 [02:07.86][05:10.74]ano yakusoku o wasurenai
-[02:13.06][05:15.89]jinjinbaozheni
+[02:13.06][05:15.89]jin jin baozhe ni
 [02:28.36]narenai tetsuki de
 [02:31.30]kami o totonoete
 [02:34.13]senobi shita tachisugata

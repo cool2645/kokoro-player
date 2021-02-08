@@ -72,7 +72,7 @@ export const getLangAvailable = (lyrics) => {
   if (!lyrics) return null
   if (lyrics.type === 'lrc') {
     if (!lyrics.translations) return []
-    return lyrics.translations.map((t) => t.lang)
+    return lyrics.translations.map((t) => ({ lang: t.lang, name: t.name }))
   }
   console.error(`Unsupported lyrics type: ${lyrics.type}`)
   return []
