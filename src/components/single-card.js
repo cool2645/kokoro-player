@@ -388,7 +388,7 @@ class SingleCard extends Component {
           .buffered="${this.buffered}"
           .currentTime="${this.currentTime}"
           .totalTime="${this.totalTime}"
-          @kokoro-change="${(e) => { if (e.detail.commit) this.setCurrentProgress(e.detail.progress) }}"
+          @kokoro-change="${(e) => { this.setCurrentProgress(e.detail.progress, e.detail.commit) }}"
         ></kokoro-progress>` : ''
       }
     `
@@ -452,8 +452,9 @@ class SingleCard extends Component {
     this.context.kokoro?.nextPlayOrder()
   }
 
-  setCurrentProgress (progress) {
-    this.context.kokoro?.setCurrentTime(progress * this.totalTime)
+  setCurrentProgress (progress, commit) {
+    if (commit) this.context.kokoro?.setCurrentTime(progress * this.totalTime)
+    else this.currentTime = progress * this.totalTime
   }
 
   setVolume (volume) {
