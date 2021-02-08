@@ -137,7 +137,7 @@ window.player.setPlaylist([{
 [00:13.27]xiaosa ru wo zuijin que bian de youdian mingan
 [00:18.14]banxiaoshi shoubudao ni xunxi jiu hui zuolibuan
 [00:22.63]dou shuo bie ai de tai man zhe daoli zhiyixingnan
-[00:27.18]wo ha ting leyi xiangshou zhe fen tian zhong weisuan
+[00:27.18]wo hai ting leyi xiangshou zhe fen tian zhong weisuan
 [00:31.50][01:32.21]ni de xiao xiang xigua zui zhongjian na yi shao de kougan
 [00:36.08][01:36.75]dianliang le yizhengge xiatian xingkong ye wei ni banlan
 [00:40.49][01:41.19]wo buhui shenqingkuankuan shangyan shenme taolu qiaoduan
