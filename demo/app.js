@@ -49,7 +49,45 @@ window.player.setPlaylist([{
 [03:16.35][03:45.96]你听啊冬至的白雪
 [03:19.98][03:49.49]你听它掩饰着哽咽
 [03:24.85][03:54.41]在没有你的世界
-[04:01.87]再没有你的冬眠`
+[04:01.87]再没有你的冬眠`,
+    translations: [{
+      lang: 'phonetic-latin',
+      name: 'Pīnyīn',
+      value: `[ar:司南]
+[ti:冬眠]
+[al:冬眠]
+[length: 4:30]
+[00:00.00]
+[00:09.48]
+[00:20.57]司南 - dōngmián
+[00:35.58]xiangkou dengguang huminghumie
+[00:42.16]shouzhong tiankafei yi lengque
+[00:49.52]zuijiao bujingyi xielou xiangnian
+[00:57.39]zai fadai de chuangqian ningjie
+[01:05.32]qishi bu ai manman changye
+[01:12.44]yinwei ni cai duole qingjie
+[01:19.14]keshi quansuo de huiyi bu relie
+[01:27.43]wo ruhe ba gudan rongjie
+[01:33.04]ni kan a chunri de hudie
+[01:36.57]ni kan ta chandou zhe feiyue
+[01:40.25]hefeng yu nuanyang qingxie
+[01:43.62]que bingleng de jijie
+[01:47.96]ni kan a zhongxia de wanyue
+[01:51.34]ni kan ta ba huanyu touqie
+[01:55.87]daogua tianji de xiaoye
+[02:33.21]gushi li de zuihou yi ye
+[02:40.87]guowang he guangyin dou chongdie
+[02:47.98]wo yongjin suoyou ziyan qu miaoxie
+[02:56.11]wufa liu ni pianke tingxie
+[03:01.55][03:31.21]ni ting a qiumo de luoye
+[03:05.25][03:34.70]ni ting ta tanxi zhe libie
+[03:08.75][03:38.34]zhi sheng wo duzi linglue
+[03:12.19][03:41.59]hai yu shan feng he yue
+[03:16.35][03:45.96]ni ting a dongzhi de baixue
+[03:19.98][03:49.49]ni ting ta yanshi zhe gengye
+[03:24.85][03:54.41]zai meiyou ni de shijie
+[04:01.87]zai meiyou ni de dongmian`
+    }]
   }
 }, {
   title: '我乐意',
@@ -85,7 +123,38 @@ window.player.setPlaylist([{
 [02:30.51]我非常乐意为你做任何任何的事情
 [02:36.48]你说只要求我每天过得开心
 [02:39.69]我非常乐意陪你到任何任何地方去
-[02:45.30]你说今年秋天想去趟南极`
+[02:45.30]你说今年秋天想去趟南极`,
+    translations: [{
+      lang: 'phonetic-latin',
+      name: 'Pīnyīn',
+      value: `[ar:玖笙]
+[ti:我乐意（Cover：许嵩）]
+[al:我乐意]
+[length: 4:03]
+[00:00.00]
+[00:04.10]
+[00:08:50]玖笙 - wǒ lèyì
+[00:13.27]xiaosa ru wo zuijin que bian de youdian mingan
+[00:18.14]banxiaoshi shoubudao ni xunxi jiu hui zuolibuan
+[00:22.63]dou shuo bie ai de tai man zhe daoli zhiyixingnan
+[00:27.18]wo ha ting leyi xiangshou zhe fen tian zhong weisuan
+[00:31.50][01:32.21]ni de xiao xiang xigua zui zhongjian na yi shao de kougan
+[00:36.08][01:36.75]dianliang le yizhengge xiatian xingkong ye wei ni banlan
+[00:40.49][01:41.19]wo buhui shenqingkuankuan shangyan shenme taolu qiaoduan
+[00:45.11][01:45.71]wo de ai chuncui jiandan
+[00:50.69][01:51.46][03:05.29]wo leyi zhan zai ni shenhou ba ni lan zai xiongkou
+[00:55.15][01:55.73][03:09.74]ditou kan ni sujing de lianjia fenhong
+[00:59.41][02:00.05][03:14.08]wo leyi ba zhe ni de shou xinyuanyima tanzou
+[01:04.22][02:04.81][03:18.80]mei ke yinfu li dou you xingfu shandong
+[01:08.34][02:09.10][03:23.21][03:41.41]wo leyi shou zai ni zuo you wei ni dangyuzhefeng
+[01:13.18][02:13.69][03:27.71][03:45.60]jin hou de lu wo pei ni yiqi zou guo
+[01:17.50][02:18.15][03:32.04][03:49.99]wo leyi ba ziji fengsong zuo ni dujia yuzhou
+[01:22.14][02:22.73][03:36.73][03:54.68]bao zhe ni pangruowuren jinqing wudong
+[02:30.51]wo feichang leyi wei ni zuo renhe renhe de shiqing
+[02:36.48]ni shuo zhi yaoqiu wo meitian guo de kaixin
+[02:39.69]wo feichang leyi pei ni dao renhe renhe difang qu
+[02:45.30]ni shuo jinnian qiutian xiang qu tang nanji`
+    }]
   }
 }, {
   title: '绿茶',
@@ -147,7 +216,64 @@ window.player.setPlaylist([{
 [03:34.27]在围绕 偷偷笑
 [03:41.01]绿茶的香味 鼻尖飘呀飘
 [03:44.31]不管故事里花落了多少
-[03:47.73]梦还在 幸福在转角`
+[03:47.73]梦还在 幸福在转角`,
+    translations: [{
+      lang: 'phonetic-latin',
+      name: 'Pīnyīn',
+      value: `[ar:孙羽幽]
+[ti:绿茶（Cover：灰色）]
+[al:孙羽幽翻唱集]
+[length: 3:59]
+[00:00.00]
+[00:08.97]
+[00:16:69]孙羽幽 - lǜchá
+[00:26.35][02:30.48]xiaoxiaode bufa gen zhe waipo cai lücha
+[00:29.77][02:33.95]qiuyin zuan chu nitu kan xiao yehua
+[00:32.95][02:37.06]zhuanshu xiao beilou hanshui yangguang zhong zhengfa
+[00:36.46][02:40.64]piaoman chaxiang de difang jiu shi wo jia
+[00:39.75][02:43.97]na xiaohua zai menkou lanlande yao weiba
+[00:43.24][02:47.26]heng zhe xiaodiao waigong tangyi shang yincha
+[00:46.47][02:50.63]na huiyi ba shijian ningjie cheng yi fu hua
+[00:50.22]wàigōng nǐ zài liàn tiěshāzhǎng ma
+[00:53.07][02:57.01]gebi mao jiao miaomiao
+[00:54.10][02:58.45]zhiliao duo shushao zhuo xishuai zhuo de tiaojiao
+[00:56.41][03:00.62]yang xiao kedou kan weiba yigege mei niao
+[00:58.87][03:03.11]diao nali le ne
+[01:00.19][03:04.07]wo bao zhe zishahu he zhe qishui xiang zhe mingtian xiao le
+[01:03.67][03:07.96]o o o o
+[01:06.98][03:11.18]duonian hou xiangqi na weidao
+[01:09.89][03:14.11]qian zhe ni de shou huiqu qiaoyiqiao
+[01:13.29][03:17.47]na xiaohe qingting guo wo de fannao
+[01:16.65]hai zai rao a rao
+[01:20.44][03:38.05]tiankong de yanse gangganghao
+[01:23.36]lücha de xiangwei suizhe feng zai piao
+[01:26.76][03:30.90]wo shuo xihuan you zheyang de meihao
+[01:30.29]zai weirao bu qu guan hua luo le duoshao
+[01:37.10]xihuan zhu cha shi niaoniao de xiangqi
+[01:39.98]peng yi bei lüyouyou yong yi xiawu peizhe waigong xia weiqi
+[01:44.18]zong na buhao xiezi na zhi bi ya
+[01:46.70]mama banzou dianshi fa wo de taoqi
+[01:50.35]ren shuo zhangdahou you henduo shiyi
+[01:53.50]jiu xiang ni pinbo le yongyou le shiqu le jingcai de cengjing
+[01:57.57]wo xiang shuo wo xihuan xianzai de anyi
+[02:00.32]dongde zhenxi de rensheng cai zui meili
+[02:04.37]nà xiàtiān xǐhuān chēng zhe yǔsǎn guāng jiǎoyā
+[02:07.44]wōniú bēi zhe kézi pá shàng le pútáojià
+[02:10.24]nà xiàoliǎn yìzhí yíng zhe yángguāng zhànkāi le huā
+[02:13.72]wàipó shùn zhe tītián mànmàn zhòng tā de lǜchá
+[02:16.88]nà xiāngtián zǒngshì shùn zhe xiǎolù ránhòu rào huí jiā
+[02:20.37]cháwǎn xǐ guò zhīhòu jìde yào fǎnfù de cā
+[02:23.65]nà shíjiān zǒngshì pǎode pǎode pǎode pǎode hěn xiāosǎ
+[02:28.03]miāomiāo kuài xiàlái yào chídào la
+[02:54.39]zenme shede ca
+[03:20.81]na tongyao erbian rao
+[03:24.71]la zhe ni yingfeng pao ya pao
+[03:27.53]ta zai niba xiaolu shang guang zhe jiao
+[03:34.27]zai weirao toutou xiao
+[03:41.01]lücha de xiangwei bijian piao ya piao
+[03:44.31]buguan gushi li hualuo le duoshao
+[03:47.73]meng haizai xingfu zai zhuanjiao`
+    }]
   }
 }, {
   title: 'あの頃～ジンジンバオヂュオニー～ (zerokoi ver.)',
@@ -328,19 +454,123 @@ window.player.setPlaylist([{
   artist: '阿冗',
   album: '你的答案',
   src: 'https://cdn.innocent.love/%E9%98%BF%E5%86%97%20-%20%E4%BD%A0%E7%9A%84%E7%AD%94%E6%A1%88.mp3',
-  cover: 'https://cdn.innocent.love/%E9%98%BF%E5%86%97%20-%20%E4%BD%A0%E7%9A%84%E7%AD%94%E6%A1%88.jpg'
+  cover: 'https://cdn.innocent.love/%E9%98%BF%E5%86%97%20-%20%E4%BD%A0%E7%9A%84%E7%AD%94%E6%A1%88.jpg',
+  lyrics: {
+    type: 'lrc',
+    value: `[ar:阿冗]
+[ti:你的答案]
+[al:你的答案]
+[length: 3:40]
+[00:00.00]作词：林晨阳，刘涛
+[00:06.26]作曲：刘涛
+[00:12.52]阿冗 - 你的答案
+[00:25.03][01:38.84]也许世界就这样
+[00:27.88][01:41.96]我也还在路上
+[00:30.77][01:44.57]没有人能诉说
+[00:35.99][01:49.75]也许我只能沉默
+[00:39.08][01:52.62]眼泪湿润眼眶
+[00:41.87][01:55.59]可又不甘懦弱
+[00:45.14][01:58.81]低着头期待白昼
+[00:50.79][02:04.49]接受所有的嘲讽
+[00:56.11][02:09.98]向着风拥抱彩虹
+[01:01.65][02:15.46]勇敢地向前走
+[01:06.55][02:20.22][02:48.93]黎明的那道光
+[01:08.56][02:22.39][02:52.38]会越过黑暗
+[01:11.54][02:25.17][02:55.34]打破一切恐惧我能
+[01:14.44][02:28.09][02:58.12]找到答案
+[01:17.23][02:30.97][03:00.83]哪怕要逆着光
+[01:19.68][02:33.29][03:03.27]就驱散黑暗
+[01:22.50][02:36.15]丢弃所有的负担
+[01:25.46][01:28.34][02:39.19][02:41.94][03:11.89]不再孤单
+[03:06.14]有一万种的力量
+[03:09.17]淹没孤单
+[03:14.68](也许世界就这样)
+[03:17.23](我也还在路上)
+[03:19.82](没有人能诉说)
+[03:24.80](也许我只能沉默)
+[03:28.25](眼泪湿润眼眶)
+[03:31.04](可又不甘懦弱)`,
+    translations: [{
+      lang: 'phonetic-latin',
+      name: 'Pīnyīn',
+      value: `[ar:阿冗]
+[ti:你的答案]
+[al:你的答案]
+[length: 3:40]
+[00:00.00]
+[00:06.26]
+[00:12.52]阿冗 - nǐ de dáàn
+[00:25.03][01:38.84][03:14.68]yexu shijie jiu zheyang
+[00:27.88][01:41.96][03:17.23]wo ye hai zai lu shang
+[00:30.77][01:44.57][03:19.82]meiyou ren neng sushuo
+[00:35.99][01:49.75][03:24.80]yexu wo zhineng chenmo
+[00:39.08][01:52.62][03:28.25]yanlei shirun yankuang
+[00:41.87][01:55.59][03:31.04]ke you bugan nuoruo
+[00:45.14][01:58.81]di zhe tou qidai baizhou
+[00:50.79][02:04.49]jieshou suoyou de chaofeng
+[00:56.11][02:09.98]xiang zhe feng yongbao caihong
+[01:01.65][02:15.46]yonggan de xiang qian zou
+[01:06.55][02:20.22][02:48.93]liming de na dao guang
+[01:08.56][02:22.39][02:52.38]hui yueguo heian
+[01:11.54][02:25.17][02:55.34]dapo yiqie kongju wo neng 
+[01:14.44][02:28.09][02:58.12]zhaodao daan
+[01:17.23][02:30.97][03:00.83]na pa yao ni zhe guang
+[01:19.68][02:33.29][03:03.27]jiu qusan heian
+[01:22.50][02:36.15]diuqi suoyou de fudan
+[01:25.46][01:28.34][02:39.19][02:41.94][03:11.89]buzai gudan
+[03:06.14]you yiwan zhong de liliang
+[03:09.17]yanmo gudan`
+    }]
+  }
 }, {
   title: '真的爱你',
   artist: 'Beyond',
   album: 'Beyond 25th Anniversary',
   src: 'https://cdn.innocent.love/Beyond%20-%20%E7%9C%9F%E7%9A%84%E7%88%B1%E4%BD%A0.flac',
-  cover: 'https://cdn.innocent.love/Beyond%20-%20%E7%9C%9F%E7%9A%84%E7%88%B1%E4%BD%A0.jpg'
-}, {
-  title: 'ひだまりデイズ',
-  artist: '妹S(シスターズ)',
-  album: 'ひだまりデイズ',
-  src: 'https://cdn.innocent.love/%E5%A6%B9S(%E3%82%B7%E3%82%B9%E3%82%BF%E3%83%BC%E3%82%B9%E3%82%99)%20-%20%E3%81%B2%E3%81%9F%E3%82%99%E3%81%BE%E3%82%8A%E3%83%86%E3%82%99%E3%82%A4%E3%82%B9%E3%82%99.flac',
-  cover: 'https://cdn.innocent.love/%E5%A6%B9S(%E3%82%B7%E3%82%B9%E3%82%BF%E3%83%BC%E3%82%B9%E3%82%99)%20-%20%E3%81%B2%E3%81%9F%E3%82%99%E3%81%BE%E3%82%8A%E3%83%86%E3%82%99%E3%82%A4%E3%82%B9%E3%82%99.jpg'
+  cover: 'https://cdn.innocent.love/Beyond%20-%20%E7%9C%9F%E7%9A%84%E7%88%B1%E4%BD%A0.jpg',
+  lyrics: {
+    type: 'lrc',
+    value: `[ar:Beyond]
+[ti:真的爱你]
+[al:25周年精选]
+[length: 4:38]
+[00:00.00]作詞：小美
+[00:07.91]作曲：黃家駒
+[00:15.93]Beyond - 真的愛你
+[00:24.82][01:35.01]無法可修飾的一對手 帶出溫暖永遠在背後
+[00:31.84][01:42.05]縱使囉唆始終關注 不懂珍惜太內咎
+[00:37.26]沉醉於音階她不讚賞 母親的愛卻永未退讓
+[00:44.13]決心衝開心中掙扎 親恩終可報答
+[00:50.17][02:00.33][02:58.18]春風化雨暖透我的心 一生眷顧無言地送贈
+[00:57.99][02:07.90][03:05.76][03:30.72]是妳多麼溫馨的目光 教我堅毅望著前路
+[01:04.46][02:14.57][03:12.17][03:36.96]叮囑我跌倒不應放棄
+[01:10.62][02:20.37][03:18.20][03:42.99]沒法解釋怎可報盡親恩 愛意寬大是無限
+[01:17.05][02:27.13][03:24.59][03:49.57]請准我說聲真的愛妳
+[01:47.55]仍記起溫馨的一對手 始終給我照顧未變樣
+[01:54.40]理想今天終於等到 分享光輝盼做到`,
+    translations: [{
+      lang: 'phonetic-latin',
+      name: 'Ping³jam¹',
+      value: `[ar:Beyond]
+[ti:真的爱你]
+[al:25周年精选]
+[length: 4:38]
+[00:00.00]
+[00:07.91]
+[00:15.93]Beyond - dzan¹dik⁷ oi³ nei⁵
+[00:24.82][01:35.01]moufaat ho sausikdik jatdoey sau daaitsoet wannyn wingjyn dzoi buihau
+[00:31.84][01:42.05]dzungsi loso tsidzung gwaandzy batdung dzansik taai noigau
+[00:37.26]tsamdzoey jy jamgaai taa bat dzaansoeng moutsan dik oi koek wingmei toeyjoeng
+[00:44.13]kytsam tsunghoi samdzung dzangdzaat tsanjan dzungho boudaap
+[00:50.17][02:00.33][02:58.18]tsoenfungfaajy nyntau ngodik sam jatsang gyngu moujin dei sungdzang
+[00:57.99][02:07.90][03:05.76][03:30.72]si nei domo wanhing dik mukgwong gaau ngo ginngai mong dzoek tsinlou
+[01:04.46][02:14.57][03:12.17][03:36.96]dingdzuk ngo ditdou batjing fonghei
+[01:10.62][02:20.37][03:18.20][03:42.99]mutfaat gaaisik dzamho boudzoen tsanjan oiji fundaai si mouhaan
+[01:17.05][02:27.13][03:24.59][03:49.57]tsing dzoen ngo sytseng dzandik oi nei
+[01:47.55]jing geihei wanhing dik jatdoey sau tsidzung kap ngo dziugu mei binjoeng
+[01:54.40]leisoeng gamtin dzungjy dangdou fanhoeng gwongfai paan dzoudou`
+    }]
+  }
 }], 0, PLAY_ORDER_LOOP)
 
 const router = new Router(document.getElementById('app'))

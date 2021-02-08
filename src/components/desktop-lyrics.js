@@ -174,6 +174,11 @@ export default class DesktopLyrics extends LitElement {
         white-space: pre;
         line-height: normal;
         display: inline-block;
+        text-align: center;
+      }
+
+      .translation-track .desktop-lyrics {
+        white-space: pre-wrap;
       }
 
       .mobile-lyrics-window.hide {
