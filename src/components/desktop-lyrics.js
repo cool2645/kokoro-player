@@ -433,7 +433,7 @@ export default class DesktopLyrics extends LitElement {
     let index = this.langAvailable.findIndex((lang) => lang.lang === this.lyrics?.lang)
     index++
     if (index === this.langAvailable.length) index = -1
-    this.setLang(this.langAvailable[index].lang)
+    this.setLang(this.langAvailable[index]?.lang)
   }
 
   setLang (lang) {
