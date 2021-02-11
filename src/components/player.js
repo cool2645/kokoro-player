@@ -1184,7 +1184,9 @@ class Player extends Component {
         class="main-window mobile ${this.darkMode ? 'dark' : ''
         } ${this.isConnected ? '' : 'disconnected'} ${this.shouldMobileShowMainWindow ? '' : 'hide'}"
         style="${this.shouldMobileShowMainWindow
-          ? `${this.mobileLeft ? 'transition: none;' : ''} left: ${this.mobileLeft}px; right: calc(-${this.mobileLeft}px)` : ''}"
+          ? `${this.mobileLeft ? 'transition: none;' : ''} left: ${
+          this.mobileLeft < 50 ? 0 : this.mobileLeft}px; right: calc(-${
+          this.mobileLeft < 50 ? 0 : this.mobileLeft}px)` : ''}"
         @touchstart="${this.startDragToGoBack}"
       >
         <div class="disconnected-panel ${this.isConnected ? 'hide' : ''}">
