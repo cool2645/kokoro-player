@@ -958,9 +958,9 @@ class Player extends Component {
     this.desktopLyricsVerticalCenter = 150
     this.desktopLyricsHorizontalCenter = (document.documentElement || document.body).clientWidth / 2
     this.shadowRoot.querySelector('#lyrics-scroll')
-      .addEventListener('DOMMouseScroll', this.onLyricsUserScroll)
+      .addEventListener('wheel', this.onLyricsUserScroll)
     this.shadowRoot.querySelector('#lyrics-scroll-mobile')
-      .addEventListener('DOMMouseScroll', this.onLyricsUserScroll)
+      .addEventListener('wheel', this.onLyricsUserScroll)
     this.shadowRoot.querySelector('#lyrics-scroll')
       .addEventListener('touchmove', this.onLyricsUserScroll)
     this.shadowRoot.querySelector('#lyrics-scroll-mobile')
@@ -1461,8 +1461,6 @@ class Player extends Component {
         scrollDom.scrollTop = currentY
         window.requestAnimationFrame(scroll)
       } else {
-        currentY += needScrollTop
-        scrollDom.scrollTop = currentY
         this.isLyricsScrollAnimating = false
       }
     }
@@ -1502,7 +1500,7 @@ class Player extends Component {
     let index = this.langAvailable.findIndex((lang) => lang.lang === this.parsedLyrics?.lang)
     index++
     if (index === this.langAvailable.length) index = -1
-    this.lang = this.langAvailable[index]?.lang
+    this.lang = this.langAvailable[index]?.lang || null
   }
 
   setCurrentSong (song, index) {

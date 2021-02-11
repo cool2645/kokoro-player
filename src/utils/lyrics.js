@@ -29,7 +29,7 @@ export const parseLrcLyrics = (function () {
         translationLrcRunner = new Runner(parsedTranslationLyrics)
       }
     }
-    if (!transLyrics) {
+    if (lang !== undefined && !transLyrics) {
       originalTranslationLyrics = null
       parsedTranslationLyrics = null
       translationLrcRunner = null
@@ -49,7 +49,7 @@ export const parseLrcLyrics = (function () {
         if (trans) {
           parsedLyrics.lyrics[i].translation = trans.content
         }
-      } else {
+      } else if (lang !== undefined) {
         delete parsedLyrics.lyrics[i].translation
       }
     }

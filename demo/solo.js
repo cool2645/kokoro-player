@@ -73,8 +73,38 @@ class SoloPage extends LitElement {
 [00:57.09][01:57.01][02:17.09]约定拉钩
 [00:59.21]现在就跟我走
 [01:59.33]现在就跟我
-[02:19.23]现在就请你跟我走
-`
+[02:19.23]现在就请你跟我走`,
+      translations: [{
+        lang: 'phonetic-latin',
+        name: 'Pīnyīn',
+        value: `[ar:阮豆]
+[ti:如果你能够做我男朋友]
+[al:如果你能够做我男朋友]
+[length: 2:41]
+[00:00.00]
+[00:06.20]
+[00:13.17]
+[00:16.30]
+[00:19.58]
+[00:22.13][01:22.75]qingwen ni shi shenme xingzuo
+[00:25.00][01:25.03]neng bu neng gaosu wo
+[00:27.13][01:27.08]ni shi shizizuo haishi shuipingzuo
+[00:29.62][01:29.58]buguan shi shenme dou hen shihe wo
+[00:32.56][01:32.48]meitian dou hui xu ge yuanwang
+[00:34.98][01:34.99]manzu wo de xiao huanxiang
+[00:37.03][01:37.07]wo zhishi haixiu
+[00:38.51][01:38.61]ye pa chuqiu
+[00:39.71][01:39.77]xiang gu qi yongqi shuo
+[00:41.43][00:51.57][01:41.41][01:51.48][02:01.44][02:11.48]ruguo ni nenggou zuo wo nanpengyou
+[00:44.77][01:44.85][02:04.70]na jiu qing ni qian wo shou
+[00:47.10][01:47.09][02:07.06]yangguang wuhou
+[00:49.75][01:49.52][02:09.42]sanbu huo jiaoyou
+[00:54.68][01:54.76][02:14.68]na jiu qing ni diandiantou
+[00:57.09][01:57.01][02:17.09]yueding lagou
+[00:59.21]xianzai jiu gen wo zou
+[01:59.33]xianzai jiu gen wo
+[02:19.23]xianzai jiu qing ni gen wo zou`
+      }]
     }
   }
 
