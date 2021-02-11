@@ -1108,12 +1108,12 @@ class Player extends Component {
               `) || locale.noLyrics}
             </div>
           </div>
-          <div class="lyrics-control-box">
-            ${this.langAvailable?.length ? html`
+          ${this.langAvailable?.length ? html`
+            <div class="lyrics-control-box">
               <a class="btn" @click="${(e) => { e.stopPropagation(); this.nextLang() }}"
               >${this.parsedLyrics?.langName || this.parsedLyrics?.lang || html`<i class="icon icon-translate"></i>`}</a>
-            ` : ''}
-          </div>
+            </div>
+          ` : ''}
         </div>
         <div class="playlist-panel ${this.isConnected && this.isPlaylistShowing ? '' : 'hide'}">
           <div class="playlist">
@@ -1231,12 +1231,12 @@ class Player extends Component {
               `) || '暂无歌词'}
             </div>
           </div>
-          <div class="lyrics-control-box">
-            ${this.langAvailable?.length ? html`
+          ${this.langAvailable?.length ? html`
+            <div class="lyrics-control-box">
               <a class="btn" @click="${(e) => { e.stopPropagation(); this.nextLang() }}"
               >${this.parsedLyrics?.langName || this.parsedLyrics?.lang || html`<i class="icon icon-translate"></i>`}</a>
-            ` : ''}
-          </div>
+            </div>  
+          ` : ''}
         </div>
         <div class="control-box ${this.isConnected ? '' : 'hide'}">
           <div class="control-panel panel ${this.isVolumeControlShowing ? 'hide' : ''}">

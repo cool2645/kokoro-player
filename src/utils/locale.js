@@ -5,7 +5,7 @@ export const zh_Hans = {
   playAll: '播放全部',
   added: '已添加',
   addToPlaylist: '添加到列表',
-  banner: '嘿，来点音乐吧',
+  banner: '心铃 - Kokoro -',
   disconnected: 'Kokoro 播放器未连接',
   noLyrics: '暂无歌词'
 }
