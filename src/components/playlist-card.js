@@ -416,7 +416,7 @@ class PlaylistCard extends Component {
   updated (changedProperties) {
     if (changedProperties.has('currentTime') || changedProperties.has('totalTime') ||
       changedProperties.has('lyrics')) {
-      if (this.isCurrentSong) {
+      if (this.isCurrentPlaylist) {
         this.parsedLyrics = parseLyrics(this.displayedSong.lyrics, this.currentTime, this.totalTime)
       } else {
         this.parsedLyrics = null
