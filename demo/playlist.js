@@ -205,8 +205,7 @@ class PlaylistPage extends LitElement {
 [02:46.07]旅行に行っても君を思い出すから
 [04:09.86][04:37.53]何でも愛せたのにな
 [04:14.75]そんなことばかり考えて
-[04:30.70]あたしはしあわせだったのに
-[04:52.23]`,
+[04:30.70]あたしはしあわせだったのに`,
         translations: [{
           lang: 'zh-Hans',
           name: '中译',
@@ -243,6 +242,36 @@ class PlaylistPage extends LitElement {
 [04:23.63]如今伴我左右的人
 [04:37.53]我就能爱上现在的一切吧
 [04:42.68]总会这样不切实际的想着`
+        }, {
+          lang: 'phonetic-latin',
+          name: 'Rōmaji',
+          value: `[00:00.00]作詞：坂口喜咲
+[00:01.00]作曲：坂口喜咲
+[00:06.64]HAPPY BIRTHDAY - 君だったら
+[00:12.33]zutto shitakatta koto wa tsuini
+[00:20.24]kimi to wa dekinai mama tōtō owarimashita
+[00:26.63]hidzuke ga kawaru koro ni te o tsunaide konbini e aruku
+[00:35.65]watashi no tonari ni chigau hito ga iru yo
+[00:44.10]aishi teru to iwa rete mo kimi janaikara 
+[00:51.22]watashi wa jōzu ni warau koto ga dekinai
+[00:58.21]ichido mo sono kotoba o kuchi ni shinakatta kimi o kimi o
+[01:06.86]watashi wa wasure rarezu ni iru yo
+[01:15.31]atarashī koibito to dakiatte iru toki mo
+[01:22.68]kisu o shite iru toki demo kimi o omoidasukara
+[01:33.53][01:40.29][01:47.32][02:56.79][03:03.86][03:10.76][03:52.45][03:59.43][04:06.08][04:20.52][04:27.05][04:34.26]kimidattara kimidattara
+[01:36.69][03:00.23][03:55.88][04:23.63]imakoko ni iru no ga
+[01:43.67][03:07.12][04:02.78]don'nani yokatta ka
+[01:50.65][03:14.14]watashi wa shiawasedattanoni
+[01:55.51][03:18.84][04:42.68]son'na koto bakari kangaete shimau
+[02:08.01]nagai jikan ga sugite mo naze
+[02:15.06]kimi no koto bakari kangaete shimau no ka
+[02:22.06]kokoro o yurushi kitta kimi no asagata no manazashi o
+[02:30.28]ima demo oikakete yumemite iru yo
+[02:39.16]atarashī koibito to tanjōbi sugoshite mo
+[02:46.07]ryokō ni itte mo kimi o omoidasukara
+[04:09.86][04:37.53]nandemo aisetanoni na
+[04:14.75]son'na koto bakari kangaete
+[04:30.70]atashi wa shiawasedattanoni`
         }]
       }
     }, {
@@ -314,6 +343,36 @@ class PlaylistPage extends LitElement {
 [03:08.00]如今我也有了重要的人
 [03:13.00]你听到了吗
 [03:31.00]请（在天上）好好看着我吧`
+        }, {
+          lang: 'phonetic-latin',
+          name: 'Rōmaji',
+          value: `[00:00.00]
+[00:23.00]naki-sōda
+[00:26.00]kyōmomata
+[00:29.00]shippai shi chatta
+[00:34.00]kon'na toki anatanara
+[00:39.00]ne~e, kangaeru yo
+[00:45.00][02:40.00][03:26.00]aisuruhito yo ā
+[00:51.00][02:46.00]doko ni imasu ka
+[00:56.00][02:50.00]kikoemasu ka
+[00:57.00][02:51.00]aenai hito yo ā
+[01:02.50][02:57.00]kioku no egao ni furetai
+[01:32.00]oboe teru boku no yume
+[01:38.00]anata ga kureta nda yo 
+[01:43.00]renzu-goshi nokoshite ku
+[01:49.00]omoide-tachi
+[01:54.00][03:03.00]aisuruhito yo
+[01:59.00]boku ni mo tomodachi ga dekita yo
+[02:04.00]shōkai suru yo
+[02:06.00][03:14.00]bukiyōdakedo
+[02:11.00][03:19.00]yasashī hitodesu
+[02:17.00]otonaninareba
+[02:22.00]sabishisa mo wasurete ikeru no
+[02:29.00]nande ītara ā
+[02:34.00]okotchau ka na
+[03:08.00]boku ni mo daijina hito ga dekita yo 
+[03:13.00]kikoe teru
+[03:31.00]mi tete kudasai`
         }]
       }
     }, {
