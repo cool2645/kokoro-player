@@ -89,8 +89,7 @@ class PlaylistPage extends LitElement {
 [03:37.70]叫んで 喚いて 声が枯れても
 [03:43.21]落ちていく色
 [03:48.19]雨よりも
-[03:53.61]透明な 音で響いて
-[04:09.46]`,
+[03:53.61]透明な 音で響いて`,
         translations: [{
           lang: 'zh-Hans',
           name: '中译',
@@ -129,6 +128,44 @@ class PlaylistPage extends LitElement {
 [03:43.21]逐渐褪去的颜色
 [03:48.19]比起雨水
 [03:53.61]更加透明的声音响起`
+        }, {
+          lang: 'phonetic-latin',
+          name: 'Rōmaji',
+          value: `[00:00.000]
+[00:00.505]
+[00:01.10]yoru no ashioto kara nigeru yō ni
+[00:06.17]heya no sumikko de kagi o kaketa
+[00:10.42]yane ga kizamu amaoto kimi no toiki
+[00:15.81]karappo no migite wa mada tsumetai mama
+[00:44.42]daremoinai owari ga hajimaru machi
+[00:49.49]kōru iki mo ame ni tokete iku
+[00:54.11]kioku o chigi tte tomoshita akari mo 
+[00:59.28]sukoshizutsu yoru ga nomikonde iku
+[01:04.61]kimi ga ame ni nurenai yō ni ne
+[01:09.66]hiraita kasa wa mada watasenai mama
+[01:15.03]zankokuna hodo kireina sekai ni
+[01:20.44]kiminokoe wa fukaku shizunde iku
+[01:28.48]boku no koe ame ni mo namida ni mo
+[01:33.70]nijimanai uta kitto kumo o kirisaite ku
+[01:39.15]sekaijū ni hibii te tōku tōku
+[01:44.89]kimi no namidaame ga furi yamimasu yō ni 
+[01:50.66]nandomonandomo kimi ga iru hō e
+[01:55.33]sakende wameite boku wa kokoda yo
+[02:00.59]ochiteiku-iro
+[02:06.22]darenimo somaranaide
+[02:49.59]ashita mata kitto ame ga futte
+[02:55.05]kiminokoe nioi ondo o kakushite mo
+[03:00.22]fure rarenai mama
+[03:05.60]akari ga kiete mo
+[03:10.90]boku no koe ame ni mo namida ni mo
+[03:16.58]nijimanai uta kitto kumo o kirisaite ku
+[03:21.66]sekaijū ni todoi te tōku tōku
+[03:27.39]kimi no namidaame ga ori yamimasu yō ni
+[03:32.37]nandomonandomo kimi ga iru hō e 
+[03:37.70]sakende wameite koe ga karete mo
+[03:43.21]ochiteiku-iro
+[03:48.19]ame yori mo
+[03:53.61]tōmeina oto de hibiite`
         }]
       }
     }, {
