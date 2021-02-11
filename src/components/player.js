@@ -29,6 +29,9 @@ class Player extends Component {
       buffered: { type: Array },
       isVolumeControlShowing: { type: Boolean },
       isPlaylistShowing: { type: Boolean },
+      isLyricsShowing: { type: Boolean },
+      lastLyricsUserScrollTime: { type: Number },
+      isLyricsScrollAnimating: { type: Boolean },
       isDesktopLyricsShowing: { type: Boolean },
       dragging: { type: Boolean },
       top: { type: Number },
@@ -72,6 +75,8 @@ class Player extends Component {
         background-color: #fbfbfb;
         color: var(--kokoro-primary-color);
         padding: 10px;
+        display: flex;
+        flex-direction: column;
       }
 
       .main-window.dark {
@@ -136,6 +141,7 @@ class Player extends Component {
 
       .main-window > .control-box {
         height: 84px;
+        min-height: 84px;
         font-size: 24px;
         position: relative;
         user-select: none;
@@ -203,9 +209,28 @@ class Player extends Component {
         left: -10px;
         right: -10px;
         transform: translateY(50%);
+        z-index: 1;
       }
 
-      .main-window > .cover-box {
+      .main-window > .cover-panel,
+      .main-window > .lyrics-panel
+      {
+        flex: 1 1 auto;
+        position: relative;
+        opacity: 1;
+        transition: opacity 250ms;
+      }
+
+      .main-window > .cover-panel.hide,
+      .main-window > .lyrics-panel.hide {
+        opacity: 0;
+        display: block;
+        height: 0;
+        flex: 0 0;
+        overflow: hidden;
+      }
+
+      .main-window .cover-box {
         box-sizing: border-box;
         height: 315px;
         padding: 20px;
@@ -213,18 +238,20 @@ class Player extends Component {
         user-select: none;
       }
 
-      .main-window > .cover-box > img {
+      .main-window .cover-box > img {
         width: 100%;
       }
-
-      .main-window > .lyrics-box {
+      
+      .main-window > .cover-panel > .lyrics-title-box {
         margin-top: -10px;
-        padding: 10px;
-        overflow: hidden;
       }
 
-      .main-window > .lyrics-box h1 {
-        font-size: 24px;
+      .main-window .lyrics-title-box {
+        padding: 10px;
+      }
+
+      .main-window .lyrics-title-box h1 {
+        font-size: 1.5rem;
         line-height: 1.45;
         margin: 0;
         font-weight: normal;
@@ -233,14 +260,89 @@ class Player extends Component {
         white-space: nowrap;
       }
 
-      .main-window > .lyrics-box h2 {
-        font-size: 18px;
+      .main-window .lyrics-title-box h2 {
+        font-size: 1.125rem;
         line-height: 1.4;
         margin: 0;
         font-weight: normal;
         text-overflow: ellipsis;
         overflow: hidden;
         white-space: nowrap;
+      }
+
+      .main-window > .cover-panel .lyric {
+        padding: 0 10px;
+        font-size: 0.875rem;
+        line-height: 1.4;
+      }
+
+      .main-window > .cover-panel .lyric.translation {
+        font-size: 0.75rem;
+      }
+
+      .main-window > .lyrics-panel {
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+      }
+
+      .main-window > .lyrics-panel > .lyrics-title-box {
+        margin-top: 10px;
+        margin-bottom: -10px;
+      }
+
+      .main-window .lyrics-scroll-box {
+        flex: 1 1 auto;
+        margin: 10px;
+        padding: 10px 0;
+        overflow-y: scroll;
+        line-height: 1.18;
+      }
+
+      .main-window .lyrics-scroll-box > .lyrics {
+        position: relative;
+      }
+
+      .main-window .lyrics-scroll-box .lyric {
+        margin: 1rem 0;
+        font-size: 0.875rem;
+        transition: font-size 250ms;
+        transition-delay: 250ms;
+      }
+
+      .main-window .lyrics-scroll-box .lyric:first-child {
+        margin-top: 0;
+      }
+
+      .main-window .lyrics-scroll-box .lyric:last-child {
+        margin-bottom: 0;
+      }
+      
+      .main-window .lyrics-scroll-box .lyric.current {
+        font-size: 1.125rem;
+        color: var(--kokoro-primary-highlight);
+      }
+
+      .main-window .lyrics-scroll-box .lyric.current .translation {
+        font-size: 0.875rem;
+      }
+      
+      .main-window .lyrics-scroll-box .lyric .translation {
+        margin-top: 2px;
+        font-size: 0.75rem;
+      }
+      
+      .main-window .lyrics-control-box {
+        box-sizing: border-box;
+        height: 40px;
+        min-height: 40px;
+        text-align: right;
+        padding: 10px;
+        font-size: 16px;
+      }
+
+      .main-window .lyrics-control-box .btn {
+        cursor: pointer;
       }
 
       .playlist-panel.hide {
@@ -262,6 +364,7 @@ class Player extends Component {
         border-radius: 15px;
         overflow: hidden;
         transition: left 200ms, top 200ms;
+        z-index: 1;
       }
 
       .playlist {
@@ -282,8 +385,8 @@ class Player extends Component {
 
       .playlist > .playlist-item-box > .playlist-item {
         box-sizing: border-box;
-        height: 46px;
-        padding: 4px 10px;
+        height: 2.875rem;
+        padding: 0.25rem 10px;
         display: inline-block;
         white-space: nowrap;
         max-width: 100%;
@@ -295,7 +398,7 @@ class Player extends Component {
         transition: transform 250ms ease-in-out;
         transform-origin: left center;
         line-height: 1;
-        margin: 6px 0;
+        margin: 0.375rem 0;
         cursor: pointer;
       }
 
@@ -333,16 +436,16 @@ class Player extends Component {
       }
 
       .playlist .playlist-item > .title {
-        font-size: 14px;
-        line-height: 22px;
+        font-size: 0.875rem;
+        line-height: 1.375rem;
         margin-right: 24px;
         overflow: hidden;
         text-overflow: ellipsis;
       }
 
       .playlist .playlist-item > .artist {
-        font-size: 12px;
-        line-height: 16px;
+        font-size: 0.75rem;
+        line-height: 1rem;
         margin-right: 24px;
         overflow: hidden;
         text-overflow: ellipsis;
@@ -356,9 +459,9 @@ class Player extends Component {
       .playlist .playlist-item > .remove {
         float: right;
         display: block;
-        line-height: 38px;
-        height: 38px;
-        font-size: 16px;
+        line-height: 2.375rem;
+        height: 2.375rem;
+        font-size: 1rem;
         visibility: hidden;
         transform: rotate(-180deg);
         transition: transform 250ms;
@@ -630,7 +733,7 @@ class Player extends Component {
         right: calc(-100% - 5px);
       }
 
-      .main-window.mobile > .cover-box .btn {
+      .main-window.mobile .cover-box .btn {
         font-size: 24px;
         position: relative;
         left: -15px;
@@ -646,7 +749,7 @@ class Player extends Component {
         cursor: pointer;
       }
 
-      .main-window.mobile > .cover-box img {
+      .main-window.mobile .cover-box img {
         border-radius: 50%;
         position: absolute;
         width: 100%;
@@ -657,7 +760,7 @@ class Player extends Component {
         border-radius: 0;
       }
 
-      .main-window.mobile > .cover-box {
+      .main-window.mobile .cover-box {
         width: auto;
         height: 0;
         padding: 28px 0 calc(100% - 28px) 0;
@@ -667,10 +770,19 @@ class Player extends Component {
         position: relative;
       }
 
-      .main-window.mobile > .lyrics-box {
+      .main-window.mobile .lyrics-title-box {
         flex: 1 1 auto;
         max-height: 200px;
         box-sizing: border-box;
+      }
+
+      .main-window.mobile > .lyrics-panel > .back {
+        font-size: 24px;
+        padding: 10px;
+      }
+
+      .main-window.mobile > .lyrics-panel > .lyrics-title-box {
+        margin-top: 0;
       }
 
       .main-window.mobile > .control-box {
@@ -791,6 +903,8 @@ class Player extends Component {
     super()
     this.drag = this.drag.bind(this)
     this.stopDragging = this.stopDragging.bind(this)
+    this.onLyricsUserScroll = this.onLyricsUserScroll.bind(this)
+    this.lastLyricsUserScrollTime = Date.now()
     this.left = 0
     this.top = 100
     this.shouldShowSmallWindow = true
@@ -840,13 +954,38 @@ class Player extends Component {
     this.shrinkToLeft = this.cursorX < ((document.documentElement || document.body).clientWidth / 2)
     this.desktopLyricsVerticalCenter = 150
     this.desktopLyricsHorizontalCenter = (document.documentElement || document.body).clientWidth / 2
+    this.shadowRoot.querySelector('#lyrics-scroll')
+      .addEventListener('DOMMouseScroll', this.onLyricsUserScroll)
+    this.shadowRoot.querySelector('#lyrics-scroll-mobile')
+      .addEventListener('DOMMouseScroll', this.onLyricsUserScroll)
+    this.shadowRoot.querySelector('#lyrics-scroll')
+      .addEventListener('touchmove', this.onLyricsUserScroll)
+    this.shadowRoot.querySelector('#lyrics-scroll-mobile')
+      .addEventListener('touchmove', this.onLyricsUserScroll)
+  }
+
+  onLyricsUserScroll () {
+    this.lastLyricsUserScrollTime = Date.now()
   }
 
   updated (changedProperties) {
     if (changedProperties.has('playing') || changedProperties.has('lyrics') || changedProperties.has('lang')) {
       this.parsedLyrics = parseLyrics(this.lyrics,
         this.playing.currentTime, this.playing.totalTime, this.lang)
+      this.scrollLyricsToCurrent()
     }
+  }
+
+  disconnectedCallback () {
+    super.disconnectedCallback()
+    this.shadowRoot.querySelector('#lyrics-scroll')
+      .removeEventListener('DOMMouseScroll', this.onLyricsUserScroll)
+    this.shadowRoot.querySelector('#lyrics-scroll-mobile')
+      .removeEventListener('DOMMouseScroll', this.onLyricsUserScroll)
+    this.shadowRoot.querySelector('#lyrics-scroll')
+      .removeEventListener('touchmove', this.onLyricsUserScroll)
+    this.shadowRoot.querySelector('#lyrics-scroll-mobile')
+      .removeEventListener('touchmove', this.onLyricsUserScroll)
   }
 
   isCurrentSong (song) {
@@ -865,6 +1004,7 @@ class Player extends Component {
           --kokoro-white: #cecece;
           --kokoro-black: rgba(0, 0, 0, 0.8);
           --kokoro-primary-color: ${this.darkMode ? '#cecece' : 'rgba(0, 0, 0, 0.8)'};
+          --kokoro-primary-highlight: ${this.darkMode ? '#fff' : '#000'};
           --kokoro-secondary-color: ${this.darkMode ? '#8e8e8e' : 'rgba(0, 0, 0, 0.4)'};
           --kokoro-border-radius: 0;
         }
@@ -931,14 +1071,46 @@ class Player extends Component {
             @kokoro-change="${(e) => { if (e.detail.commit) this.setCurrentProgress(e.detail.progress) }}"
           ></kokoro-progress>
         </div>
-        <div class="cover-box ${this.isConnected ? '' : 'hide'}">
-          ${this.currentSong ? html`
-            <img src="${this.currentSong.cover}" />
-          ` : ''}
+        <div class="cover-panel ${this.isLyricsShowing || !this.isConnected ? 'hide' : ''}"
+             @click="${() => { this.isLyricsShowing = !this.isLyricsShowing }}"
+        >
+          <div class="cover-box">
+            ${this.currentSong ? html`
+              <img src="${this.currentSong.cover}" />
+            ` : ''}
+          </div>
+          <div class="lyrics-title-box">
+            <h1>${this.currentSong?.title}</h1>
+            <h2>${this.currentSong?.artist}</h2>
+          </div>
+          <div class="lyric">${this.parsedLyrics?.currentSentence}</div>
+          <div class="lyric translation">${this.parsedLyrics?.currentSentenceTranslation}</div>
         </div>
-        <div class="lyrics-box ${this.isConnected ? '' : 'hide'}">
-          <h1>${this.currentSong?.title}</h1>
-          <h2>${this.currentSong?.artist}</h2>
+        <div class="lyrics-panel ${this.isLyricsShowing && this.isConnected ? '' : 'hide'}"
+             @click="${() => { this.isLyricsShowing = !this.isLyricsShowing }}"
+        >
+          <div class="lyrics-title-box">
+            <h1>${this.currentSong?.title}</h1>
+            <h2>${this.currentSong?.artist}</h2>
+          </div>
+          <div class="lyrics-scroll-box" id="lyrics-scroll">
+            <div class="lyrics" @click="${(e) => { e.stopPropagation() }}">
+              ${this.parsedLyrics?.lyrics.map((lyric) => html`
+                <div
+                  class="lyric ${lyric.timestamp === this.parsedLyrics?.currentSentenceStart ? 'current' : ''}"
+                >
+                  <div>${lyric.content}</div>
+                  ${lyric.translation ? html`<div class="translation">${lyric.translation}</div>` : ''}
+                </div>
+              `) || '暂无歌词'}
+            </div>
+          </div>
+          <div class="lyrics-control-box">
+            ${this.langAvailable?.length ? html`
+              <a class="btn" @click="${(e) => { e.stopPropagation(); this.nextLang() }}"
+              >${this.parsedLyrics?.langName || this.parsedLyrics?.lang || html`<i class="icon icon-translate"></i>`}</a>
+            ` : ''}
+          </div>
         </div>
         <div class="playlist-panel ${this.isConnected && this.isPlaylistShowing ? '' : 'hide'}">
           <div class="playlist">
@@ -1013,15 +1185,50 @@ class Player extends Component {
           ${locale.disconnected}
           <a class="btn" @click="${this.toggleMainWindow}"><i class="icon icon-back"></i></a>
         </div>
-        <div class="cover-box ${this.isConnected ? '' : 'hide'}">
-          ${this.currentSong ? html`
-            <img src="${this.currentSong.cover}" />
-          ` : ''}
-          <a class="btn" @click="${this.toggleMainWindow}"><i class="icon icon-back"></i></a>
+        <div class="cover-panel ${this.isLyricsShowing || !this.isConnected ? 'hide' : ''}"
+             @click="${() => { this.isLyricsShowing = !this.isLyricsShowing }}"
+        >
+          <div class="cover-box ${this.isConnected ? '' : 'hide'}">
+            ${this.currentSong ? html`
+              <img src="${this.currentSong.cover}" />
+            ` : ''}
+            <a class="btn" @click="${this.toggleMainWindow}"><i class="icon icon-back"></i></a>
+          </div>
+          <div class="lyrics-title-box ${this.isConnected ? '' : 'hide'}">
+            <h1>${this.currentSong?.title}</h1>
+            <h2>${this.currentSong?.artist}</h2>
+          </div>
+          <div class="lyric">${this.parsedLyrics?.currentSentence}</div>
+          <div class="lyric translation">${this.parsedLyrics?.currentSentenceTranslation}</div>
         </div>
-        <div class="lyrics-box ${this.isConnected ? '' : 'hide'}">
-          <h1>${this.currentSong?.title}</h1>
-          <h2>${this.currentSong?.artist}</h2>
+        <div class="lyrics-panel ${this.isLyricsShowing && this.isConnected ? '' : 'hide'}"
+             @click="${() => { this.isLyricsShowing = !this.isLyricsShowing }}"
+        >
+          <div class="back">
+            <a class="btn" @click="${this.toggleMainWindow}"><i class="icon icon-back"></i></a>
+          </div>
+          <div class="lyrics-title-box">
+            <h1>${this.currentSong?.title}</h1>
+            <h2>${this.currentSong?.artist}</h2>
+          </div>
+          <div class="lyrics-scroll-box" id="lyrics-scroll-mobile">
+            <div class="lyrics" @click="${(e) => { e.stopPropagation() }}">
+              ${this.parsedLyrics?.lyrics.map((lyric) => html`
+                <div
+                  class="lyric ${lyric.timestamp === this.parsedLyrics?.currentSentenceStart ? 'current' : ''}"
+                >
+                  <div>${lyric.content}</div>
+                  ${lyric.translation ? html`<div class="translation">${lyric.translation}</div>` : ''}
+                </div>
+              `) || '暂无歌词'}
+            </div>
+          </div>
+          <div class="lyrics-control-box">
+            ${this.langAvailable?.length ? html`
+              <a class="btn" @click="${(e) => { e.stopPropagation(); this.nextLang() }}"
+              >${this.parsedLyrics?.langName || this.parsedLyrics?.lang || html`<i class="icon icon-translate"></i>`}</a>
+            ` : ''}
+          </div>
         </div>
         <div class="control-box ${this.isConnected ? '' : 'hide'}">
           <div class="control-panel panel ${this.isVolumeControlShowing ? 'hide' : ''}">
@@ -1218,6 +1425,45 @@ class Player extends Component {
           .scrollIntoView(true)
       }
     }
+  }
+
+  scrollLyricsToCurrent () {
+    if (Date.now() - this.lastLyricsUserScrollTime < 3000) return
+    if (this.isLyricsScrollAnimating) return
+    this.isLyricsScrollAnimating = true
+    const scrollDom = this.isMobile
+      ? this.shadowRoot.querySelector('#lyrics-scroll-mobile')
+      : this.shadowRoot.querySelector('#lyrics-scroll')
+    if (!scrollDom) return
+    const needScrollToDom = scrollDom.querySelector('.lyric.current')
+    if (!needScrollToDom) return
+    const scroll = () => {
+      let currentY = scrollDom.scrollTop
+      const top = 0
+      const bottom = scrollDom.scrollHeight - scrollDom.clientHeight
+      const needScrollTop = Math.max(top, Math.min(bottom,
+        needScrollToDom.offsetTop + needScrollToDom.offsetHeight / 2 -
+        scrollDom.clientHeight * 0.4)) - currentY
+      if (needScrollTop > 1 || needScrollTop < -1) {
+        currentY += needScrollTop > 0
+          ? Math.ceil(needScrollTop / 15)
+          : Math.floor(needScrollTop / 15)
+        scrollDom.scrollTop = currentY
+        window.requestAnimationFrame(scroll)
+      } else {
+        currentY += needScrollTop
+        scrollDom.scrollTop = currentY
+        this.isLyricsScrollAnimating = false
+      }
+    }
+    window.requestAnimationFrame(scroll)
+  }
+
+  nextLang () {
+    let index = this.langAvailable.findIndex((lang) => lang.lang === this.parsedLyrics?.lang)
+    index++
+    if (index === this.langAvailable.length) index = -1
+    this.lang = this.langAvailable[index]?.lang
   }
 
   setCurrentSong (song, index) {

@@ -27,11 +27,12 @@ export const parseLrcLyrics = (function () {
         parsedTranslationLyrics = Lrc.parse(transLyrics.value)
         parsedTranslationLyrics.lyrics.sort((a, b) => (a.timestamp - b.timestamp))
         translationLrcRunner = new Runner(parsedTranslationLyrics)
-      } else {
-        originalTranslationLyrics = null
       }
-    } else {
+    }
+    if (!transLyrics) {
       originalTranslationLyrics = null
+      parsedTranslationLyrics = null
+      translationLrcRunner = null
     }
     lrcRunner.timeUpdate(time)
     if (translationLrcRunner) translationLrcRunner.timeUpdate(time)
@@ -42,8 +43,18 @@ export const parseLrcLyrics = (function () {
     } else {
       nextLyric = lrcRunner.getLyric(lrcRunner.curIndex() + 1)
     }
+    for (let i = 0; i < parsedLyrics.lyrics.length; i++) {
+      if (transLyrics) {
+        const trans = parsedTranslationLyrics.lyrics[i]
+        if (trans) {
+          parsedLyrics.lyrics[i].translation = trans.content
+        }
+      } else {
+        delete parsedLyrics.lyrics[i].translation
+      }
+    }
     return {
-      lyrics: parsedLyrics,
+      lyrics: parsedLyrics.lyrics,
       lang: transLyrics?.lang || null,
       langName: transLyrics?.name || null,
       currentSentence: currentLyric.content,
