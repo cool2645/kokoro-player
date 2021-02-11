@@ -97,6 +97,7 @@ export default class Track extends LitElement {
 
   startDragging (e) {
     this.dragging = true
+    e.stopPropagation()
     this.drag(e)
     if (e.type === 'mousedown') {
       document.addEventListener('mousemove', this.drag)

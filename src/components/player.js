@@ -1347,6 +1347,7 @@ class Player extends Component {
 
   startDragging (e) {
     this.dragging = true
+    e.stopPropagation()
     const e1 = (typeof window.TouchEvent !== 'undefined' && e instanceof window.TouchEvent)
       ? e.changedTouches[0]
       : e
@@ -1469,6 +1470,7 @@ class Player extends Component {
 
   startDragToGoBack (e) {
     if (!window.TouchEvent || !(e instanceof window.TouchEvent)) return
+    e.stopPropagation()
     const e1 = e.changedTouches[0]
     this.cursorX = e1.clientX
     this.mobileLeft = 0

@@ -454,6 +454,7 @@ export default class DesktopLyrics extends LitElement {
 
   startDragging (e) {
     this.dragging = true
+    e.stopPropagation()
     const e1 = (typeof window.TouchEvent !== 'undefined' && e instanceof window.TouchEvent)
       ? e.changedTouches[0]
       : e
