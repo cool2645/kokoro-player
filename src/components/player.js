@@ -39,6 +39,7 @@ class Player extends Component {
       right: { type: Number },
       bottom: { type: Number },
       mobileDefaultSide: { type: String },
+      mobileLeft: { type: Number },
       desktopLyricsVerticalCenter: { type: Number },
       desktopLyricsHorizontalCenter: { type: Number },
       desktopLyricsColorSchemes: { type: Array },
@@ -904,6 +905,8 @@ class Player extends Component {
     this.drag = this.drag.bind(this)
     this.stopDragging = this.stopDragging.bind(this)
     this.onLyricsUserScroll = this.onLyricsUserScroll.bind(this)
+    this.dragToGoBack = this.dragToGoBack.bind(this)
+    this.stopDragToGoBack = this.stopDragToGoBack.bind(this)
     this.lastLyricsUserScrollTime = Date.now()
     this.left = 0
     this.top = 100
@@ -1102,7 +1105,7 @@ class Player extends Component {
                   <div>${lyric.content}</div>
                   ${lyric.translation ? html`<div class="translation">${lyric.translation}</div>` : ''}
                 </div>
-              `) || '暂无歌词'}
+              `) || locale.noLyrics}
             </div>
           </div>
           <div class="lyrics-control-box">
@@ -1180,6 +1183,9 @@ class Player extends Component {
       <div
         class="main-window mobile ${this.darkMode ? 'dark' : ''
         } ${this.isConnected ? '' : 'disconnected'} ${this.shouldMobileShowMainWindow ? '' : 'hide'}"
+        style="${this.shouldMobileShowMainWindow
+          ? `${this.mobileLeft ? 'transition: none;' : ''} left: ${this.mobileLeft}px; right: calc(-${this.mobileLeft}px)` : ''}"
+        @touchstart="${this.startDragToGoBack}"
       >
         <div class="disconnected-panel ${this.isConnected ? 'hide' : ''}">
           ${locale.disconnected}
@@ -1326,13 +1332,15 @@ class Player extends Component {
     this.isDesktopLyricsShowing = !this.isDesktopLyricsShowing
   }
 
-  toggleMainWindow () {
+  toggleMainWindow (e) {
+    if (e instanceof window.Event) e.stopPropagation()
     this.shouldMobileShowMainWindow = !this.shouldMobileShowMainWindow
     if (this.shouldMobileShowMainWindow) {
       document.body.style.overflow = 'hidden'
     } else {
       document.body.style.overflow = ''
     }
+    this.mobileLeft = 0
   }
 
   startDragging (e) {
@@ -1457,6 +1465,35 @@ class Player extends Component {
       }
     }
     window.requestAnimationFrame(scroll)
+  }
+
+  startDragToGoBack (e) {
+    if (!window.TouchEvent || !(e instanceof window.TouchEvent)) return
+    const e1 = e.changedTouches[0]
+    this.cursorX = e1.clientX
+    this.mobileLeft = 0
+    document.addEventListener('touchmove', this.dragToGoBack)
+    document.addEventListener('touchend', this.stopDragToGoBack)
+    document.addEventListener('touchcancel', this.stopDragToGoBack)
+  }
+
+  dragToGoBack (e) {
+    if (!window.TouchEvent || !(e instanceof window.TouchEvent)) return
+    e = e.changedTouches[0]
+    this.mobileLeft += e.clientX - this.cursorX
+    if (this.mobileLeft < 0) this.mobileLeft = 0
+    this.cursorX = e.clientX
+  }
+
+  stopDragToGoBack () {
+    if (this.mobileLeft < (document.documentElement || document.body).clientWidth / 2) {
+      this.mobileLeft = 0
+    } else {
+      this.toggleMainWindow()
+    }
+    document.removeEventListener('touchmove', this.dragToGoBack)
+    document.removeEventListener('touchend', this.stopDragToGoBack)
+    document.removeEventListener('touchcancel', this.stopDragToGoBack)
   }
 
   nextLang () {

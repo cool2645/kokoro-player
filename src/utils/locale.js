@@ -5,8 +5,9 @@ export const zh_Hans = {
   playAll: '播放全部',
   added: '已添加',
   addToPlaylist: '添加到列表',
-  banner: '心铃 - 音乐你的网站',
-  disconnected: '心铃播放器未连接'
+  banner: '嘿，来点音乐吧',
+  disconnected: 'Kokoro 播放器未连接',
+  noLyrics: '暂无歌词'
 }
 
 export const en = {
@@ -16,7 +17,8 @@ export const en = {
   added: 'Added',
   addToPlaylist: 'Add to Playlist',
   banner: 'Kokoro - Music Your Website',
-  disconnected: 'Kokoro Disconnected'
+  disconnected: 'Kokoro Disconnected',
+  noLyrics: 'No lyrics'
 }
 
 export const using = Object.assign({}, zh_Hans)
