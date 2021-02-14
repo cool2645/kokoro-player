@@ -36,6 +36,7 @@
     "@babel/core": "^7.12.10",
     "@babel/plugin-proposal-nullish-coalescing-operator": "^7.12.1",
     "@babel/preset-env": "^7.12.11",
+    "@purtuga/web-components-polyfill-webpack-plugin": "^2.1.0",
     "@vaadin/router": "^1.4.3",
     "@webcomponents/webcomponentsjs": "^2.0.0",
     "babel-loader": "^8.2.2",

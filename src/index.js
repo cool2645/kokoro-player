@@ -1,9 +1,21 @@
 import './iconfont/iconfont.css'
 
-export { default as Kokoro, PLAY_ORDER_SHUFFLE, PLAY_ORDER_LOOP, PLAY_ORDER_SINGLE } from 'kokoro'
+import Kokoro, { PLAY_ORDER_SHUFFLE, PLAY_ORDER_LOOP, PLAY_ORDER_SINGLE } from 'kokoro'
 
-export { default as Player } from './components/player'
-export { default as SingleCard } from './components/single-card'
-export { default as PlaylistCard } from './components/playlist-card'
-export { default as Provider } from './utils/provider'
-export * as locale from './utils/locale'
+import Player from './components/player'
+import SingleCard from './components/single-card'
+import PlaylistCard from './components/playlist-card'
+import Provider from './utils/provider'
+import * as locale from './utils/locale'
+export {
+  Kokoro, Player, SingleCard, PlaylistCard, Provider,
+  locale, PLAY_ORDER_SHUFFLE, PLAY_ORDER_LOOP, PLAY_ORDER_SINGLE
+}
+export default {
+  Kokoro,
+  PLAY_ORDER_SHUFFLE,
+  PLAY_ORDER_LOOP,
+  PLAY_ORDER_SINGLE,
+  Provider,
+  locale
+}

@@ -827,6 +827,11 @@
   resolved "https://registry.npm.taobao.org/@polka/url/download/@polka/url-1.0.0-next.11.tgz#aeb16f50649a91af79dbe36574b66d0f9e4d9f71"
   integrity sha1-rrFvUGSaka952+NldLZtD55Nn3E=
 
+"@purtuga/web-components-polyfill-webpack-plugin@^2.1.0":
+  version "2.1.0"
+  resolved "https://registry.npmjs.org/@purtuga/web-components-polyfill-webpack-plugin/-/web-components-polyfill-webpack-plugin-2.1.0.tgz#53eb723cc91fc8bbb43c1a1678417ee68cd5f829"
+  integrity sha512-90u2kiW+oFgo7NBVGGdzYfhGla3+zmdUomFtns/30YjlyHiaZZsx9htKu+uBkxEHeob4qCWGOGQ/aRjVSZxkyA==
+
 "@types/glob@^7.1.1":
   version "7.1.3"
   resolved "https://registry.yarnpkg.com/@types/glob/-/glob-7.1.3.tgz#e6ba80f36b7daad2c685acd9266382e68985c183"

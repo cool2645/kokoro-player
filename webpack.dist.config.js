@@ -2,6 +2,7 @@ const path = require('path')
 
 const BannerPlugin = require('webpack').BannerPlugin
 const TerserPlugin = require('terser-webpack-plugin')
+const WebComponentsPolyfill = require('@purtuga/web-components-polyfill-webpack-plugin')
 
 const pkg = require('./package.json')
 
@@ -12,6 +13,7 @@ module.exports = ({ mode }) => {
     output: {
       library: 'KokoroPlayer',
       libraryTarget: 'umd',
+      libraryExport: 'default',
       filename: 'kokoro-player.min.js',
       path: path.resolve(__dirname, 'dist')
     },
@@ -44,6 +46,7 @@ module.exports = ({ mode }) => {
     },
     devtool: mode === 'development' ? 'eval-source-map' : 'source-map',
     plugins: [
+      new WebComponentsPolyfill(),
       new BannerPlugin(`${pkg.name} - ${pkg.description}
 --------
 @version ${pkg.version}
