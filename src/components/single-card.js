@@ -19,7 +19,7 @@ class SingleCard extends Component {
       album: { type: String },
       src: { type: String },
       cover: { type: String },
-      lyrics: { type: String },
+      lyrics: { type: Object },
       parsedLyrics: { type: Object },
       primaryColor: { type: String },
       secondaryColor: { type: String },
@@ -79,7 +79,9 @@ class SingleCard extends Component {
       }
       
       .control-panel {
-        flex: 1 1 auto;
+        box-sizing: border-box;
+        width: 60%;
+        max-width: 300px;
         padding: 15px 10px 15px 20px;
         display: flex;
         flex-direction: column;
