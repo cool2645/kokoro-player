@@ -57,8 +57,6 @@ window.player.setPlaylist([{
 [ti:冬眠]
 [al:冬眠]
 [length: 4:30]
-[00:00.00]
-[00:09.48]
 [00:20.57]司南 - dōngmián
 [00:35.58]xiangkou dengguang huminghumie
 [00:42.16]shouzhong tiankafei yi lengque
@@ -131,8 +129,6 @@ window.player.setPlaylist([{
 [ti:我乐意（Cover：许嵩）]
 [al:我乐意]
 [length: 4:03]
-[00:00.00]
-[00:04.10]
 [00:08:50]玖笙 - wǒ lèyì
 [00:13.27]xiaosa ru wo zuijin que bian de youdian mingan
 [00:18.14]banxiaoshi shoubudao ni xunxi jiu hui zuolibuan
@@ -224,8 +220,6 @@ window.player.setPlaylist([{
 [ti:绿茶（Cover：灰色）]
 [al:孙羽幽翻唱集]
 [length: 3:59]
-[00:00.00]
-[00:08.97]
 [00:16:69]孙羽幽 - lǜchá
 [00:26.35][02:30.48]xiaoxiaode bufa gen zhe waipo cai lücha
 [00:29.77][02:33.95]qiuyin zuan chu nitu kan xiao yehua
@@ -398,8 +392,6 @@ window.player.setPlaylist([{
 [ti:あの頃～ジンジンバオヂュオニー～ (zerokoi ver.)]
 [al:ゼロ恋]
 [length: 5:43]
-[00:00.00]
-[00:05.01]
 [00:10.71]whiteeeen - anogoro ~ jinjinbaozheni ~
 [00:16.81]tsukihi ga nagarete
 [00:19.72]afure dasu omoide
@@ -497,8 +489,6 @@ window.player.setPlaylist([{
 [ti:你的答案]
 [al:你的答案]
 [length: 3:40]
-[00:00.00]
-[00:06.26]
 [00:12.52]阿冗 - nǐ de dáàn
 [00:25.03][01:38.84][03:14.68]yexu shijie jiu zheyang
 [00:27.88][01:41.96][03:17.23]wo ye hai zai lu shang
@@ -555,8 +545,6 @@ window.player.setPlaylist([{
 [ti:真的爱你]
 [al:25周年精选]
 [length: 4:38]
-[00:00.00]
-[00:07.91]
 [00:15.93]Beyond - dzan¹dik⁷ oi³ nei⁵
 [00:24.82][01:35.01]moufaat ho sausikdik jatdoey sau daaitsoet wannyn wingjyn dzoi buihau
 [00:31.84][01:42.05]dzungsi loso tsidzung gwaandzy batdung dzansik taai noigau

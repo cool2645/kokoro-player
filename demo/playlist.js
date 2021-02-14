@@ -132,9 +132,7 @@ class PlaylistPage extends Locale {
         }, {
           lang: 'phonetic-latin',
           name: 'Rōmaji',
-          value: `[00:00.000]
-[00:00.505]
-[00:01.10]yoru no ashioto kara nigeru yō ni
+          value: `[00:01.10]yoru no ashioto kara nigeru yō ni
 [00:06.17]heya no sumikko de kagi o kaketa
 [00:10.42]yane ga kizamu amaoto kimi no toiki
 [00:15.81]karappo no migite wa mada tsumetai mama
@@ -347,8 +345,7 @@ class PlaylistPage extends Locale {
         }, {
           lang: 'phonetic-latin',
           name: 'Rōmaji',
-          value: `[00:00.00]
-[00:23.00]naki-sōda
+          value: `[00:23.00]naki-sōda
 [00:26.00]kyōmomata
 [00:29.00]shippai shi chatta
 [00:34.00]kon'na toki anatanara
@@ -465,6 +462,47 @@ class PlaylistPage extends Locale {
 [04:28.30]为你送行
 [04:34.80]所以现在 向照片里的笑容
 [04:40.20]说声晚安~`
+        }, {
+          lang: 'phonetic-latin',
+          name: 'Rōmaji',
+          value: `[00:00.50]nayuta - yamanai ame ni hanataba o
+[00:26.30]mado o kumoraseru tameiki
+[00:31.80]yubisaki o nurashite kaku kasa
+[00:37.20]furi yami-sō ninai
+[00:40.70]ame no oto kyō wa kimi ni aenai no ka na
+[00:48.20]son'na yoru wa kyō mo hitori de kimi o omotte
+[00:55.30]amaoto ni magirete nakijakuru koe
+[01:01.30]tewotsunaide nemuttetara ī na
+[01:06.80]nante tsubuyaku hitorigoto
+[01:12.40][04:10.70]ashita ame ga yande itanara
+[01:18.40][04:16.70]kimi ga nemuru machi ni ai ni ikou
+[01:24.60]dakara ima wa denwa-goshi no koe de
+[01:32.00]oyasumi
+[01:48.20]itsuka owaru toki datte
+[01:54.60]kokoro no naka de warau kiminokoe
+[01:59.00]ashitane sekai ga kiete shimatte mo
+[02:05.40]mune no itami wa kienai no ka na
+[02:10.20]kimi no inai shizukana yoru ni
+[02:13.70]nomikoma renai yō ni
+[02:17.30]sotto kakushita hitotsu-bun no koi
+[02:23.50]kimi no ondo de mezametara ī na
+[02:28.60]nante ga iita esoragoto
+[02:34.40]yoru o kizamu tokei denshi-on
+[02:40.40]itazura ni kimi o mushi nante
+[02:46.50]warau koe to furueru yubi
+[02:52.40]jōzu ni watashi wa kakuseta ka na
+[02:57.60]futarikiri no hako ni wa kowai yume
+[03:03.80]sukoshizutsu hibi hare kowareru
+[03:09.90]mata aeru yo dakara ima wa
+[03:15.30]usotsuki oyasumi
+[03:47.30]koyubi ni karamu akai ito no saki
+[03:53.40]tsunagatte iru kimi wa kumonoue
+[03:59.70]mie teru ka na kiminotameni
+[04:05.50]jōzu ni waraeru yō ni natta yo
+[04:23.20]himawari no ne hana mitai ni
+[04:28.30]waratte miokurou
+[04:34.80]dakara ima wa shashin-goshi no
+[04:40.20]egao ni oyasumi`
         }]
       }
     }, {
@@ -545,6 +583,39 @@ class PlaylistPage extends Locale {
 [03:53.80]不要再这样笑了
 [03:57.10]已经快要忘却的你的声音
 [04:00.20]又开始在我的脑内响起`
+        }, {
+          lang: 'phonetic-latin',
+          name: 'Rōmaji',
+          value: `[00:15.00]みゆはん - hanabi no yōna koi
+[00:25.70]shichigatsu no ano hi ni itta rainen mo mata kono hanabi o
+[00:31.50]futari de mata mirukara mō hanarenaide
+[00:38.20]sonotoki boku wa mada itsuka owari ga kuru nante koto mo
+[00:44.10]kimi ga dareka no mono ni naru koto mo shirazu ni
+[00:50.70]sayonara no junbi ga deki tenai sono yoru ni
+[01:03.20]yume no nakanokimi ni fureta
+[01:09.30]mezameruto mō kiete nakunatteta
+[01:16.40][04:06.80]ā kimi ga inai to dakishimeru koto mo dekinai yo
+[01:22.80][04:13.20]mō yakimochi o yaku fukigen-sōna ano kao mo
+[01:29.00][04:19.60]kenka shite nakanaori shita ato no nanigenai nichijō kaiwa mo
+[01:35.60][04:26.10]ā mō nainda
+[01:54.30]sora ni agaru uchiagehanabi
+[01:57.20]hiraite wa sugu kieteyuku marude hakanaku chitte ku
+[02:03.00]kimi ga ukanda
+[02:06.50]shichigatsu no ano hi ni itta wasure mo shinai ano kotoba
+[02:12.50]aishiteruyo zutto korekara mo yoroshiku ne
+[02:19.20]sayonara no katachi ni kimi no kuchi wa ugoku
+[02:31.70]amarini mo totsuzen sugite
+[02:38.20]iitaikotomoiezuni kie tetta
+[02:44.80]ā kimigainai to gomen arigatō mo ienai yo
+[02:51.10]mō terete hanikamu akaku somatte yuku hoho mo
+[02:57.40]nanimokamo torikaesenakute
+[03:00.90]kon'na toki kimi ga yoko ni ite kuretara na
+[03:05.80]ā sabishiku natta
+[03:35.10]sayonara no junbi ga deki hajimeta sono yoru ni
+[03:47.50]yume no nakanokimi wa warau
+[03:53.80]mō son'na-gao de warawanaide
+[03:57.10]wasurekakete ita kiminokoe
+[04:00.20]mata boku no atama no naka hibiite ku`
         }]
       }
     }, {
@@ -618,6 +689,37 @@ class PlaylistPage extends Locale {
 [02:12.10]哭丧着脸的蝉仿佛在笑夏天的汗水
 [02:35.10]你笑着 我唱着
 [02:48.00]在你面前 让我保持坚强吧`
+        }, {
+          lang: 'phonetic-latin',
+          name: 'Rōmaji',
+          value: `[00:05.50]らいらい。 - ushinau
+[00:15.50]kimigasukidakara
+[00:17.30]kimi no kokoro no kizu ni boku o nutta
+[00:21.00]kimi no kokoro no okusoko no
+[00:23.80]fukaku shizumu kikkake o kono-te ni tsukanda
+[00:28.30]kimigasukidakara
+[00:30.10]kimi no daisukina natsu o suki ni natta
+[00:33.80]yakeru yōna hizashi ni koshi o oroshite
+[00:37.20]tokete nagareta niji ni waratta
+[00:53.10]tachinarabu aiso mo tsukuriwarai mo zenbu sutesatte
+[00:59.70]tatazunde iru
+[01:01.70]chūshajō no kagerō ni kono mi o nagesutete
+[01:06.10]hanikande iru
+[01:08.00]natsu no ase ni heso o mageta niji ga warau yō ni
+[01:12.60][02:17.10]kyō mo
+[01:18.60][01:31.40][02:25.90][02:41.80][02:55.00][03:07.40]sayonara jā ne kyō mo baibai
+[01:24.80]kimi wa utatte boku wa waratte
+[01:28.00][02:38.50]gitā o motte kasureta koe de
+[01:37.60][03:13.70]aishi teru tte shinja ya datte
+[01:40.90][02:51.10][03:16.90]son'na uta dake boku ni nokoshite
+[01:57.40]tachisukumu
+[01:59.30]kyōfu mo ushirometa-sa mo hiza o kakaekonde
+[02:03.80]iroaseru
+[02:05.60]chūshajō no kagerō ni yūki o furishibotte
+[02:10.10]iki o suru
+[02:12.10]natsu no ase ni beso o kaita semi ga warau yō ni
+[02:35.10]kimi wa waratte boku wa utatte
+[02:48.00]kimi no mae dake tsuyoku i sasete`
         }]
       }
     }]

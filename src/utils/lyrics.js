@@ -43,10 +43,14 @@ export const parseLrcLyrics = (function () {
     } else {
       nextLyric = lrcRunner.getLyric(lrcRunner.curIndex() + 1)
     }
-    for (let i = 0; i < parsedLyrics.lyrics.length; i++) {
+    for (let i = 0, j = 0; i < parsedLyrics.lyrics.length; i++) {
       if (transLyrics) {
-        const trans = parsedTranslationLyrics.lyrics[i]
-        if (trans) {
+        let trans = parsedTranslationLyrics.lyrics[j]
+        while (trans.timestamp < parsedLyrics.lyrics[i].timestamp) {
+          j++
+          trans = parsedTranslationLyrics.lyrics[j]
+        }
+        if (trans && trans.timestamp === parsedLyrics.lyrics[i].timestamp) {
           parsedLyrics.lyrics[i].translation = trans.content
         }
       } else if (lang !== undefined) {

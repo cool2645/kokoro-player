@@ -82,11 +82,6 @@ class SoloPage extends Locale {
 [ti:如果你能够做我男朋友]
 [al:如果你能够做我男朋友]
 [length: 2:41]
-[00:00.00]
-[00:06.20]
-[00:13.17]
-[00:16.30]
-[00:19.58]
 [00:22.13][01:22.75]qingwen ni shi shenme xingzuo
 [00:25.00][01:25.03]neng bu neng gaosu wo
 [00:27.13][01:27.08]ni shi shizizuo haishi shuipingzuo
