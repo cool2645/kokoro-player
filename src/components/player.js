@@ -907,6 +907,7 @@ class Player extends Component {
     this.dragToGoBack = this.dragToGoBack.bind(this)
     this.stopDragToGoBack = this.stopDragToGoBack.bind(this)
     this.hideLyricsIfClicked = this.hideLyricsIfClicked.bind(this)
+    this.lyricsMouseTouchDown = this.lyricsMouseTouchDown.bind(this)
     this.lastLyricsUserScrollTime = Date.now()
     this.left = 0
     this.top = 100
@@ -1104,7 +1105,12 @@ class Player extends Component {
             <h2>${this.currentSong?.artist}</h2>
           </div>
           <div class="lyrics-scroll-box" id="lyrics-scroll">
-            <div class="lyrics" @click="${(e) => { e.stopPropagation() }}">
+            <div 
+              class="lyrics"
+              @click="${this.hideLyricsIfClicked}"
+              @mousedown="${this.lyricsMouseTouchDown}"
+              @touchstart="${this.lyricsMouseTouchDown}"
+            >
               ${this.parsedLyrics?.lyrics.map((lyric) => html`
                 <div
                   class="lyric ${lyric.timestamp === this.parsedLyrics?.currentSentenceStart ? 'current' : ''}"
@@ -1229,9 +1235,9 @@ class Player extends Component {
           <div class="lyrics-scroll-box" id="lyrics-scroll-mobile">
             <div
               class="lyrics"
-              @click="${(e) => { e.stopPropagation() }}"
-              @touchstart="${(e) => { this.touchYStart = e.changedTouches[0].clientY }}"
-              @touchend="${this.hideLyricsIfClicked}"
+              @click="${this.hideLyricsIfClicked}"
+              @mousedown="${this.lyricsMouseTouchDown}"
+              @touchstart="${this.lyricsMouseTouchDown}"
             >
               ${this.parsedLyrics?.lyrics.map((lyric) => html`
                 <div
@@ -1342,9 +1348,22 @@ class Player extends Component {
     `
   }
 
+  lyricsMouseTouchDown (e) {
+    if (window.TouchEvent && e instanceof window.TouchEvent) {
+      e = e.changedTouches[0]
+    }
+    this.lyricsMouseTouchDownY = e.clientY
+    this.lyricsMouseTouchDownX = e.clientX
+  }
+
   hideLyricsIfClicked (e) {
-    if (Math.abs(e.changedTouches[0].clientY - this.touchYStart) < 30) {
-      setTimeout(() => { this.isLyricsShowing = !this.isLyricsShowing })
+    e.stopPropagation()
+    if (Math.abs(e.clientY - this.lyricsMouseTouchDownY) < 30 &&
+      Math.abs(e.clientX - this.lyricsMouseTouchDownX) < 30
+    ) {
+      this.isLyricsShowing = !this.isLyricsShowing
+      this.lyricsMouseTouchDownY = null
+      this.lyricsMouseTouchDownX = null
     }
   }
 
