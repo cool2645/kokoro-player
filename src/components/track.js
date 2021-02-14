@@ -26,6 +26,14 @@ export default class Track extends LitElement {
         overflow: hidden;
         cursor: pointer;
       }
+      
+      .touch-assist {
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: -5px;
+        bottom: -5px;
+      }
 
       .progress {
         height: 100%;
@@ -74,8 +82,12 @@ export default class Track extends LitElement {
 
   render () {
     return html`
+      <div class="touch-assist"
+           @touchstart="${this.startDragging}"
+      ></div>
       <div class="bar" id="bar"
            @mousedown="${this.startDragging}"
+           @touchstart="${this.startDragging}"
       >
         <div class="progress"></div>
         ${this.buffered?.map((buf) => html`
