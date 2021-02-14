@@ -974,7 +974,7 @@ class Player extends Component {
   updated (changedProperties) {
     if (changedProperties.has('playing') || changedProperties.has('lyrics') || changedProperties.has('lang')) {
       this.parsedLyrics = parseLyrics(this.lyrics,
-        this.playing.currentTime, this.playing.totalTime, this.lang)
+        this.playing?.currentTime, this.playing?.totalTime, this.lang)
       this.scrollLyricsToCurrent()
     }
   }
@@ -1076,8 +1076,8 @@ class Player extends Component {
           <kokoro-progress
             .played="${this.played}"
             .buffered="${this.buffered}"
-            .currentTime="${this.playing.currentTime}"
-            .totalTime="${this.playing.totalTime}"
+            .currentTime="${this.playing?.currentTime}"
+            .totalTime="${this.playing?.totalTime}"
             @kokoro-change="${(e) => { if (e.detail.commit) this.setCurrentProgress(e.detail.progress) }}"
           ></kokoro-progress>
         </div>
