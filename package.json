@@ -8,6 +8,7 @@
     "start": "webpack-dev-server --env.mode development",
     "develop": "webpack-dev-server --env.mode development",
     "build": "webpack --env.mode production && webpack --env.mode production --config=webpack.dist.config.js",
+    "version": "webpack --env.mode production --config=webpack.dist.config.js",
     "lint": "eslint --fix .",
     "gitadd": "git add -A"
   },
