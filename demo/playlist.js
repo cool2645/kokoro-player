@@ -816,7 +816,7 @@ class PlaylistPage extends Locale {
     <!-- Player -->
     <kokoro-player${this.darkMode ? `
       darkMode` : ''}
-      lang="${this._lang}"
+      language="${this._lang}"
       top="100"
       left="0"
       mobileDefaultSide="right"

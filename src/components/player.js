@@ -16,7 +16,7 @@ class Player extends Component {
       playing: { type: Object },
       lyrics: { type: Object },
       parsedLyrics: { type: Object },
-      lang: { type: String },
+      language: { type: String },
       langAvailable: { type: Array },
       pnKind: { type: String },
       pnKindAvailable: { type: Array },
@@ -926,7 +926,7 @@ class Player extends Component {
     this.desktopLyricsColorSchemeIndex = 0
     this.desktopLyricsFontSize = 30
     this.desktopLyricsMobileFontSize = 14
-    this.lang = navigator.languages?.length ? navigator.languages[0] : navigator.language
+    this.language = navigator.languages?.length ? navigator.languages[0] : navigator.language
   }
 
   firstUpdated (_) {
@@ -974,7 +974,7 @@ class Player extends Component {
   updated (changedProperties) {
     if (changedProperties.has('playing') || changedProperties.has('lyrics') || changedProperties.has('lang')) {
       this.parsedLyrics = parseLyrics(this.lyrics,
-        this.playing?.currentTime, this.playing?.totalTime, this.lang)
+        this.playing?.currentTime, this.playing?.totalTime, this.language)
       this.scrollLyricsToCurrent()
     }
   }
@@ -1332,7 +1332,7 @@ class Player extends Component {
         .paused="${this.paused}"
         .langAvailable="${this.langAvailable}"
         @kokoro-action="${(e) => this[e.detail.action]()}"
-        @kokoro-change="${(e) => { this.lang = e.detail.lang }}"
+        @kokoro-change="${(e) => { this.language = e.detail.lang }}"
       ></kokoro-desktop-lyrics>
     `
   }
@@ -1509,7 +1509,7 @@ class Player extends Component {
     let index = this.langAvailable.findIndex((lang) => lang.lang === this.parsedLyrics?.lang)
     index++
     if (index === this.langAvailable.length) index = -1
-    this.lang = this.langAvailable[index]?.lang || null
+    this.language = this.langAvailable[index]?.lang || null
   }
 
   setCurrentSong (song, index) {
