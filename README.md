@@ -1,7 +1,7 @@
 # 💘 Kokoro Player
 
 [![Version](https://flat.badgen.net/npm/v/kokoro-player)](https://npmjs.com/package/kokoro-player)
-[![Gzipped Bundle Size](https://flat.badgen.net/bundlephobia/minzip/kokoro-player)](https://bundlephobia.com/result?p=kokoro-player)
+[![Gzipped Bundle Size](https://flat.badgen.net/badgesize/gzip/cool2645/kokoro-player/master/dist/kokoro-player.min.js)](https://bundlephobia.com/result?p=kokoro-player)
 [![JavaScript Style Guide](https://flat.badgen.net/badge/code%20style/standard/green)](https://standardjs.com)
 [![Gitmoji](https://flat.badgen.net/badge/gitmoji/%F0%9F%98%9C%20%F0%9F%98%8D/FFDD67)](https://gitmoji.carloscuesta.me)
 
