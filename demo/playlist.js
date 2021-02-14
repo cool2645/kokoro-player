@@ -831,6 +831,7 @@ class PlaylistPage extends Locale {
       langCode: 'javascript',
       lang: 'JavaScript',
       code: `import { Kokoro, Provider } from 'kokoro-player' 
+// const { Kokoro, Provider } = window.KokoroPlayer
 
 window.player = new Kokoro()
 window.customElements.define('kokoro-provider', Provider${this.connected ? '.connect(window.player)' : ''})

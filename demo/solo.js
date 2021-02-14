@@ -214,7 +214,8 @@ class SoloPage extends Locale {
         }, {
           langCode: 'javascript',
           lang: 'JavaScript',
-          code: `import { Kokoro, Provider, PLAY_ORDER_LOOP } from 'kokoro-player' 
+          code: `import { Kokoro, Provider, PLAY_ORDER_LOOP } from 'kokoro-player'
+// const { Kokoro, Provider, PLAY_ORDER_LOOP } = window.KokoroPlayer
 
 window.player = new Kokoro()
 window.customElements.define('kokoro-provider', Provider${this.connected ? '.connect(window.player)' : ''})
