@@ -2,6 +2,7 @@ const path = require('path')
 
 const BannerPlugin = require('webpack').BannerPlugin
 const TerserPlugin = require('terser-webpack-plugin')
+const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer')
 
 const pkg = require('./package.json')
 
@@ -44,6 +45,7 @@ module.exports = ({ mode }) => {
     },
     devtool: mode === 'development' ? 'eval-source-map' : 'source-map',
     plugins: [
+      new BundleAnalyzerPlugin(),
       new BannerPlugin(`${pkg.name} - ${pkg.description}
 --------
 @version ${pkg.version}
