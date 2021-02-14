@@ -18,6 +18,7 @@ export default class Track extends LitElement {
         display: block;
         height: 3px;
         user-select: none;
+        position: relative;
       }
       
       .bar {

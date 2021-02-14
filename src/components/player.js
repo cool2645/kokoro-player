@@ -719,10 +719,9 @@ class Player extends Component {
         position: fixed;
         top: 0;
         left: 0;
-        bottom: 0;
         right: 0;
         width: auto;
-        height: auto;
+        height: 100%;
         visibility: visible;
         border-radius: 0;
         transition: left 250ms, right 250ms;
@@ -907,6 +906,7 @@ class Player extends Component {
     this.onLyricsUserScroll = this.onLyricsUserScroll.bind(this)
     this.dragToGoBack = this.dragToGoBack.bind(this)
     this.stopDragToGoBack = this.stopDragToGoBack.bind(this)
+    this.hideLyricsIfClicked = this.hideLyricsIfClicked.bind(this)
     this.lastLyricsUserScrollTime = Date.now()
     this.left = 0
     this.top = 100
@@ -1227,7 +1227,12 @@ class Player extends Component {
             <h2>${this.currentSong?.artist}</h2>
           </div>
           <div class="lyrics-scroll-box" id="lyrics-scroll-mobile">
-            <div class="lyrics" @click="${(e) => { e.stopPropagation() }}">
+            <div
+              class="lyrics"
+              @click="${(e) => { e.stopPropagation() }}"
+              @touchstart="${(e) => { this.touchYStart = e.changedTouches[0].clientY }}"
+              @touchend="${this.hideLyricsIfClicked}"
+            >
               ${this.parsedLyrics?.lyrics.map((lyric) => html`
                 <div
                   class="lyric ${lyric.timestamp === this.parsedLyrics?.currentSentenceStart ? 'current' : ''}"
@@ -1335,6 +1340,12 @@ class Player extends Component {
         @kokoro-change="${(e) => { this.language = e.detail.lang }}"
       ></kokoro-desktop-lyrics>
     `
+  }
+
+  hideLyricsIfClicked (e) {
+    if (Math.abs(e.changedTouches[0].clientY - this.touchYStart) < 30) {
+      setTimeout(() => { this.isLyricsShowing = !this.isLyricsShowing })
+    }
   }
 
   toggleDesktopLyrics () {
