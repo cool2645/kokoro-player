@@ -1,6 +1,7 @@
 const path = require('path')
 
 const BannerPlugin = require('webpack').BannerPlugin
+const TerserPlugin = require('terser-webpack-plugin')
 
 const pkg = require('./package.json')
 
@@ -36,6 +37,10 @@ module.exports = ({ mode }) => {
           loader: 'url-loader'
         }
       ]
+    },
+    optimization: {
+      minimize: true,
+      minimizer: [new TerserPlugin()]
     },
     devtool: mode === 'development' ? 'eval-source-map' : 'source-map',
     plugins: [
