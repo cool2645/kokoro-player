@@ -3,7 +3,7 @@
   "description": "💘 A modern, light and elegant music player, powered with web component.",
   "main": "dist/kokoro-player.min.js",
   "module": "src/index.js",
-  "version": "0.1.0-beta.4",
+  "version": "0.1.0-beta.5",
   "scripts": {
     "start": "webpack-dev-server --env.mode development",
     "develop": "webpack-dev-server --env.mode development",
