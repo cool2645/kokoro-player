@@ -1,6 +1,6 @@
 {
   "name": "kokoro-player",
-  "description": "💘 All you need is a modern, super light and elegant music player, powered with web component.",
+  "description": "💘 A modern, light and elegant music player, powered with web component.",
   "main": "dist/kokoro-player.min.js",
   "module": "src/index.js",
   "version": "0.0.1",
