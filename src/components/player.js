@@ -1064,7 +1064,7 @@ class Player extends Component {
               <i class="icon icon-volume"></i>
               <kokoro-track
                 id="volume-track"
-                .played="${this.player.volume}"
+                .played="${this.player?.volume}"
                 .buffered="${[0, 1]}"
                 @kokoro-change="${(e) => this.setVolume(e.detail.progress)}"
               ></kokoro-track>
@@ -1124,7 +1124,7 @@ class Player extends Component {
         </div>
         <div class="playlist-panel ${this.isConnected && this.isPlaylistShowing ? '' : 'hide'}">
           <div class="playlist">
-            ${this.playlist.map((song, index) => html`
+            ${this.playlist?.map((song, index) => html`
               <div class="playlist-item-box" @click="${() => { this.setCurrentSong(song, index) }}">
                 <div class="playlist-item ${this.isCurrentSong(song) ? 'current' : ''}">
                   <a class="remove" @click="${() => { this.removeSong(index) }}"
@@ -1139,7 +1139,7 @@ class Player extends Component {
             class="playlist-close"
             @click="${this.togglePlaylist}"
           ><i class="icon icon-close"></i></a>
-          ${this.playlist.length ? html`
+          ${this.playlist?.length ? html`
             <a
               class="playlist-clear"
               @click="${() => { this.clearPlaylist() }}"
@@ -1269,7 +1269,7 @@ class Player extends Component {
               <i class="icon icon-volume"></i>
               <kokoro-track
                 id="volume-track"
-                .played="${this.player.volume}"
+                .played="${this.player?.volume}"
                 .buffered="${[0, 1]}"
                 @kokoro-change="${(e) => this.setVolume(e.detail.progress)}"
               ></kokoro-track>
@@ -1281,8 +1281,8 @@ class Player extends Component {
           <kokoro-progress
             .played="${this.played}"
             .buffered="${this.buffered}"
-            .currentTime="${this.playing.currentTime}"
-            .totalTime="${this.playing.totalTime}"
+            .currentTime="${this.playing?.currentTime}"
+            .totalTime="${this.playing?.totalTime}"
             @kokoro-change="${(e) => { if (e.detail.commit) this.setCurrentProgress(e.detail.progress) }}"
           ></kokoro-progress>
         </div>
@@ -1292,7 +1292,7 @@ class Player extends Component {
         ></div>
         <div class="playlist-panel ${this.isConnected && this.isPlaylistShowing ? '' : 'hide'}">
           <div class="playlist">
-            ${this.playlist.map((song, index) => html`
+            ${this.playlist?.map((song, index) => html`
               <div class="playlist-item-box" @click="${() => { this.setCurrentSong(song, index) }}">
                 <div class="playlist-item ${this.isCurrentSong(song) ? 'current' : ''}">
                   <a class="remove" @click="${() => { this.removeSong(index) }}"
@@ -1307,7 +1307,7 @@ class Player extends Component {
             class="playlist-close"
             @click="${this.togglePlaylist}"
           ><i class="icon icon-close"></i></a>
-          ${this.playlist.length ? html`
+          ${this.playlist?.length ? html`
             <a
               class="playlist-clear"
               @click="${() => { this.clearPlaylist() }}"
