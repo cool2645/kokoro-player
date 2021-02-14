@@ -1,8 +1,9 @@
-import { LitElement, html, css } from 'lit-element'
+import { html, css } from 'lit-element'
 
 import { waveStyle, sharedPageStyle } from './style'
+import Locale from './locale'
 
-class SoloPage extends LitElement {
+class SoloPage extends Locale {
   static get properties () {
     return {
       connected: { type: Boolean },
@@ -112,9 +113,17 @@ class SoloPage extends LitElement {
     return html`
       <div class="demo waveAnimation">
         <div class="content">
-          <nav-bar .location=${this.location} color="#ffe9f8"></nav-bar>
+          <nav-bar
+            .location=${this.location} color="#ffe9f8"
+            .demo="${this.getLocale('demo')}"
+            .langName="${this.getLocale('lang')}"
+            .solo="${this.getLocale('solo')}"
+            .playlist="${this.getLocale('playlist')}"
+            .lang="${this.getLangList()}"
+            @demo-change-lang="${(e) => this.changeLang(e.detail.lang)}"
+          ></nav-bar>
           <div class="main">
-            <h1>Single Song Card</h1>
+            <h1>${this.getLocale('soloCard')}</h1>
             <div class="landing">
               <kokoro-provider>
                 <kokoro-single-card
@@ -153,7 +162,7 @@ class SoloPage extends LitElement {
         </div>
       </div>
       <div class="source">
-        <h1>Source Code</h1>
+        <h1>${this.getLocale('source')}</h1>
         <div>
           <label for="conn"><input type="checkbox" id="conn"
                                    ?checked="${this.connected}"

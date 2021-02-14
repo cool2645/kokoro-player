@@ -991,6 +991,13 @@ class Player extends Component {
       .removeEventListener('touchmove', this.onLyricsUserScroll)
   }
 
+  requestUpdate (...args) {
+    super.requestUpdate(...args)
+    if (args.length === 0) {
+      this.shadowRoot.querySelector('kokoro-desktop-lyrics')?.requestUpdate()
+    }
+  }
+
   isCurrentSong (song) {
     return SrcUtil.same(this.currentSong?.src, song.src)
   }

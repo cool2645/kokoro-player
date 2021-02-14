@@ -1,8 +1,9 @@
-import { LitElement, html, css } from 'lit-element'
+import { html, css } from 'lit-element'
 
 import { waveStyle, sharedPageStyle } from './style'
+import Locale from './locale'
 
-class PlaylistPage extends LitElement {
+class PlaylistPage extends Locale {
   static get properties () {
     return {
       connected: { type: Boolean },
@@ -627,9 +628,17 @@ class PlaylistPage extends LitElement {
       <link href="https://cdn.jsdelivr.net/gh/PrismJS/prism@1.16.0/themes/prism-coy.css" rel="stylesheet" />
       <div class="demo waveAnimation">
         <div class="content">
-          <nav-bar .location=${this.location} color="#3e4f55"></nav-bar>
+          <nav-bar
+            .location=${this.location} color="#3e4f55"
+            .demo="${this.getLocale('demo')}"
+            .langName="${this.getLocale('lang')}"
+            .solo="${this.getLocale('solo')}"
+            .playlist="${this.getLocale('playlist')}"
+            .lang="${this.getLangList()}"
+            @demo-change-lang="${(e) => this.changeLang(e.detail.lang)}"
+          ></nav-bar>
           <div class="main">
-            <h1>Playlist Card</h1>
+            <h1>${this.getLocale('playlistCard')}</h1>
             <div class="landing">
               <kokoro-provider>
                 <kokoro-playlist-card
@@ -663,7 +672,7 @@ class PlaylistPage extends LitElement {
         </div>
       </div>
       <div class="source">
-        <h1>Source Code</h1>
+        <h1>${this.getLocale('source')}</h1>
         <div>
           <label for="conn"><input type="checkbox" id="conn"
                                    ?checked="${this.connected}"
