@@ -915,7 +915,8 @@ class Player extends Component {
     this.mobileDefaultSide = 'left'
     this.right = (document.documentElement || document.body).clientWidth - 122
     this.bottom = (document.documentElement || document.body).clientHeight - 100 - 122
-    this.isDesktopLyricsShowing = true
+    this.isDesktopLyricsShowing = false
+    this.desktopLyricsVerticalCenter = 150
     this.desktopLyricsColorSchemes = [
       { name: '夕阳', value: 'linear-gradient(-1deg, #e92201, #fb9c17, #e92201)' },
       { name: '蓝天', value: 'linear-gradient(-1deg, #0145d3, #118cfa, #0145d3)' },
@@ -955,7 +956,6 @@ class Player extends Component {
     }
     this.cursorX = this.left
     this.shrinkToLeft = this.cursorX < ((document.documentElement || document.body).clientWidth / 2)
-    this.desktopLyricsVerticalCenter = 150
     this.desktopLyricsHorizontalCenter = (document.documentElement || document.body).clientWidth / 2
     this.shadowRoot.querySelector('#lyrics-scroll')
       .addEventListener('wheel', this.onLyricsUserScroll)

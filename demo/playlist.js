@@ -658,6 +658,7 @@ class PlaylistPage extends Locale {
               top="100"
               left="0"
               mobileDefaultSide="right"
+              isDesktopLyricsShowing
             ></kokoro-player>
           </kokoro-provider>
         </div>
@@ -713,9 +714,13 @@ class PlaylistPage extends Locale {
     <!-- Player -->
     <kokoro-player${this.darkMode ? `
       darkMode` : ''}
+      lang="${this._lang}"
       top="100"
       left="0"
       mobileDefaultSide="right"
+      desktopLyricsColorSchemeIndex="2"
+      desktopLyricsVerticalCenter="150"
+      isDesktopLyricsShowing
     ></kokoro-player>
   </kokoro-provider>
 </body>

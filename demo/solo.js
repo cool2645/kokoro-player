@@ -148,6 +148,7 @@ class SoloPage extends Locale {
               left="0"
               mobileDefaultSide="right"
               desktopLyricsColorSchemeIndex="2"
+              isDesktopLyricsShowing
             ></kokoro-player>
           </kokoro-provider>
         </div>
@@ -201,12 +202,16 @@ class SoloPage extends Locale {
   </kokoro-provider>
   <kokoro-provider>
     <!-- Player -->
-    <kokoro-player${this.darkMode ? `
+    <kokoro-player
+      id="player"${this.darkMode ? `
       darkMode` : ''}
+      lang="${this._lang}"
       top="100"
       left="0"
       mobileDefaultSide="right"
       desktopLyricsColorSchemeIndex="2"
+      desktopLyricsVerticalCenter="150"
+      isDesktopLyricsShowing
     ></kokoro-player>
   </kokoro-provider>
 </body>
@@ -221,6 +226,26 @@ window.customElements.define('kokoro-provider', Provider${this.connected ? '.con
 ${this.connected ? `// To disconnect
 // document.querySelector('kokoro-provider').disconnect()` : `// To connect
 // document.querySelector('kokoro-provider').connect(window.player)`}
+
+// Set lyrics for card
+// More about lyrics: https://kokoro.js.org/interfaces/ilyrics.html
+document.querySelector('#if').lyrics = {
+  type: 'lrc',
+  value: '[ar:阮豆]\\n[ti:如果你能够做我男朋友]\\n[al:如果你能够做我男朋友]\\n[length: 2:41]\\n[00:00.00]作词：久贤\\n[00:06.20]作曲：久贤\\n[00:13.17]编曲：安苏羽\\n[00:16.30]制作人：久贤\\n[00:19.58]混音：贾佳\\n[00:22.13][01:22.75]请问你是什么星座\\n[00:25.00][01:25.03]能不能告诉我\\n[00:27.13][01:27.08]你是狮子座还是水瓶座\\n[00:29.62][01:29.58]不管是什么都很适合我\\n[00:32.56][01:32.48]每天都会许个愿望\\n[00:34.98][01:34.99]满足我的小幻想\\n[00:37.03][01:37.07]我只是害羞\\n[00:38.51][01:38.61]也怕出糗\\n[00:39.71][01:39.77]想鼓起勇气说\\n[00:41.43][00:51.57][01:41.41][01:51.48][02:01.44][02:11.48]如果你能够做我男朋友\\n[00:44.77][01:44.85][02:04.70]那就请你牵我手\\n[00:47.10][01:47.09][02:07.06]阳光 午后\\n[00:49.75][01:49.52][02:09.42]散步或郊游\\n[00:54.68][01:54.76][02:14.68]那就请你点点头\\n[00:57.09][01:57.01][02:17.09]约定拉钩\\n[00:59.21]现在就跟我走\\n[01:59.33]现在就跟我\\n[02:19.23]现在就请你跟我走',
+  translations: [{
+    lang: 'phonetic-latin',
+    name: 'Pīnyīn',
+    value: '[ar:阮豆]\\n[ti:如果你能够做我男朋友]\\n[al:如果你能够做我男朋友]\\n[length: 2:41]\\n[00:00.00]\\n[00:06.20]\\n[00:13.17]\\n[00:16.30]\\n[00:19.58]\\n[00:22.13][01:22.75]qingwen ni shi shenme xingzuo\\n[00:25.00][01:25.03]neng bu neng gaosu wo\\n[00:27.13][01:27.08]ni shi shizizuo haishi shuipingzuo\\n[00:29.62][01:29.58]buguan shi shenme dou hen shihe wo\\n[00:32.56][01:32.48]meitian dou hui xu ge yuanwang\\n[00:34.98][01:34.99]manzu wo de xiao huanxiang\\n[00:37.03][01:37.07]wo zhishi haixiu\\n[00:38.51][01:38.61]ye pa chuqiu\\n[00:39.71][01:39.77]xiang gu qi yongqi shuo\\n[00:41.43][00:51.57][01:41.41][01:51.48][02:01.44][02:11.48]ruguo ni nenggou zuo wo nanpengyou\\n[00:44.77][01:44.85][02:04.70]na jiu qing ni qian wo shou\\n[00:47.10][01:47.09][02:07.06]yangguang wuhou\\n[00:49.75][01:49.52][02:09.42]sanbu huo jiaoyou\\n[00:54.68][01:54.76][02:14.68]na jiu qing ni diandiantou\\n[00:57.09][01:57.01][02:17.09]yueding lagou\\n[00:59.21]xianzai jiu gen wo zou\\n[01:59.33]xianzai jiu gen wo\\n[02:19.23]xianzai jiu qing ni gen wo zou'
+  }]
+}
+
+// To override desktop lyrics color scheme
+// document.querySelector('#player').desktopLyricsColorSchemes = [
+//   { name: '夕阳', value: 'linear-gradient(-1deg, #e92201, #fb9c17, #e92201)' },
+//   { name: '蓝天', value: 'linear-gradient(-1deg, #0145d3, #118cfa, #0145d3)' },
+//   { name: '星野', value: 'linear-gradient(-1deg, #a5c9e5, #9da9eb, #c6bde2)' },
+//   { name: '山峦', value: 'linear-gradient(-1deg, #1dbf76, #67d74d, #1dbf76)' }
+// ]
 
 // Set initial playlist
 // More about Kokoro's API: https://kokoro.js.org
