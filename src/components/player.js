@@ -973,7 +973,7 @@ class Player extends Component {
   }
 
   updated (changedProperties) {
-    if (changedProperties.has('playing') || changedProperties.has('lyrics') || changedProperties.has('lang')) {
+    if (changedProperties.has('playing') || changedProperties.has('lyrics') || changedProperties.has('language')) {
       this.parsedLyrics = parseLyrics(this.lyrics,
         this.playing?.currentTime, this.playing?.totalTime, this.language)
       this.scrollLyricsToCurrent()
