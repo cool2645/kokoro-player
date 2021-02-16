@@ -5,23 +5,23 @@
 [![JavaScript Style Guide](https://flat.badgen.net/badge/code%20style/standard/green)](https://standardjs.com)
 [![Gitmoji](https://flat.badgen.net/badge/gitmoji/%F0%9F%98%9C%20%F0%9F%98%8D/FFDD67)](https://gitmoji.carloscuesta.me)
 
-[中文文档](./README.zh_Hans.md)
+[中文 README](./README.zh_Hans.md)
 
 Kokoro is a Japanese word which means heart. Kokoro player symbolizes the voices coming from the heart.
 
-## Install
+## 🎉 Install
 
 ```html
-<script src="//unpkg.com/kokoro-player/dist/kokoro-player.min.js"></script>
+<script src="//unpkg.com/kokoro-player/dist/kokoro-player.min.js" async=""></script>
 ```
 
-## Demo and Usage
+## 💓 Demo and Usage
 
 [Kokoro Player Demo](https://kokoro-player.js.org)
 
 [Kokoro API Documentation](https://kokoro.js.org)
 
-## Features
+## 💎 Features
 
 **Powerful.** Kokoro Player has complete, powerful functions no less than native platform music software. Playlist, play orders, scrolling lyrics and desktop lyrics are all available.
 
@@ -35,7 +35,15 @@ Kokoro is a Japanese word which means heart. Kokoro player symbolizes the voices
 
 **Limitation.** In order to achieve the above responsive features and ease of use, Kokoro Player extensively uses ResizeObserver and Web Component APIs. Therefore, it can only work in modern browsers.
 
-## Thanks
+## 🎨 Tips
+
+**Q: How to determine the beautiful color to use in my cards like [the demo site](https://kokoro-player.js.org) does?**
+
+Try https://media-style-palette.js.org.
+We'll try to add that feature to automatically detect color from cover image in future versions.
+Currently we do not do that in favor of small bundle size.
+
+## 💌 Thanks
 
 Projects that help Kokoro's idea
 
@@ -46,10 +54,8 @@ Projects that help Kokoro's idea
 Projects that inspire Kokoro Player's UI design
 
 - [MUSE](https://github.com/moefront/muse)
-
 - Netease Cloud Music Desktop Edition
-
+- QQ Music for Mac
 - Netease Cloud Music for Android
-
 - QQ Music for Android
 - Android Oreo media style notification
