@@ -13,6 +13,7 @@ class Player extends Component {
   static get properties () {
     return {
       currentSong: { type: Object },
+      src: { type: String },
       playing: { type: Object },
       lyrics: { type: Object },
       parsedLyrics: { type: Object },
@@ -966,6 +967,35 @@ class Player extends Component {
       .addEventListener('touchmove', this.onLyricsUserScroll)
     this.shadowRoot.querySelector('#lyrics-scroll-mobile')
       .addEventListener('touchmove', this.onLyricsUserScroll)
+    if ('mediaSession' in navigator && window.MediaMetadata) {
+      navigator.mediaSession.setActionHandler('play', () => {
+        this.context.kokoro?.play()
+      })
+      navigator.mediaSession.setActionHandler('pause', () => {
+        this.context.kokoro?.pause()
+      })
+      navigator.mediaSession.setActionHandler('seekbackward', (details) => {
+        if (!this.playing) return
+        if (typeof details.seekOffset === 'number') {
+          this.context.kokoro?.setCurrentTime(this.playing.currentTime - details.seekOffset)
+        } else {
+          this.context.kokoro?.setCurrentTime(this.playing.currentTime - 10)
+        }
+      })
+      navigator.mediaSession.setActionHandler('seekforward', (details) => {
+        if (!this.playing) return
+        if (typeof details.seekOffset === 'number') {
+          this.context.kokoro?.setCurrentTime(this.playing.currentTime + details.seekOffset)
+        } else {
+          this.context.kokoro?.setCurrentTime(this.playing.currentTime + 10)
+        }
+      })
+      navigator.mediaSession.setActionHandler('seekto', (details) => {
+        this.context.kokoro?.setCurrentTime(details.seekTime)
+      })
+      navigator.mediaSession.setActionHandler('previoustrack', () => { this.prev() })
+      navigator.mediaSession.setActionHandler('nexttrack', () => { this.next() })
+    }
   }
 
   onLyricsUserScroll () {
@@ -977,6 +1007,16 @@ class Player extends Component {
       this.parsedLyrics = parseLyrics(this.lyrics,
         this.playing?.currentTime, this.playing?.totalTime, this.language)
       this.scrollLyricsToCurrent()
+    }
+    if (changedProperties.has('src')) {
+      if (this.currentSong && 'mediaSession' in navigator && window.MediaMetadata) {
+        navigator.mediaSession.metadata = new window.MediaMetadata({
+          title: this.currentSong.title,
+          artist: this.currentSong.artist,
+          album: this.currentSong.album,
+          artwork: [{ src: this.currentSong.cover }]
+        })
+      }
     }
   }
 
@@ -1583,6 +1623,7 @@ class Player extends Component {
 const mapStateToProps = (state) => {
   return {
     currentSong: state.playing.song,
+    src: state.playing.src,
     lyrics: state.playing.song?.lyrics,
     langAvailable: getLangAvailable(state.playing.song?.lyrics),
     pnKindAvailable: [],
