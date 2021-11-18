@@ -51,6 +51,7 @@ export const parseLrcLyrics = (function () {
         let trans = parsedTranslationLyrics.lyrics[j]
         while (trans.timestamp < parsedLyrics.lyrics[i].timestamp) {
           j++
+          if (j >= parsedTranslationLyrics.lyrics.length) break
           trans = parsedTranslationLyrics.lyrics[j]
         }
         if (trans && trans.timestamp === parsedLyrics.lyrics[i].timestamp) {
@@ -62,7 +63,9 @@ export const parseLrcLyrics = (function () {
     }
     let currentTranslation
     try {
-      currentTranslation = translationLrcRunner ? translationLrcRunner.curLyric() : null
+      currentTranslation = translationLrcRunner &&
+        translationLrcRunner.curLyric().timestamp === lrcRunner.curLyric().timestamp
+        ? translationLrcRunner.curLyric() : null
     } catch (e) {}
     return {
       lyrics: parsedLyrics.lyrics,
